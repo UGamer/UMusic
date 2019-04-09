@@ -15,20 +15,38 @@ namespace UMusic
     public partial class Player : Form
     {
         WMPLib.WindowsMediaPlayer wplayer;
+        Timer positionTimer;
 
         string filePath;
         TagLib.File currentFile;
+
         Timer scrollingTimer;
         int titleLabelWidth;
         int titleLabelXPos = 0;
+        
+        Timer scrollingTimerArtist;
+        int artistLabelWidth;
+        int artistLabelXPos = 0;
 
         bool playing = true;
+        bool looping = false;
+        bool shuffle = false;
 
-        public Player()
+        public Player(string filePath)
         {
             InitializeComponent();
 
-            filePath = "love it mane.mp3";
+            globalKeyboardHook gkh = new globalKeyboardHook();
+
+            gkh.HookedKeys.Add(Keys.MediaPlayPause);
+            gkh.KeyDown += new KeyEventHandler(gkh_KeyDown);
+
+            this.filePath = filePath;
+            PlaySong(filePath);
+        }
+
+        private void PlaySong(string filePath)
+        {
             currentFile = TagLib.File.Create(filePath);
 
             if (currentFile.Tag.Pictures.Length >= 1)
@@ -38,6 +56,7 @@ namespace UMusic
             }
 
             TitleLabel.Text = currentFile.Tag.Title;
+            ArtistLabel.Text = currentFile.Tag.FirstAlbumArtist;
 
             if (TitleLabel.Size.Width > TitlePanel.Size.Width)
             {
@@ -47,29 +66,54 @@ namespace UMusic
                 scrollingTimer.Tick += scrollingTimer_Tick;
                 scrollingTimer.Start();
             }
-            wplayer = new WMPLib.WindowsMediaPlayer();
 
-            wplayer.URL = filePath;
-            wplayer.controls.play();
-
-            globalKeyboardHook gkh = new globalKeyboardHook();
-
-            gkh.HookedKeys.Add(Keys.MediaPlayPause);
-            gkh.KeyDown += new KeyEventHandler(gkh_KeyDown);
-        }
-
-        private void scrollingTimer_Tick(object sender, EventArgs e)
-        {
-            if (titleLabelXPos <= titleLabelWidth)
+            if (ArtistLabel.Size.Width > ArtistPanel.Size.Width)
             {
-                titleLabelXPos--;
-                TitleLabel.Location = new Point(titleLabelXPos, 4);
+                artistLabelWidth = ArtistLabel.Size.Width;
+                scrollingTimerArtist = new Timer();
+                scrollingTimerArtist.Interval = 1;
+                scrollingTimerArtist.Tick += scrollingTimerArtist_Tick;
+                scrollingTimerArtist.Start();
+            }
+
+            TimeSpan fullLength = currentFile.Properties.Duration;
+            string fullString = fullLength.ToString();
+            string hms = fullString.Substring(0, fullString.IndexOf("."));
+
+            int hourIndex = hms.IndexOf(":");
+            string h = hms.Substring(0, hourIndex);
+            string m = hms.Substring(hourIndex + 1, 2);
+            string s = hms.Substring(hourIndex + 4, 2);
+
+            int hour = Convert.ToInt32(h);
+            int min = Convert.ToInt32(m);
+            int sec = Convert.ToInt32(s);
+
+            int timeInSecs = (hour * 3600) + (min * 60) + sec;
+
+            ProgressBar.Maximum = timeInSecs;
+
+            if (hour == 0)
+            {
+                TotalLengthLabel.Text = min.ToString("00") + ":" + sec.ToString("00");
             }
             else
             {
-                TitleLabel.Location = new Point(0, 4);
+                TotalLengthLabel.Text = hour.ToString("00") + ":" + min.ToString("00") + ":" + sec.ToString("00");
             }
+
+            wplayer = new WMPLib.WindowsMediaPlayer();
+            
+            wplayer.URL = filePath;
+            wplayer.controls.play();
+
+            positionTimer = new Timer();
+            positionTimer.Interval = 1000;
+            positionTimer.Tick += positionTimer_Tick;
+            positionTimer.Start();
         }
+
+        
 
         private void PlayPauseButton_Click(object sender, EventArgs e)
         {
@@ -95,6 +139,116 @@ namespace UMusic
                 wplayer.controls.play();
                 PlayPauseButton.Text = "Pause";
             }
+        }
+
+        private void PreviousButton_Click(object sender, EventArgs e)
+        {
+            wplayer.controls.previous();
+        }
+
+        private void NextButton_Click(object sender, EventArgs e)
+        {
+            wplayer.controls.next();
+        }
+
+        private void VolumeBar_ValueChanged(object sender, EventArgs e)
+        {
+            wplayer.settings.volume = VolumeBar.Value;
+        }
+
+        private void LoopButton_Click(object sender, EventArgs e)
+        {
+            if (looping == false)
+            {
+                looping = true;
+                wplayer.settings.setMode("loop", true);
+                LoopButton.Text = "Looping";
+            }
+            else
+            {
+                looping = false;
+                wplayer.settings.setMode("loop", false);
+                LoopButton.Text = "Not Looping";
+            }
+        }
+        
+        private void Player_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            wplayer.controls.stop();
+        }
+
+        private void ShuffleButton_Click(object sender, EventArgs e)
+        {
+            if (shuffle == false)
+            {
+                shuffle = true;
+                wplayer.settings.setMode("shuffle", true);
+                ShuffleButton.Text = "Shuffling";
+            }
+            else
+            {
+                shuffle = false;
+                wplayer.settings.setMode("shuffle", false);
+                ShuffleButton.Text = "Not Shuffling";
+            }
+        }
+
+        private void positionTimer_Tick(object sender, EventArgs e)
+        {
+            ProgressBar.Value = (int)wplayer.controls.currentPosition;
+            int sec = ProgressBar.Value;
+
+            int min = sec / 60;
+            sec %= 60;
+            int hour = min / 60;
+            min %= 60;
+
+            string h = hour.ToString("00");
+            string m = min.ToString("00");
+            string s = sec.ToString("00");
+
+            if (hour == 0)
+            {
+                CurrentTimeLabel.Text = m + ":" + s;
+            }
+            else
+            {
+                CurrentTimeLabel.Text = h + ":" + m + ":" + s;
+            }
+        }
+
+        private void scrollingTimer_Tick(object sender, EventArgs e)
+        {
+            if (titleLabelXPos >= titleLabelWidth * -1)
+            {
+                titleLabelXPos--;
+                TitleLabel.Location = new Point(titleLabelXPos, 4);
+            }
+            else
+            {
+                TitleLabel.Location = new Point(TitlePanel.Size.Width, 4);
+                titleLabelXPos = TitlePanel.Size.Width;
+            }
+        }
+
+        private void scrollingTimerArtist_Tick(object sender, EventArgs e)
+        {
+            if (artistLabelXPos >= artistLabelWidth * -1)
+            {
+                artistLabelXPos--;
+                ArtistLabel.Location = new Point(artistLabelXPos, 4);
+            }
+            else
+            {
+                ArtistLabel.Location = new Point(ArtistPanel.Size.Width, 4);
+                artistLabelXPos = ArtistPanel.Size.Width;
+            }
+        }
+
+        private void ProgressBar_ValueChanged(object sender, EventArgs e)
+        {
+            int seconds = ProgressBar.Value;
+            wplayer.controls.currentPosition = seconds;
         }
     }
 }
