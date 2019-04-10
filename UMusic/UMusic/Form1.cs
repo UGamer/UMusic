@@ -124,6 +124,7 @@ namespace UMusic
         {
             chromeBrowser.Load("https://soundcloud.com/");
             BrowserDock.Visible = true;
+
             try
             {
                 if (player.playing == true)
