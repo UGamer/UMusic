@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CefSharp;
+using CefSharp.WinForms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,11 +15,14 @@ namespace UMusic
 {
     public partial class Form1 : Form
     {
+        public ChromiumWebBrowser chromeBrowser;
+        Player player;
 
         public Form1()
         {
             InitializeComponent();
             GetFiles();
+            InitializeBrowser();
         }
         
         private void GetFiles()
@@ -63,12 +68,68 @@ namespace UMusic
             }
         }
 
+        private void InitializeBrowser()
+        {
+            chromeBrowser = new ChromiumWebBrowser("https://www.google.com/");
+            // Add it to the form and fill it to the form window.
+            BrowserDock.Controls.Add(chromeBrowser);
+            chromeBrowser.Dock = DockStyle.Fill;
+        }
+
         private void DGV_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             int rowIndex = e.RowIndex;
             string filePath = DGV.Rows[rowIndex].Cells[1].Value.ToString();
-            Player player = new Player(filePath);
+            player = new Player(filePath);
             player.Show();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Cef.Shutdown();
+        }
+
+        private void UMusicPic_Click(object sender, EventArgs e)
+        {
+            BrowserDock.Visible = false;
+        }
+
+        private void YouTubeMusicPic_Click(object sender, EventArgs e)
+        {
+            chromeBrowser.Load("https://music.youtube.com/");
+            BrowserDock.Visible = true;
+
+            try
+            {
+                if (player.playing == true)
+                    player.PlayPause();
+            }
+            catch { }
+        }
+
+        private void SpotifyPic_Click(object sender, EventArgs e)
+        {
+            chromeBrowser.Load("https://open.spotify.com");
+            BrowserDock.Visible = true;
+
+            try
+            {
+                if (player.playing == true)
+                    player.PlayPause();
+            }
+            catch { }
+        }
+
+        private void SoundCloudPic_Click(object sender, EventArgs e)
+        {
+            chromeBrowser.Load("https://soundcloud.com/");
+            BrowserDock.Visible = true;
+            try
+            {
+                if (player.playing == true)
+                    player.PlayPause();
+            }
+            catch { }
         }
     }
 }

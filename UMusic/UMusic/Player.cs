@@ -14,6 +14,8 @@ namespace UMusic
 {
     public partial class Player : Form
     {
+        public bool exist = true;
+
         WMPLib.WindowsMediaPlayer wplayer;
         Timer positionTimer;
 
@@ -28,7 +30,7 @@ namespace UMusic
         int artistLabelWidth;
         int artistLabelXPos = 0;
 
-        bool playing = true;
+        public bool playing = true;
         bool looping = false;
         bool shuffle = false;
 
@@ -125,7 +127,7 @@ namespace UMusic
             PlayPause();
         }
 
-        private void PlayPause()
+        public void PlayPause()
         {
             if (playing == true)
             {
@@ -172,10 +174,6 @@ namespace UMusic
             }
         }
         
-        private void Player_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            wplayer.controls.stop();
-        }
 
         private void ShuffleButton_Click(object sender, EventArgs e)
         {
@@ -244,11 +242,36 @@ namespace UMusic
                 artistLabelXPos = ArtistPanel.Size.Width;
             }
         }
+        
+        private void LockButton_Click(object sender, EventArgs e)
+        {
+            if (LockButton.Text == "Unlocked")
+            {
+                this.TopMost = true;
+                LockButton.Text = "Locked";
+            }
+            else
+            {
+                this.TopMost = false;
+                LockButton.Text = "Unlocked";
+            }
+        }
+
+        private void MiniPlayerButton_Click(object sender, EventArgs e)
+        {
+
+        }
 
         private void ProgressBar_ValueChanged(object sender, EventArgs e)
         {
             int seconds = ProgressBar.Value;
             wplayer.controls.currentPosition = seconds;
         }
+
+        private void Player_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            wplayer.controls.stop();
+        }
+
     }
 }
