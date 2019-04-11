@@ -174,6 +174,20 @@ namespace UMusic
             catch { }
         }
 
+        private void YouTubeBox_Click(object sender, EventArgs e)
+        {
+            chromeBrowser.Load("https://www.youtube.com/");
+            BrowserDock.Visible = true;
+            DGV.Visible = false;
+
+            try
+            {
+                if (player.playing == true)
+                    player.PlayPause();
+            }
+            catch { }
+        }
+
         private void SpotifyPic_Click(object sender, EventArgs e)
         {
             chromeBrowser.Load("https://open.spotify.com");
@@ -267,6 +281,22 @@ namespace UMusic
                 DGV.Size = new Size(originalDGVWidth, 365);
 
                 CollapseExtendButton.Text = "^";
+            }
+        }
+
+        private void DownloadButton_Click(object sender, EventArgs e)
+        {
+            if (chromeBrowser.Address.IndexOf("soundcloud") != -1)
+            {
+
+            }
+            else if (chromeBrowser.Address.IndexOf("youtube") != -1)
+            {
+
+            }
+            else if (chromeBrowser.Address.IndexOf("spotify") != -1)
+            {
+
             }
         }
     }

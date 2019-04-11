@@ -38,10 +38,12 @@
             // 
             // TopText
             // 
-            this.TopText.Location = new System.Drawing.Point(13, 23);
+            this.TopText.Enabled = false;
+            this.TopText.Location = new System.Drawing.Point(20, 35);
+            this.TopText.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.TopText.Name = "TopText";
             this.TopText.ReadOnly = true;
-            this.TopText.Size = new System.Drawing.Size(209, 20);
+            this.TopText.Size = new System.Drawing.Size(312, 26);
             this.TopText.TabIndex = 0;
             this.TopText.Visible = false;
             this.TopText.MouseEnter += new System.EventHandler(this.MiniPlayer_MouseEnter);
@@ -50,9 +52,10 @@
             // ControlsPanel
             // 
             this.ControlsPanel.Controls.Add(this.PlayPauseButton);
-            this.ControlsPanel.Location = new System.Drawing.Point(13, 156);
+            this.ControlsPanel.Location = new System.Drawing.Point(20, 240);
+            this.ControlsPanel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ControlsPanel.Name = "ControlsPanel";
-            this.ControlsPanel.Size = new System.Drawing.Size(209, 43);
+            this.ControlsPanel.Size = new System.Drawing.Size(314, 66);
             this.ControlsPanel.TabIndex = 1;
             this.ControlsPanel.Visible = false;
             this.ControlsPanel.MouseEnter += new System.EventHandler(this.MiniPlayer_MouseEnter);
@@ -61,19 +64,22 @@
             // PlayPauseButton
             // 
             this.PlayPauseButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.PlayPauseButton.Location = new System.Drawing.Point(85, 4);
+            this.PlayPauseButton.Location = new System.Drawing.Point(128, 6);
+            this.PlayPauseButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.PlayPauseButton.Name = "PlayPauseButton";
-            this.PlayPauseButton.Size = new System.Drawing.Size(36, 36);
+            this.PlayPauseButton.Size = new System.Drawing.Size(54, 55);
             this.PlayPauseButton.TabIndex = 0;
             this.PlayPauseButton.UseVisualStyleBackColor = true;
             this.PlayPauseButton.Click += new System.EventHandler(this.PlayPauseButton_Click);
             // 
             // ArtistBox
             // 
-            this.ArtistBox.Location = new System.Drawing.Point(13, 49);
+            this.ArtistBox.Enabled = false;
+            this.ArtistBox.Location = new System.Drawing.Point(20, 75);
+            this.ArtistBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ArtistBox.Name = "ArtistBox";
             this.ArtistBox.ReadOnly = true;
-            this.ArtistBox.Size = new System.Drawing.Size(209, 20);
+            this.ArtistBox.Size = new System.Drawing.Size(312, 26);
             this.ArtistBox.TabIndex = 2;
             this.ArtistBox.Visible = false;
             this.ArtistBox.MouseEnter += new System.EventHandler(this.MiniPlayer_MouseEnter);
@@ -81,14 +87,15 @@
             // 
             // MiniPlayer
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.ClientSize = new System.Drawing.Size(234, 211);
+            this.ClientSize = new System.Drawing.Size(351, 325);
             this.Controls.Add(this.ArtistBox);
             this.Controls.Add(this.ControlsPanel);
             this.Controls.Add(this.TopText);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "MiniPlayer";
             this.Text = "Mini Player";
             this.MouseEnter += new System.EventHandler(this.MiniPlayer_MouseEnter);
