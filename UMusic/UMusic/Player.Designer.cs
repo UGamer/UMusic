@@ -45,11 +45,18 @@
             this.TotalLengthLabel = new System.Windows.Forms.Label();
             this.MiniPlayerButton = new System.Windows.Forms.Button();
             this.LockButton = new System.Windows.Forms.Button();
+            this.AlbumLabel = new System.Windows.Forms.Label();
+            this.AlbumPanel = new System.Windows.Forms.Panel();
+            this.GenrePanel = new System.Windows.Forms.Panel();
+            this.GenreLabel = new System.Windows.Forms.Label();
+            this.PlaylistButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.AlbumArtBox)).BeginInit();
             this.TitlePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ProgressBar)).BeginInit();
             this.ArtistPanel.SuspendLayout();
+            this.AlbumPanel.SuspendLayout();
+            this.GenrePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // AlbumArtBox
@@ -82,11 +89,11 @@
             // 
             // PlayPauseButton
             // 
+            this.PlayPauseButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.PlayPauseButton.Location = new System.Drawing.Point(561, 388);
             this.PlayPauseButton.Name = "PlayPauseButton";
             this.PlayPauseButton.Size = new System.Drawing.Size(50, 50);
             this.PlayPauseButton.TabIndex = 2;
-            this.PlayPauseButton.Text = "Pause";
             this.PlayPauseButton.UseVisualStyleBackColor = true;
             this.PlayPauseButton.Click += new System.EventHandler(this.PlayPauseButton_Click);
             // 
@@ -112,28 +119,32 @@
             // 
             // LoopButton
             // 
+            this.LoopButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.LoopButton.FlatAppearance.BorderColor = System.Drawing.Color.Red;
+            this.LoopButton.FlatAppearance.BorderSize = 3;
             this.LoopButton.Location = new System.Drawing.Point(672, 388);
             this.LoopButton.Name = "LoopButton";
             this.LoopButton.Size = new System.Drawing.Size(50, 50);
             this.LoopButton.TabIndex = 5;
-            this.LoopButton.Text = "Not Looping";
             this.LoopButton.UseVisualStyleBackColor = true;
             this.LoopButton.Click += new System.EventHandler(this.LoopButton_Click);
             // 
             // ShuffleButton
             // 
+            this.ShuffleButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.ShuffleButton.FlatAppearance.BorderColor = System.Drawing.Color.Red;
+            this.ShuffleButton.FlatAppearance.BorderSize = 3;
             this.ShuffleButton.Location = new System.Drawing.Point(451, 388);
             this.ShuffleButton.Name = "ShuffleButton";
             this.ShuffleButton.Size = new System.Drawing.Size(50, 50);
             this.ShuffleButton.TabIndex = 6;
-            this.ShuffleButton.Text = "Not Shuffling";
             this.ShuffleButton.UseVisualStyleBackColor = true;
             this.ShuffleButton.Click += new System.EventHandler(this.ShuffleButton_Click);
             // 
             // VolumeBar
             // 
             this.VolumeBar.Location = new System.Drawing.Point(727, 388);
-            this.VolumeBar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.VolumeBar.Margin = new System.Windows.Forms.Padding(2);
             this.VolumeBar.Maximum = 100;
             this.VolumeBar.Name = "VolumeBar";
             this.VolumeBar.Size = new System.Drawing.Size(115, 45);
@@ -144,11 +155,13 @@
             // ProgressBar
             // 
             this.ProgressBar.Location = new System.Drawing.Point(451, 338);
-            this.ProgressBar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ProgressBar.Margin = new System.Windows.Forms.Padding(2);
             this.ProgressBar.Name = "ProgressBar";
             this.ProgressBar.Size = new System.Drawing.Size(391, 45);
             this.ProgressBar.TabIndex = 8;
-            this.ProgressBar.MouseCaptureChanged += new System.EventHandler(this.ProgressBar_ValueChanged);
+            this.ProgressBar.MouseCaptureChanged += new System.EventHandler(this.ProgressBar_MouseCaptureChanged);
+            this.ProgressBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ProgressBar_MouseDown);
+            this.ProgressBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ProgressBar_MouseUp);
             // 
             // ArtistPanel
             // 
@@ -203,19 +216,71 @@
             // 
             // LockButton
             // 
+            this.LockButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.LockButton.Location = new System.Drawing.Point(881, 388);
             this.LockButton.Name = "LockButton";
             this.LockButton.Size = new System.Drawing.Size(50, 50);
             this.LockButton.TabIndex = 11;
-            this.LockButton.Text = "Unlocked";
             this.LockButton.UseVisualStyleBackColor = true;
             this.LockButton.Click += new System.EventHandler(this.LockButton_Click);
+            // 
+            // AlbumLabel
+            // 
+            this.AlbumLabel.AutoSize = true;
+            this.AlbumLabel.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AlbumLabel.Location = new System.Drawing.Point(0, 4);
+            this.AlbumLabel.Name = "AlbumLabel";
+            this.AlbumLabel.Size = new System.Drawing.Size(59, 20);
+            this.AlbumLabel.TabIndex = 0;
+            this.AlbumLabel.Text = "Album";
+            this.AlbumLabel.UseMnemonic = false;
+            // 
+            // AlbumPanel
+            // 
+            this.AlbumPanel.Controls.Add(this.AlbumLabel);
+            this.AlbumPanel.Location = new System.Drawing.Point(445, 96);
+            this.AlbumPanel.Name = "AlbumPanel";
+            this.AlbumPanel.Size = new System.Drawing.Size(496, 30);
+            this.AlbumPanel.TabIndex = 3;
+            // 
+            // GenrePanel
+            // 
+            this.GenrePanel.Controls.Add(this.GenreLabel);
+            this.GenrePanel.Location = new System.Drawing.Point(445, 132);
+            this.GenrePanel.Name = "GenrePanel";
+            this.GenrePanel.Size = new System.Drawing.Size(496, 30);
+            this.GenrePanel.TabIndex = 4;
+            // 
+            // GenreLabel
+            // 
+            this.GenreLabel.AutoSize = true;
+            this.GenreLabel.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GenreLabel.Location = new System.Drawing.Point(0, 4);
+            this.GenreLabel.Name = "GenreLabel";
+            this.GenreLabel.Size = new System.Drawing.Size(45, 17);
+            this.GenreLabel.TabIndex = 0;
+            this.GenreLabel.Text = "Genre";
+            this.GenreLabel.UseMnemonic = false;
+            // 
+            // PlaylistButton
+            // 
+            this.PlaylistButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.PlaylistButton.Location = new System.Drawing.Point(936, 332);
+            this.PlaylistButton.Name = "PlaylistButton";
+            this.PlaylistButton.Size = new System.Drawing.Size(50, 50);
+            this.PlaylistButton.TabIndex = 13;
+            this.PlaylistButton.Text = "Show Queue";
+            this.PlaylistButton.UseVisualStyleBackColor = true;
+            this.PlaylistButton.Click += new System.EventHandler(this.PlaylistButton_Click);
             // 
             // Player
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(998, 450);
+            this.Controls.Add(this.PlaylistButton);
+            this.Controls.Add(this.GenrePanel);
+            this.Controls.Add(this.AlbumPanel);
             this.Controls.Add(this.MiniPlayerButton);
             this.Controls.Add(this.LockButton);
             this.Controls.Add(this.TotalLengthLabel);
@@ -241,6 +306,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.ProgressBar)).EndInit();
             this.ArtistPanel.ResumeLayout(false);
             this.ArtistPanel.PerformLayout();
+            this.AlbumPanel.ResumeLayout(false);
+            this.AlbumPanel.PerformLayout();
+            this.GenrePanel.ResumeLayout(false);
+            this.GenrePanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -248,7 +317,7 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox AlbumArtBox;
+        public System.Windows.Forms.PictureBox AlbumArtBox;
         private System.Windows.Forms.Panel TitlePanel;
         private System.Windows.Forms.Label TitleLabel;
         private System.Windows.Forms.Button PlayPauseButton;
@@ -264,5 +333,10 @@
         private System.Windows.Forms.Label TotalLengthLabel;
         private System.Windows.Forms.Button MiniPlayerButton;
         private System.Windows.Forms.Button LockButton;
+        private System.Windows.Forms.Label AlbumLabel;
+        private System.Windows.Forms.Panel AlbumPanel;
+        private System.Windows.Forms.Panel GenrePanel;
+        private System.Windows.Forms.Label GenreLabel;
+        private System.Windows.Forms.Button PlaylistButton;
     }
 }

@@ -16,11 +16,12 @@ namespace UMusic
     {
         public bool exist = true;
 
-        WMPLib.WindowsMediaPlayer wplayer;
+        public WMPLib.WindowsMediaPlayer wplayer;
+        public WMPLib.IWMPPlaylist playlist;
         Timer positionTimer;
 
         string filePath;
-        TagLib.File currentFile;
+        public TagLib.File currentFile;
 
         Timer scrollingTimer;
         int titleLabelWidth;
@@ -30,13 +31,33 @@ namespace UMusic
         int artistLabelWidth;
         int artistLabelXPos = 0;
 
-        public bool playing = true;
+        Timer scrollingTimerAlbum;
+        int albumLabelWidth;
+        int albumLabelXPos = 0;
+
+        Timer scrollingTimerGenre;
+        int genreLabelWidth;
+        int genreLabelXPos = 0;
+
+        public bool playing = false;
         bool looping = false;
         bool shuffle = false;
+        bool locked = false;
+
+        bool grabbed = false;
+
+        MiniPlayer miniPlayer;
 
         public Player(string filePath)
         {
             InitializeComponent();
+
+            LockButton.BackgroundImage = Image.FromFile("Resources\\Unlock.png");
+
+            PlayPauseButton.BackgroundImage = Image.FromFile("Resources\\Pause.png");
+
+            LoopButton.BackgroundImage = Image.FromFile("Resources\\Loop.png");
+            ShuffleButton.BackgroundImage = Image.FromFile("Resources\\Shuffle.png");
 
             globalKeyboardHook gkh = new globalKeyboardHook();
 
@@ -47,35 +68,170 @@ namespace UMusic
             PlaySong(filePath);
         }
 
-        private void PlaySong(string filePath)
+        public void PlaySong(string filePath)
         {
-            currentFile = TagLib.File.Create(filePath);
+            try
+            {
+                wplayer.controls.stop();
+            }
+            catch
+            {
+
+            }
+
+            playing = true;
+            
+            wplayer = new WMPLib.WindowsMediaPlayer();
+            playlist = wplayer.playlistCollection.newPlaylist("myplaylist");
+            WMPLib.IWMPMedia currentSong = wplayer.newMedia(filePath);
+            
+            playlist.appendItem(currentSong);
+            wplayer.currentPlaylist = playlist;
+
+            WMPLib.IWMPMedia playlistItem = playlist.Item[0];
+
+            wplayer.controls.play();
+
+            wplayer.MediaChange += wplayer_MediaChange;
+            wplayer.PlayStateChange += wplayer_PlayStateChange;
+
+            positionTimer = new Timer();
+            positionTimer.Interval = 1;
+            positionTimer.Tick += positionTimer_Tick;
+            positionTimer.Start();
+            
+            DisplayInfo();
+        }
+
+        private void wplayer_PlayStateChange(int NewState)
+        {
+            string playState = wplayer.playState.ToString();
+
+            if (playState == "wmppsStopped")
+            {
+                PlayPauseButton.BackgroundImage = Image.FromFile("Resources\\Play.png");
+                playing = false;
+            }
+        }
+
+        private void wplayer_MediaChange(object Item)
+        {
+            DisplayInfo();
+        }
+
+        public void DisplayInfo()
+        {
+            string currentMedia = wplayer.currentMedia.sourceURL;
+
+            currentFile = TagLib.File.Create(currentMedia);
 
             if (currentFile.Tag.Pictures.Length >= 1)
             {
                 var bin = (byte[])(currentFile.Tag.Pictures[0].Data.Data);
                 AlbumArtBox.BackgroundImage = Image.FromStream(new MemoryStream(bin)).GetThumbnailImage(500, 500, null, IntPtr.Zero);
             }
+            else
+                AlbumArtBox.BackgroundImage = Image.FromFile("Resources\\Unknown Album Art.png");
 
             TitleLabel.Text = currentFile.Tag.Title;
-            ArtistLabel.Text = currentFile.Tag.FirstAlbumArtist;
 
-            if (TitleLabel.Size.Width > TitlePanel.Size.Width)
+            if (currentFile.Tag.Title == null)
             {
-                titleLabelWidth = TitleLabel.Size.Width;
-                scrollingTimer = new Timer();
-                scrollingTimer.Interval = 1;
-                scrollingTimer.Tick += scrollingTimer_Tick;
-                scrollingTimer.Start();
+                string fileName = currentFile.Name;
+                for (bool ready = false; ready == false; )
+                {
+                    int folderIndex = fileName.IndexOf("\\");
+                    if (folderIndex != -1)
+                    {
+                        fileName = fileName.Substring(folderIndex + 1);
+                    }
+                    else
+                    {
+                        fileName = fileName.Substring(0, fileName.Length - 4);
+                        ready = true;
+                    }
+                }
+
+                TitleLabel.Text = fileName;
             }
 
-            if (ArtistLabel.Size.Width > ArtistPanel.Size.Width)
+            ArtistLabel.Text = currentFile.Tag.FirstAlbumArtist;
+
+            AlbumLabel.Text = "Album: " + currentFile.Tag.Album;
+            if (currentFile.Tag.Album == null)
+                AlbumLabel.Text = "";
+
+            GenreLabel.Text = "Genre: " + currentFile.Tag.FirstGenre;
+            if (currentFile.Tag.FirstGenre == null)
+                GenreLabel.Text = "";
+
+            // This section is for scrolling timer determinations.
             {
-                artistLabelWidth = ArtistLabel.Size.Width;
-                scrollingTimerArtist = new Timer();
-                scrollingTimerArtist.Interval = 1;
-                scrollingTimerArtist.Tick += scrollingTimerArtist_Tick;
-                scrollingTimerArtist.Start();
+                try
+                {
+                    scrollingTimer.Stop();
+                    TitleLabel.Location = new Point(0, 4);
+                }
+                catch { }
+                try
+                {
+                    scrollingTimerArtist.Stop();
+                    ArtistLabel.Location = new Point(0, 4);
+                }
+                catch { }
+                try
+                {
+                    scrollingTimerAlbum.Stop();
+                    AlbumLabel.Location = new Point(0, 4);
+                }
+                catch { }
+                try
+                {
+                    scrollingTimerGenre.Stop();
+                    GenreLabel.Location = new Point(0, 4);
+                }
+                catch { }
+
+                if (TitleLabel.Size.Width > TitlePanel.Size.Width)
+                {
+                    titleLabelWidth = TitleLabel.Size.Width;
+                    titleLabelXPos = 0;
+                    scrollingTimer = new Timer();
+                    scrollingTimer.Interval = 1;
+                    scrollingTimer.Tick += scrollingTimer_Tick;
+                    scrollingTimer.Start();
+
+                }
+
+                if (ArtistLabel.Size.Width > ArtistPanel.Size.Width)
+                {
+                    artistLabelWidth = ArtistLabel.Size.Width;
+                    artistLabelXPos = 0;
+                    scrollingTimerArtist = new Timer();
+                    scrollingTimerArtist.Interval = 1;
+                    scrollingTimerArtist.Tick += scrollingTimerArtist_Tick;
+                    scrollingTimerArtist.Start();
+                }
+
+                if (AlbumLabel.Size.Width > AlbumPanel.Size.Width)
+                {
+                    albumLabelWidth = AlbumLabel.Size.Width;
+                    albumLabelXPos = 0;
+                    scrollingTimerAlbum = new Timer();
+                    scrollingTimerAlbum.Interval = 1;
+                    scrollingTimerAlbum.Tick += scrollingTimerAlbum_Tick;
+                    scrollingTimerAlbum.Start();
+                }
+
+                if (GenreLabel.Size.Width > GenrePanel.Size.Width)
+                {
+                    genreLabelWidth = GenreLabel.Size.Width;
+                    genreLabelXPos = 0;
+                    scrollingTimerGenre = new Timer();
+                    scrollingTimerGenre.Interval = 1;
+                    scrollingTimerGenre.Tick += scrollingTimerGenre_Tick;
+                    scrollingTimerGenre.Start();
+                }
             }
 
             TimeSpan fullLength = currentFile.Properties.Duration;
@@ -103,19 +259,7 @@ namespace UMusic
             {
                 TotalLengthLabel.Text = hour.ToString("00") + ":" + min.ToString("00") + ":" + sec.ToString("00");
             }
-
-            wplayer = new WMPLib.WindowsMediaPlayer();
-            
-            wplayer.URL = filePath;
-            wplayer.controls.play();
-
-            positionTimer = new Timer();
-            positionTimer.Interval = 1000;
-            positionTimer.Tick += positionTimer_Tick;
-            positionTimer.Start();
         }
-
-        
 
         private void PlayPauseButton_Click(object sender, EventArgs e)
         {
@@ -133,13 +277,25 @@ namespace UMusic
             {
                 playing = false;
                 wplayer.controls.pause();
-                PlayPauseButton.Text = "Play";
+                PlayPauseButton.BackgroundImage = Image.FromFile("Resources\\Play.png");
+
+                try
+                {
+                    miniPlayer.PlayPauseButton.BackgroundImage = Image.FromFile("Resources\\Play.png");
+                }
+                catch { }
             }
             else
             {
                 playing = true;
                 wplayer.controls.play();
-                PlayPauseButton.Text = "Pause";
+                PlayPauseButton.BackgroundImage = Image.FromFile("Resources\\Pause.png");
+
+                try
+                {
+                    miniPlayer.PlayPauseButton.BackgroundImage = Image.FromFile("Resources\\Pause.png");
+                }
+                catch { }
             }
         }
 
@@ -164,37 +320,40 @@ namespace UMusic
             {
                 looping = true;
                 wplayer.settings.setMode("loop", true);
-                LoopButton.Text = "Looping";
+                LoopButton.FlatStyle = FlatStyle.Flat;
             }
             else
             {
                 looping = false;
                 wplayer.settings.setMode("loop", false);
-                LoopButton.Text = "Not Looping";
+                LoopButton.FlatStyle = FlatStyle.Standard;
             }
         }
         
-
         private void ShuffleButton_Click(object sender, EventArgs e)
         {
             if (shuffle == false)
             {
                 shuffle = true;
                 wplayer.settings.setMode("shuffle", true);
-                ShuffleButton.Text = "Shuffling";
+                ShuffleButton.FlatStyle = FlatStyle.Flat;
             }
             else
             {
                 shuffle = false;
                 wplayer.settings.setMode("shuffle", false);
-                ShuffleButton.Text = "Not Shuffling";
+                ShuffleButton.FlatStyle = FlatStyle.Standard;
             }
         }
 
         private void positionTimer_Tick(object sender, EventArgs e)
         {
-            ProgressBar.Value = (int)wplayer.controls.currentPosition;
-            int sec = ProgressBar.Value;
+            if (grabbed == false)
+            {
+                ProgressBar.Value = (int)wplayer.controls.currentPosition;
+            }
+
+            int sec = (int)wplayer.controls.currentPosition;
 
             int min = sec / 60;
             sec %= 60;
@@ -212,6 +371,29 @@ namespace UMusic
             else
             {
                 CurrentTimeLabel.Text = h + ":" + m + ":" + s;
+            }
+
+            if (grabbed == true)
+            {
+                sec = ProgressBar.Value;
+
+                min = sec / 60;
+                sec %= 60;
+                hour = min / 60;
+                min %= 60;
+
+                h = hour.ToString("00");
+                m = min.ToString("00");
+                s = sec.ToString("00");
+
+                if (hour == 0)
+                {
+                    CurrentTimeLabel.Text = m + ":" + s;
+                }
+                else
+                {
+                    CurrentTimeLabel.Text = h + ":" + m + ":" + s;
+                }
             }
         }
 
@@ -242,36 +424,83 @@ namespace UMusic
                 artistLabelXPos = ArtistPanel.Size.Width;
             }
         }
-        
+
+        private void scrollingTimerAlbum_Tick(object sender, EventArgs e)
+        {
+            if (albumLabelXPos >= albumLabelWidth * -1)
+            {
+                albumLabelXPos--;
+                AlbumLabel.Location = new Point(albumLabelXPos, 4);
+            }
+            else
+            {
+                AlbumLabel.Location = new Point(AlbumPanel.Size.Width, 4);
+                albumLabelXPos = AlbumPanel.Size.Width;
+            }
+        }
+
+        private void scrollingTimerGenre_Tick(object sender, EventArgs e)
+        {
+            if (genreLabelXPos >= genreLabelWidth * -1)
+            {
+                genreLabelXPos--;
+                GenreLabel.Location = new Point(genreLabelXPos, 4);
+            }
+            else
+            {
+                GenreLabel.Location = new Point(GenrePanel.Size.Width, 4);
+                genreLabelXPos = GenrePanel.Size.Width;
+            }
+        }
+
         private void LockButton_Click(object sender, EventArgs e)
         {
-            if (LockButton.Text == "Unlocked")
+            if (locked == false)
             {
                 this.TopMost = true;
-                LockButton.Text = "Locked";
+                locked = true;
+                LockButton.BackgroundImage = Image.FromFile("Resources\\Lock.png");
             }
             else
             {
                 this.TopMost = false;
-                LockButton.Text = "Unlocked";
+                locked = false;
+                LockButton.BackgroundImage = Image.FromFile("Resources\\Unlock.png");
             }
         }
 
         private void MiniPlayerButton_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void ProgressBar_ValueChanged(object sender, EventArgs e)
-        {
-            int seconds = ProgressBar.Value;
-            wplayer.controls.currentPosition = seconds;
+            miniPlayer = new MiniPlayer(this);
+            miniPlayer.Show();
         }
 
         private void Player_FormClosed(object sender, FormClosedEventArgs e)
         {
             wplayer.controls.stop();
+            this.Dispose();
         }
 
+        private void ProgressBar_MouseCaptureChanged(object sender, EventArgs e)
+        {
+            int seconds = ProgressBar.Value;
+            wplayer.controls.currentPosition = seconds;
+        }
+
+        private void ProgressBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            grabbed = true;
+        }
+
+        private void ProgressBar_MouseUp(object sender, MouseEventArgs e)
+        {
+            grabbed = false;
+        }
+
+        private void PlaylistButton_Click(object sender, EventArgs e)
+        {
+            Playlist playlistWindow = new Playlist(this);
+            playlistWindow.Show();
+        }
     }
 }
