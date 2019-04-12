@@ -44,6 +44,8 @@ namespace UMusic
         bool looping = false;
         bool shuffle = false;
         bool locked = false;
+        int volumeValue = 100;
+        string settings;
 
         bool grabbed = false;
 
@@ -67,21 +69,29 @@ namespace UMusic
 
             this.filePath = filePath;
             PlaySong(filePath);
+
+            settings = File.ReadAllText("settings.txt", Encoding.UTF8);
+
+            if (settings.IndexOf("Loop=True") != -1)
+                LoopMethod();
+
+            if (settings.IndexOf("Shuffle=True") != -1)
+                ShuffleMethod();
+
+            string volume = settings.Substring(settings.IndexOf("Volume=\"") + 8);
+            volume = volume.Substring(0, volume.IndexOf("\""));
+            volumeValue = Convert.ToInt32(volume);
+            wplayer.settings.volume = volumeValue;
+            VolumeBar.Value = volumeValue;
         }
 
         public void PlaySong(string filePath)
         {
-            try
-            {
-                wplayer.controls.stop();
-            }
-            catch
-            {
-
-            }
+            try { wplayer.controls.stop(); }
+            catch { }
 
             playing = true;
-            
+
             wplayer = new WMPLib.WindowsMediaPlayer();
             playlist = wplayer.playlistCollection.newPlaylist("myplaylist");
             WMPLib.IWMPMedia currentSong = wplayer.newMedia(filePath);
@@ -108,7 +118,17 @@ namespace UMusic
         {
             string playState = wplayer.playState.ToString();
 
-            if (playState == "wmppsStopped")
+            if (playState == "wmppsPaused")
+            {
+                PlayPauseButton.BackgroundImage = Image.FromFile("Resources\\Play.png");
+                playing = false;
+            }
+            else if (playState == "wmppsPlaying")
+            {
+                PlayPauseButton.BackgroundImage = Image.FromFile("Resources\\Pause.png");
+                playing = true;
+            }
+            else if (playState == "wmppsStopped")
             {
                 PlayPauseButton.BackgroundImage = Image.FromFile("Resources\\Play.png");
                 playing = false;
@@ -313,9 +333,15 @@ namespace UMusic
         private void VolumeBar_ValueChanged(object sender, EventArgs e)
         {
             wplayer.settings.volume = VolumeBar.Value;
+            volumeValue = VolumeBar.Value;
         }
 
         private void LoopButton_Click(object sender, EventArgs e)
+        {
+            LoopMethod();
+        }
+
+        private void LoopMethod()
         {
             if (looping == false)
             {
@@ -332,6 +358,11 @@ namespace UMusic
         }
         
         private void ShuffleButton_Click(object sender, EventArgs e)
+        {
+            ShuffleMethod();
+        }
+
+        private void ShuffleMethod()
         {
             if (shuffle == false)
             {
@@ -476,12 +507,6 @@ namespace UMusic
             miniPlayer.Show();
         }
 
-        private void Player_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            wplayer.controls.stop();
-            this.Dispose();
-        }
-
         private void ProgressBar_MouseCaptureChanged(object sender, EventArgs e)
         {
             int seconds = ProgressBar.Value;
@@ -506,8 +531,24 @@ namespace UMusic
 
         private void TagEditorButton_Click(object sender, EventArgs e)
         {
-            TagEditor tagEditor = new TagEditor();
+            Form1 main = new Form1();
+            TagEditor tagEditor = new TagEditor(this, main);
             tagEditor.Show();
+        }
+
+        private void Player_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            wplayer.controls.stop();
+
+            string segment1 = settings.Substring(0, settings.IndexOf("Loop=") + 5);
+            
+            TextWriter tw = new StreamWriter("settings.txt");
+            tw.WriteLine(segment1 + looping.ToString());
+            tw.WriteLine("Shuffle=" + shuffle.ToString());
+            tw.WriteLine("Volume=\"" + volumeValue.ToString() + "\"");
+            tw.Close();
+
+            this.Dispose();
         }
     }
 }

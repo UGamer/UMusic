@@ -189,6 +189,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SavePanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SavePanel.Designer.cs">
+      <DependentUpon>SavePanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="TagEditor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -217,6 +223,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SavePanel.resx">
+      <DependentUpon>SavePanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TagEditor.resx">
       <DependentUpon>TagEditor.cs</DependentUpon>
     </EmbeddedResource>

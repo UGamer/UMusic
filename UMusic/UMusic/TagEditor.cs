@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TagLib;
 
@@ -13,9 +6,28 @@ namespace UMusic
 {
     public partial class TagEditor : Form
     {
-        public TagEditor()
+        Player reference;
+        Form1 main;
+
+        public TagEditor(Player reference, Form1 main)
+        {
+            this.reference = reference;
+            this.main = main;
+            InitializeComponent();
+        }
+
+        public TagEditor(string filePath, Form1 main)
         {
             InitializeComponent();
+            FileNameBox.Text = filePath;
+
+            File currentFile = File.Create(FileNameBox.Text);
+
+            TitleBox.Text = currentFile.Tag.Title;
+            ArtistBox.Text = currentFile.Tag.AlbumArtists[0];
+            AlbumBox.Text = currentFile.Tag.Album;
+            GenreBox.Text = currentFile.Tag.Genres[0];
+            YearBox.Text = currentFile.Tag.Year.ToString();
         }
 
         private void SubmitButton_Click(object sender, EventArgs e)
@@ -27,15 +39,35 @@ namespace UMusic
             currentFile.Tag.Album = AlbumBox.Text;
             currentFile.Tag.Genres = new[] { GenreBox.Text };
             currentFile.Tag.Year = (uint) Convert.ToInt32(YearBox.Text);
-            currentFile.Tag.Pictures = new[] { new Picture(AlbumArtBox.Text) };
 
+            try
+            {
+                currentFile.Tag.Pictures = new[] { new Picture(AlbumArtBox.Text) };
+            }
+            catch (ArgumentException f) { }
+            
             if (ExplicitBox.Checked == true)
                 currentFile.Tag.Comment = "EXPLICIT";
 
-            currentFile.Save();
+            try
+            {
+                currentFile.Save();
+            }
+            catch (System.IO.IOException g)
+            {
+                string message = "Tagging for \"" + TitleBox.Text + "\" has failed because the song is currently in use. Would you like to clear the queue to tag this song?";
+                string caption = "Tagging Failed";
+                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                DialogResult result = MessageBox.Show(message, caption, buttons);
+                if (result == DialogResult.Yes)
+                {
+                    reference.wplayer.controls.stop();
+                    currentFile.Save();
+                }
+            }
         }
 
-        private void BrowseButton_Click(object sender, EventArgs e)
+        private void BrowseArtButton_Click(object sender, EventArgs e)
         {
             if (AlbumArtDialog.ShowDialog() == DialogResult.OK)
             {
@@ -43,30 +75,51 @@ namespace UMusic
             }
         }
 
-        /*
-        public byte[] ExecuteTagging(byte[] inputFile, string title, string artist, string album, string comment, uint year, string copyright, byte[] image)
+        private void BrowseFileNameButton_Click(object sender, EventArgs e)
         {
-            var stream = new MemoryStream();
-            var writer = new BinaryWriter(stream);
-            writer.Write(inputFile);
-            using (var audioFile = TagLib.File.Create(new SimpleFileAbstraction(stream)))
+            if (FileNameDialog.ShowDialog() == DialogResult.OK)
             {
-                audioFile.Tag.Title = title;
-                audioFile.Tag.Performers = new[] { artist };
-                audioFile.Tag.Album = album;
-                audioFile.Tag.Comment = comment;
-                audioFile.Tag.Genres = new[] { "Podcast" };
-                audioFile.Tag.Year = year;
-                audioFile.Tag.Copyright = copyright;
-                audioFile.Tag.Pictures = new[] { new Picture(image) };
-                audioFile.Save();
+                FileNameBox.Text = FileNameDialog.FileName;
+
+                File currentFile = File.Create(FileNameBox.Text);
+
+                TitleBox.Text = currentFile.Tag.Title;
+                ArtistBox.Text = currentFile.Tag.AlbumArtists[0];
+                AlbumBox.Text = currentFile.Tag.Album;
+                GenreBox.Text = currentFile.Tag.Genres[0];
+                YearBox.Text = currentFile.Tag.Year.ToString();
+            }
+        }
+
+        /*
+        private void FillAutoComplete()
+        {
+            DataTable dt = new DataTable();
+            foreach (DataGridViewColumn col in main.DGV.Columns)
+            {
+                dt.Columns.Add(col.Name);
             }
 
-            stream.Position = 0;
-            using (var reader = new BinaryReader(stream))
+            foreach (DataGridViewRow row in main.DGV.Rows)
             {
-                return reader.ReadBytes((int)stream.Length);
+                DataRow dRow = dt.NewRow();
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    dRow[cell.ColumnIndex] = cell.Value;
+                }
+                dt.Rows.Add(dRow);
             }
+            
+            AutoCompleteStringCollection autoFill = new AutoCompleteStringCollection();
+            int columnIndex = 4; // File Name column
+            string[] table = new string[dt.Rows.Count];
+            int index = 0;
+            for (index = 0; index < dt.Rows.Count; index++)
+            {
+                table[index] = dt.Rows[index][columnIndex].ToString();
+                autoFill.Add(table[index]);
+            }
+            FileNameBox.AutoCompleteCustomSource = autoFill;
         }
         */
     }

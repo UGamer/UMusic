@@ -28,18 +28,27 @@ namespace UMusic
             GetFiles();
             InitializeBrowser();
         }
-        
+
         private void GetFiles()
         {
             DGV.DataSource = null;
 
             string[] musicFiles = Directory.GetFiles("music");
-            string[] downloadFiles = Directory.GetFiles("music\\download");
+            string[] downloadFiles;
+            try
+            {
+                downloadFiles = Directory.GetFiles("music\\download");
+            }
+            catch
+            {
+                Directory.CreateDirectory("music\\download");
+                downloadFiles = Directory.GetFiles("music\\download");
+            }
 
             string[] files = new string[musicFiles.Length + downloadFiles.Length];
 
             int index = 0;
-            for (; index < musicFiles.Length; index++ )
+            for (; index < musicFiles.Length; index++)
             {
                 files[index] = musicFiles[index];
             }
@@ -78,7 +87,7 @@ namespace UMusic
             DGV.Columns[2].HeaderText = "Album";
             DGV.Columns[3].HeaderText = "Genre";
             DGV.Columns[4].HeaderText = "File";
-            
+
 
             DGV.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             DGV.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -127,10 +136,6 @@ namespace UMusic
 
                     this.DGV.Rows.Add(row);
                 }
-                else
-                {
-
-                }
             }
         }
 
@@ -150,6 +155,9 @@ namespace UMusic
             try
             {
                 player.PlaySong(filePath);
+                WMPLib.IWMPMedia newSong = player.wplayer.newMedia(filePath);
+                player.playlist.appendItem(newSong);
+                player.wplayer.currentPlaylist = player.playlist;
                 player.Show();
             }
             catch
@@ -158,19 +166,64 @@ namespace UMusic
                 {
                     player.wplayer.controls.stop();
                     player = new Player(filePath);
+                    WMPLib.IWMPMedia newSong = player.wplayer.newMedia(filePath);
+                    player.playlist.appendItem(newSong);
+                    player.wplayer.currentPlaylist = player.playlist;
                     player.Show();
                 }
                 catch
                 {
                     player = new Player(filePath);
+                    WMPLib.IWMPMedia newSong = player.wplayer.newMedia(filePath);
+                    player.playlist.appendItem(newSong);
+                    player.wplayer.currentPlaylist = player.playlist;
                     player.Show();
                 }
             }
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        int rowIndex;
+
+        private void DGV_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
         {
-            Cef.Shutdown();
+            if (e.Button == MouseButtons.Right)
+            {
+                this.DGV.Rows[e.RowIndex].Selected = true;
+                this.rowIndex = e.RowIndex;
+                this.DGV.CurrentCell = this.DGV.Rows[e.RowIndex].Cells[0];
+                this.LocalContextMenu.Show(this.DGV, e.Location);
+                LocalContextMenu.Show(Cursor.Position);
+            }
+        }
+
+        private void addToQueueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string fileName;
+            object value = DGV.Rows[this.rowIndex].Cells[4].Value;
+            fileName = value.ToString();
+
+            try
+            {
+                player.Show();
+                WMPLib.IWMPMedia newSong = player.wplayer.newMedia(fileName);
+                player.playlist.appendItem(newSong);
+                player.wplayer.currentPlaylist = player.playlist;
+            }
+            catch
+            {
+                player = new Player(fileName);
+                player.Show();
+            }
+        }
+
+        private void editTagsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string fileName;
+            object value = DGV.Rows[this.rowIndex].Cells[4].Value;
+            fileName = value.ToString();
+
+            TagEditor tagEditor = new TagEditor(fileName, this);
+            tagEditor.Show();
         }
 
         private void UMusicPic_Click(object sender, EventArgs e)
@@ -236,39 +289,7 @@ namespace UMusic
             catch { }
         }
 
-        int rowIndex;
-
-        private void DGV_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                this.DGV.Rows[e.RowIndex].Selected = true;
-                this.rowIndex = e.RowIndex;
-                this.DGV.CurrentCell = this.DGV.Rows[e.RowIndex].Cells[0];
-                this.LocalContextMenu.Show(this.DGV, e.Location);
-                LocalContextMenu.Show(Cursor.Position);
-            }
-        }
-
-        private void addToQueueToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string fileName;
-            object value = DGV.Rows[this.rowIndex].Cells[4].Value;
-            fileName = value.ToString();
-
-            try
-            {
-                player.Show();
-                WMPLib.IWMPMedia newSong = player.wplayer.newMedia(fileName);
-                player.playlist.appendItem(newSong);
-                player.wplayer.currentPlaylist = player.playlist;
-            }
-            catch
-            {
-                player = new Player(fileName);
-                player.Show();
-            }
-        }
+        
 
         private void CollapseExpandButton_Click(object sender, EventArgs e)
         {
@@ -302,6 +323,11 @@ namespace UMusic
 
                 CollapseExtendButton.Text = "^";
             }
+        }
+
+        private void GoogleButton_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void DownloadButton_Click(object sender, EventArgs e)
@@ -365,6 +391,11 @@ namespace UMusic
             {
 
             }
+        }
+        
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Cef.Shutdown();
         }
     }
 }
