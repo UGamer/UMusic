@@ -1,5 +1,7 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
+using MediaToolkit;
+using MediaToolkit.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,9 +9,11 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VideoLibrary;
 
 namespace UMusic
 {
@@ -27,7 +31,23 @@ namespace UMusic
         
         private void GetFiles()
         {
-            string[] files = Directory.GetFiles("music");
+            DGV.DataSource = null;
+
+            string[] musicFiles = Directory.GetFiles("music");
+            string[] downloadFiles = Directory.GetFiles("music\\download");
+
+            string[] files = new string[musicFiles.Length + downloadFiles.Length];
+
+            int index = 0;
+            for (; index < musicFiles.Length; index++ )
+            {
+                files[index] = musicFiles[index];
+            }
+
+            for (; index < downloadFiles.Length + musicFiles.Length; index++)
+            {
+                files[index] = downloadFiles[index - musicFiles.Length];
+            }
 
             string[] tableArray = new string[files.Length];
 
@@ -37,7 +57,7 @@ namespace UMusic
             string[] genres = new string[files.Length];
 
             TagLib.File currentFile;
-            for (int index = 0; index < titles.Length; index++)
+            for (index = 0; index < titles.Length; index++)
             {
                 currentFile = TagLib.File.Create(files[index]);
                 titles[index] = currentFile.Tag.Title;
@@ -292,7 +312,54 @@ namespace UMusic
             }
             else if (chromeBrowser.Address.IndexOf("youtube") != -1)
             {
+                try
+                {
+                    var source = @"music\\download\\";
+                    var youtube = YouTube.Default;
+                    var vid = youtube.GetVideo(chromeBrowser.Address);
+                    File.WriteAllBytes(source + vid.FullName, vid.GetBytes());
 
+                    var inputFile = new MediaFile { Filename = source + vid.FullName };
+                    var outputFile = new MediaFile { Filename = $"{source + vid.FullName}.mp3" };
+
+                    using (var engine = new Engine())
+                    {
+                        engine.GetMetadata(inputFile);
+
+                        engine.Convert(inputFile, outputFile);
+                    }
+
+                    string message = "Your download for \"" + vid.FullName + "\" has completed. Would you like to keep the video file?";
+                    string caption = "Download Complete";
+                    MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                    DialogResult result = MessageBox.Show(message, caption, buttons);
+                    if (result == DialogResult.Yes)
+                    {
+
+                    }
+                    else
+                    {
+                        File.Delete("music\\download\\" + vid.FullName);
+                    }
+
+                    GetFiles();
+                }
+                catch
+                {
+                    try
+                    {
+                        // This is thrown when the video attempting to be downloaded is either age-restricted or
+                        // requires Music Premium.
+
+                        string message = "Your download failed.";
+                        string caption = "Download Failed";
+                        MessageBox.Show(message, caption);
+                    }
+                    catch
+                    {
+                        chromeBrowser.Load("https://www.google.com/");
+                    }
+                }
             }
             else if (chromeBrowser.Address.IndexOf("spotify") != -1)
             {

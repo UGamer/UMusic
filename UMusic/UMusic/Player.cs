@@ -15,6 +15,7 @@ namespace UMusic
     public partial class Player : Form
     {
         public bool exist = true;
+        globalKeyboardHook gkh;
 
         public WMPLib.WindowsMediaPlayer wplayer;
         public WMPLib.IWMPPlaylist playlist;
@@ -59,7 +60,7 @@ namespace UMusic
             LoopButton.BackgroundImage = Image.FromFile("Resources\\Loop.png");
             ShuffleButton.BackgroundImage = Image.FromFile("Resources\\Shuffle.png");
 
-            globalKeyboardHook gkh = new globalKeyboardHook();
+            gkh = new globalKeyboardHook();
 
             gkh.HookedKeys.Add(Keys.MediaPlayPause);
             gkh.KeyDown += new KeyEventHandler(gkh_KeyDown);
@@ -501,6 +502,12 @@ namespace UMusic
         {
             Playlist playlistWindow = new Playlist(this);
             playlistWindow.Show();
+        }
+
+        private void TagEditorButton_Click(object sender, EventArgs e)
+        {
+            TagEditor tagEditor = new TagEditor();
+            tagEditor.Show();
         }
     }
 }

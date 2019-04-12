@@ -19,6 +19,9 @@ namespace UMusic
         {
             this.reference = reference;
             InitializeComponent();
+
+            LockButton.BackgroundImage = Image.FromFile("Resources\\Unlock.png");
+
             FillList();
         }
 

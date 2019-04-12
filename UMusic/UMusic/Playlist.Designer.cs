@@ -35,6 +35,7 @@
             this.LoadButton = new System.Windows.Forms.Button();
             this.SaveButton = new System.Windows.Forms.Button();
             this.PlaylistItemDGV = new System.Windows.Forms.DataGridView();
+            this.LockButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.PlaylistItemDGV)).BeginInit();
             this.SuspendLayout();
             // 
@@ -42,20 +43,22 @@
             // 
             this.MoveUpButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.MoveUpButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.MoveUpButton.Location = new System.Drawing.Point(13, 280);
+            this.MoveUpButton.Location = new System.Drawing.Point(52, 280);
             this.MoveUpButton.Name = "MoveUpButton";
             this.MoveUpButton.Size = new System.Drawing.Size(33, 33);
             this.MoveUpButton.TabIndex = 0;
+            this.MoveUpButton.Text = "/\\";
             this.MoveUpButton.UseVisualStyleBackColor = true;
             // 
             // MoveDownButton
             // 
             this.MoveDownButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.MoveDownButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.MoveDownButton.Location = new System.Drawing.Point(52, 280);
+            this.MoveDownButton.Location = new System.Drawing.Point(13, 280);
             this.MoveDownButton.Name = "MoveDownButton";
             this.MoveDownButton.Size = new System.Drawing.Size(33, 33);
             this.MoveDownButton.TabIndex = 1;
+            this.MoveDownButton.Text = "V";
             this.MoveDownButton.UseVisualStyleBackColor = true;
             // 
             // ClearButton
@@ -101,11 +104,22 @@
             this.PlaylistItemDGV.Size = new System.Drawing.Size(237, 262);
             this.PlaylistItemDGV.TabIndex = 5;
             // 
+            // LockButton
+            // 
+            this.LockButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.LockButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.LockButton.Location = new System.Drawing.Point(91, 280);
+            this.LockButton.Name = "LockButton";
+            this.LockButton.Size = new System.Drawing.Size(33, 33);
+            this.LockButton.TabIndex = 6;
+            this.LockButton.UseVisualStyleBackColor = true;
+            // 
             // Playlist
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(262, 319);
+            this.Controls.Add(this.LockButton);
             this.Controls.Add(this.PlaylistItemDGV);
             this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.LoadButton);
@@ -128,5 +142,6 @@
         private System.Windows.Forms.Button LoadButton;
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.DataGridView PlaylistItemDGV;
+        private System.Windows.Forms.Button LockButton;
     }
 }

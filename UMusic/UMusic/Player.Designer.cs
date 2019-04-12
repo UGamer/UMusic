@@ -50,6 +50,7 @@
             this.GenrePanel = new System.Windows.Forms.Panel();
             this.GenreLabel = new System.Windows.Forms.Label();
             this.PlaylistButton = new System.Windows.Forms.Button();
+            this.TagEditorButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.AlbumArtBox)).BeginInit();
             this.TitlePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeBar)).BeginInit();
@@ -273,11 +274,23 @@
             this.PlaylistButton.UseVisualStyleBackColor = true;
             this.PlaylistButton.Click += new System.EventHandler(this.PlaylistButton_Click);
             // 
+            // TagEditorButton
+            // 
+            this.TagEditorButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.TagEditorButton.Location = new System.Drawing.Point(881, 332);
+            this.TagEditorButton.Name = "TagEditorButton";
+            this.TagEditorButton.Size = new System.Drawing.Size(50, 50);
+            this.TagEditorButton.TabIndex = 14;
+            this.TagEditorButton.Text = "Tag Editor";
+            this.TagEditorButton.UseVisualStyleBackColor = true;
+            this.TagEditorButton.Click += new System.EventHandler(this.TagEditorButton_Click);
+            // 
             // Player
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(998, 450);
+            this.Controls.Add(this.TagEditorButton);
             this.Controls.Add(this.PlaylistButton);
             this.Controls.Add(this.GenrePanel);
             this.Controls.Add(this.AlbumPanel);
@@ -338,5 +351,6 @@
         private System.Windows.Forms.Panel GenrePanel;
         private System.Windows.Forms.Label GenreLabel;
         private System.Windows.Forms.Button PlaylistButton;
+        private System.Windows.Forms.Button TagEditorButton;
     }
 }
