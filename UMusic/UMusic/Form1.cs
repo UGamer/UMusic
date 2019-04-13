@@ -21,24 +21,35 @@ namespace UMusic
     {
         public ChromiumWebBrowser chromeBrowser;
         Player player;
+        string settings;
+
+        private string sortColumn;
+        string sortOrder;
 
         public Form1()
         {
             InitializeComponent();
+
+            settings = File.ReadAllText("settings.txt", Encoding.UTF8);
+
             GetFiles();
             InitializeBrowser();
         }
 
-        private void GetFiles()
+        public void GetFiles()
         {
-            DGV.DataSource = null;
+            do
+            {
+                foreach (DataGridViewRow row in DGV.Rows)
+                {
+                    try { DGV.Rows.Remove(row); }
+                    catch (Exception) { }
+                }
+            } while (DGV.Rows.Count > 1);
 
             string[] musicFiles = Directory.GetFiles("music");
             string[] downloadFiles;
-            try
-            {
-                downloadFiles = Directory.GetFiles("music\\download");
-            }
+            try  { downloadFiles = Directory.GetFiles("music\\download"); }
             catch
             {
                 Directory.CreateDirectory("music\\download");
@@ -47,22 +58,17 @@ namespace UMusic
 
             string[] files = new string[musicFiles.Length + downloadFiles.Length];
 
-            int index = 0;
-            for (; index < musicFiles.Length; index++)
-            {
+            int index;
+            for (index = 0; index < musicFiles.Length; index++)
                 files[index] = musicFiles[index];
-            }
 
             for (; index < downloadFiles.Length + musicFiles.Length; index++)
-            {
                 files[index] = downloadFiles[index - musicFiles.Length];
-            }
-
-            string[] tableArray = new string[files.Length];
 
             string[] titles = new string[files.Length];
             string[] artists = new string[files.Length];
             string[] albums = new string[files.Length];
+            string[] albumArtists = new string[files.Length];
             string[] genres = new string[files.Length];
 
             TagLib.File currentFile;
@@ -70,29 +76,31 @@ namespace UMusic
             {
                 currentFile = TagLib.File.Create(files[index]);
                 titles[index] = currentFile.Tag.Title;
-                artists[index] = currentFile.Tag.FirstAlbumArtist;
+                artists[index] = currentFile.Tag.FirstPerformer;
                 albums[index] = currentFile.Tag.Album;
+                albumArtists[index] = currentFile.Tag.FirstAlbumArtist;
                 genres[index] = currentFile.Tag.FirstGenre;
-                tableArray[index] = titles[index];
             }
 
-            string[,] twoD = new string[files.Length, 5];
+            string[,] twoD = new string[files.Length, 6];
 
             int height = twoD.GetLength(0);
             int width = twoD.GetLength(1);
 
             DGV.ColumnCount = width;
             DGV.Columns[0].HeaderText = "Title";
-            DGV.Columns[1].HeaderText = "Artist";
+            DGV.Columns[1].HeaderText = "Artist(s)";
             DGV.Columns[2].HeaderText = "Album";
-            DGV.Columns[3].HeaderText = "Genre";
-            DGV.Columns[4].HeaderText = "File";
-
-
+            DGV.Columns[3].HeaderText = "Album Artist(s)";
+            DGV.Columns[4].HeaderText = "Genre";
+            DGV.Columns[5].HeaderText = "File";
+            
             DGV.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             DGV.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             DGV.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             DGV.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DGV.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DGV.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
             for (int r = 0; r < height; r++)
             {
@@ -104,13 +112,13 @@ namespace UMusic
                     twoD[r, 0] = titles[r];
                     twoD[r, 1] = artists[r];
                     twoD[r, 2] = albums[r];
-                    twoD[r, 3] = genres[r];
-
-                    twoD[r, 4] = files[r];
+                    twoD[r, 3] = albumArtists[r];
+                    twoD[r, 4] = genres[r];
+                    twoD[r, 5] = files[r];
 
                     if (twoD[r, 0] == null)
                     {
-                        string fileName = twoD[r, 4];
+                        string fileName = twoD[r, 5];
                         for (bool ready = false; ready == false;)
                         {
                             int folderIndex = fileName.IndexOf("\\");
@@ -124,7 +132,6 @@ namespace UMusic
                                 ready = true;
                             }
                         }
-
                         twoD[r, 0] = fileName;
                     }
 
@@ -133,10 +140,53 @@ namespace UMusic
                     row.Cells[2].Value = twoD[r, 2];
                     row.Cells[3].Value = twoD[r, 3];
                     row.Cells[4].Value = twoD[r, 4];
+                    row.Cells[5].Value = twoD[r, 5];
 
                     this.DGV.Rows.Add(row);
                 }
+
+                settings = File.ReadAllText("settings.txt", Encoding.UTF8);
+
+                int sortColumnIndex = settings.IndexOf("SortBy=");
+                int sortOrderIndex = settings.IndexOf("Order=");
+
+                sortColumn = settings.Substring(sortColumnIndex + 8);
+                sortColumn = sortColumn.Substring(0, sortColumn.IndexOf("\""));
+
+                sortOrder = settings.Substring(sortOrderIndex + 7);
+                sortOrder = sortOrder.Substring(0, sortOrder.IndexOf("\""));
+
+                bool columnFound = false;
+                for (index = 0; index < DGV.Columns.Count && columnFound == false; index++)
+                {
+                    if (DGV.Columns[index].HeaderText == sortColumn)
+                    {
+                        columnFound = true;
+                        if (sortOrder == "Ascending")
+                            DGV.Sort(DGV.Columns[index], ListSortDirection.Ascending);
+                        else
+                            DGV.Sort(DGV.Columns[index], ListSortDirection.Descending);
+                    }
+                }
             }
+        }
+
+        private void DGV_Sorted(object sender, EventArgs e)
+        {
+            sortColumn = DGV.SortedColumn.HeaderText.ToString();
+            sortOrder = DGV.SortOrder.ToString();
+
+            string segment1 = settings.Substring(0, settings.IndexOf("SortBy=") + 8);
+
+            TextWriter tw = new StreamWriter("settings.txt");
+            tw.WriteLine(segment1 + sortColumn + "\"");
+            tw.WriteLine("Order=\"" + sortOrder + "\"");
+            tw.WriteLine();
+
+            string segment2 = settings.Substring(settings.IndexOf("[Folders]"));
+
+            tw.WriteLine(segment2);
+            tw.Close();
         }
 
         private void InitializeBrowser()
@@ -150,14 +200,16 @@ namespace UMusic
         private void DGV_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             int rowIndex = e.RowIndex;
-            string filePath = DGV.Rows[rowIndex].Cells[4].Value.ToString();
+            string filePath = DGV.Rows[rowIndex].Cells[5].Value.ToString();
 
             try
             {
-                player.PlaySong(filePath);
+                player.PlaySong(filePath, true);
+                /*
                 WMPLib.IWMPMedia newSong = player.wplayer.newMedia(filePath);
                 player.playlist.appendItem(newSong);
                 player.wplayer.currentPlaylist = player.playlist;
+                */
                 player.Show();
             }
             catch
@@ -165,18 +217,22 @@ namespace UMusic
                 try
                 {
                     player.wplayer.controls.stop();
-                    player = new Player(filePath);
+                    player = new Player(filePath, this);
+                    /*
                     WMPLib.IWMPMedia newSong = player.wplayer.newMedia(filePath);
                     player.playlist.appendItem(newSong);
                     player.wplayer.currentPlaylist = player.playlist;
+                    */
                     player.Show();
                 }
                 catch
                 {
-                    player = new Player(filePath);
+                    player = new Player(filePath, this);
+                    /*
                     WMPLib.IWMPMedia newSong = player.wplayer.newMedia(filePath);
                     player.playlist.appendItem(newSong);
                     player.wplayer.currentPlaylist = player.playlist;
+                    */
                     player.Show();
                 }
             }
@@ -199,7 +255,7 @@ namespace UMusic
         private void addToQueueToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string fileName;
-            object value = DGV.Rows[this.rowIndex].Cells[4].Value;
+            object value = DGV.Rows[this.rowIndex].Cells[5].Value;
             fileName = value.ToString();
 
             try
@@ -211,7 +267,7 @@ namespace UMusic
             }
             catch
             {
-                player = new Player(fileName);
+                player = new Player(fileName, this);
                 player.Show();
             }
         }
@@ -219,7 +275,7 @@ namespace UMusic
         private void editTagsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string fileName;
-            object value = DGV.Rows[this.rowIndex].Cells[4].Value;
+            object value = DGV.Rows[this.rowIndex].Cells[5].Value;
             fileName = value.ToString();
 
             TagEditor tagEditor = new TagEditor(fileName, this);
@@ -288,9 +344,7 @@ namespace UMusic
             }
             catch { }
         }
-
         
-
         private void CollapseExpandButton_Click(object sender, EventArgs e)
         {
             int originalLinksWidth;
@@ -327,7 +381,9 @@ namespace UMusic
 
         private void GoogleButton_Click(object sender, EventArgs e)
         {
-
+            chromeBrowser.Load("https://www.google.com/");
+            BrowserDock.Visible = true;
+            DGV.Visible = false;
         }
 
         private void DownloadButton_Click(object sender, EventArgs e)
@@ -338,11 +394,15 @@ namespace UMusic
             }
             else if (chromeBrowser.Address.IndexOf("youtube") != -1)
             {
+                string address = chromeBrowser.Address;
+                if (address.IndexOf("music") != 1)
+                    address = address.Substring(address.IndexOf("music.") + 6);
+
                 try
                 {
                     var source = @"music\\download\\";
                     var youtube = YouTube.Default;
-                    var vid = youtube.GetVideo(chromeBrowser.Address);
+                    var vid = youtube.GetVideo(address);
                     File.WriteAllBytes(source + vid.FullName, vid.GetBytes());
 
                     var inputFile = new MediaFile { Filename = source + vid.FullName };

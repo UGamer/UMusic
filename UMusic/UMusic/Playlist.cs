@@ -21,6 +21,11 @@ namespace UMusic
             this.reference = reference;
             InitializeComponent();
 
+            items = new WMPLib.IWMPMedia[reference.playlist.count];
+
+            for (int index = 0; index < items.Length; index++)
+                items[index] = reference.playlist.Item[index];
+
             LockButton.BackgroundImage = Image.FromFile("Resources\\Unlock.png");
             SaveButton.BackgroundImage = Image.FromFile("Resources\\Save.png");
             LoadButton.BackgroundImage = Image.FromFile("Resources\\Load.png");
@@ -32,12 +37,14 @@ namespace UMusic
 
         private void FillList()
         {
-            items = new WMPLib.IWMPMedia[reference.playlist.count];
-
-            for (int index = 0; index < items.Length; index++)
-                items[index] = reference.playlist.Item[index];
-            
-            DGV.DataSource = null;
+            do
+            {
+                foreach (DataGridViewRow row in DGV.Rows)
+                {
+                    try { DGV.Rows.Remove(row); }
+                    catch (Exception) { }
+                }
+            } while (DGV.Rows.Count > 1);
 
             string[] songNames = new string[items.Length];
             files = new string[items.Length];
@@ -96,10 +103,6 @@ namespace UMusic
 
                     this.DGV.Rows.Add(row);
                 }
-                else
-                {
-
-                }
             }
         }
 
@@ -124,10 +127,25 @@ namespace UMusic
 
                 for (int index = 0; index < count; index++)
                 {
-                    newSongIndex = playlistSegment.IndexOf("\\");
+                    newSongIndex = playlistSegment.IndexOf("\n");
                     fileNames[index] = playlistSegment.Substring(0, newSongIndex);
                     playlistSegment = playlistSegment.Substring(newSongIndex + 1);
                 }
+
+                items = new WMPLib.IWMPMedia[count];
+                reference.wplayer.currentPlaylist.clear();
+                reference.playlist.clear();
+
+                for (int index = 0; index < items.Length; index++)
+                {
+                    WMPLib.IWMPMedia newSong = reference.wplayer.newMedia(fileNames[index]);
+                    items[index] = newSong;
+                    reference.playlist.appendItem(newSong);
+                }
+
+                reference.wplayer.currentPlaylist = reference.playlist;
+
+                FillList();
             }
         }
 

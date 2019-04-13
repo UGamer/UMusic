@@ -33,7 +33,7 @@ namespace UMusic
         {
             this.BackgroundImage = reference.AlbumArtBox.BackgroundImage;
             TopText.Text = reference.currentFile.Tag.Title;
-            ArtistBox.Text = reference.currentFile.Tag.FirstAlbumArtist;
+            ArtistBox.Text = reference.currentFile.Tag.FirstPerformer;
         }
 
         private void MiniPlayer_MouseEnter(object sender, EventArgs e)

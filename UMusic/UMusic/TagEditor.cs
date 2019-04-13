@@ -13,21 +13,47 @@ namespace UMusic
         {
             this.reference = reference;
             this.main = main;
+
             InitializeComponent();
+            FillFields(reference.wplayer.currentMedia.sourceURL);
         }
 
         public TagEditor(string filePath, Form1 main)
         {
-            InitializeComponent();
-            FileNameBox.Text = filePath;
+            this.main = main;
 
-            File currentFile = File.Create(FileNameBox.Text);
+            InitializeComponent();
+            FillFields(filePath);
+        }
+
+        private void FillFields(string filePath)
+        {
+            FileNameBox.Text = filePath;
+            File currentFile = File.Create(filePath);
 
             TitleBox.Text = currentFile.Tag.Title;
-            ArtistBox.Text = currentFile.Tag.AlbumArtists[0];
+
+            ArtistBox.Text = currentFile.Tag.FirstPerformer;
+
             AlbumBox.Text = currentFile.Tag.Album;
-            GenreBox.Text = currentFile.Tag.Genres[0];
+            AlbumArtistBox.Text = currentFile.Tag.FirstAlbumArtist;
+            TrackNumberBox.Text = currentFile.Tag.Track.ToString();
+            TrackCountBox.Text = currentFile.Tag.TrackCount.ToString();
+            DiscNumberBox.Text = currentFile.Tag.Disc.ToString();
+            DiscCountBox.Text = currentFile.Tag.DiscCount.ToString();
+
+            GenreBox.Text = currentFile.Tag.FirstGenre;
+
             YearBox.Text = currentFile.Tag.Year.ToString();
+            if (YearBox.Text == "0")
+                YearBox.Text = "";
+
+            try
+            {
+                if (currentFile.Tag.Comment.IndexOf("EXPLICIT") != -1)
+                    ExplicitBox.Checked = true;
+            }
+            catch { }
         }
 
         private void SubmitButton_Click(object sender, EventArgs e)
@@ -35,16 +61,23 @@ namespace UMusic
             File currentFile = File.Create(FileNameBox.Text);
 
             currentFile.Tag.Title = TitleBox.Text;
-            currentFile.Tag.AlbumArtists = new[] { ArtistBox.Text };
+            currentFile.Tag.Performers = new[] { ArtistBox.Text };
+
             currentFile.Tag.Album = AlbumBox.Text;
+            currentFile.Tag.AlbumArtists = new[] { AlbumArtistBox.Text };
+            try { currentFile.Tag.Track = (uint)Convert.ToInt32(TrackNumberBox.Text); } catch { }
+            try { currentFile.Tag.TrackCount = (uint)Convert.ToInt32(TrackCountBox.Text); } catch { }
+            try { currentFile.Tag.Disc = (uint)Convert.ToInt32(DiscNumberBox.Text); } catch { }
+            try { currentFile.Tag.DiscCount = (uint)Convert.ToInt32(DiscCountBox.Text); } catch { }
             currentFile.Tag.Genres = new[] { GenreBox.Text };
-            currentFile.Tag.Year = (uint) Convert.ToInt32(YearBox.Text);
+
+            try { currentFile.Tag.Year = (uint)Convert.ToInt32(YearBox.Text); }  catch { }
 
             try
             {
                 currentFile.Tag.Pictures = new[] { new Picture(AlbumArtBox.Text) };
             }
-            catch (ArgumentException f) { }
+            catch (ArgumentException) { }
             
             if (ExplicitBox.Checked == true)
                 currentFile.Tag.Comment = "EXPLICIT";
@@ -52,8 +85,10 @@ namespace UMusic
             try
             {
                 currentFile.Save();
+                MessageBox.Show("Your file has been successfully tagged.", "Tagging Success");
+                main.GetFiles();
             }
-            catch (System.IO.IOException g)
+            catch (System.IO.IOException)
             {
                 string message = "Tagging for \"" + TitleBox.Text + "\" has failed because the song is currently in use. Would you like to clear the queue to tag this song?";
                 string caption = "Tagging Failed";
@@ -61,8 +96,16 @@ namespace UMusic
                 DialogResult result = MessageBox.Show(message, caption, buttons);
                 if (result == DialogResult.Yes)
                 {
-                    reference.wplayer.controls.stop();
-                    currentFile.Save();
+                    try
+                    {
+                        reference.wplayer.currentPlaylist.clear();
+                        reference.wplayer.controls.stop();
+                        currentFile.Save();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Could not find queue. Please close the player manually.", "Queue Clear Failed");
+                    }
                 }
             }
         }
@@ -84,43 +127,23 @@ namespace UMusic
                 File currentFile = File.Create(FileNameBox.Text);
 
                 TitleBox.Text = currentFile.Tag.Title;
-                ArtistBox.Text = currentFile.Tag.AlbumArtists[0];
+
+                ArtistBox.Text = currentFile.Tag.FirstPerformer;
+
                 AlbumBox.Text = currentFile.Tag.Album;
-                GenreBox.Text = currentFile.Tag.Genres[0];
+                AlbumArtistBox.Text = currentFile.Tag.FirstAlbumArtist;
+                TrackNumberBox.Text = currentFile.Tag.Track.ToString();
+                TrackCountBox.Text = currentFile.Tag.TrackCount.ToString();
+                DiscNumberBox.Text = currentFile.Tag.Disc.ToString();
+                DiscCountBox.Text = currentFile.Tag.DiscCount.ToString();
+
+                GenreBox.Text = currentFile.Tag.FirstGenre;
+
                 YearBox.Text = currentFile.Tag.Year.ToString();
+
+                if (currentFile.Tag.Comment.IndexOf("EXPLICIT") != -1)
+                    ExplicitBox.Checked = true;
             }
         }
-
-        /*
-        private void FillAutoComplete()
-        {
-            DataTable dt = new DataTable();
-            foreach (DataGridViewColumn col in main.DGV.Columns)
-            {
-                dt.Columns.Add(col.Name);
-            }
-
-            foreach (DataGridViewRow row in main.DGV.Rows)
-            {
-                DataRow dRow = dt.NewRow();
-                foreach (DataGridViewCell cell in row.Cells)
-                {
-                    dRow[cell.ColumnIndex] = cell.Value;
-                }
-                dt.Rows.Add(dRow);
-            }
-            
-            AutoCompleteStringCollection autoFill = new AutoCompleteStringCollection();
-            int columnIndex = 4; // File Name column
-            string[] table = new string[dt.Rows.Count];
-            int index = 0;
-            for (index = 0; index < dt.Rows.Count; index++)
-            {
-                table[index] = dt.Rows[index][columnIndex].ToString();
-                autoFill.Add(table[index]);
-            }
-            FileNameBox.AutoCompleteCustomSource = autoFill;
-        }
-        */
     }
 }

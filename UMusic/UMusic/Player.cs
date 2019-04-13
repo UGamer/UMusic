@@ -50,9 +50,11 @@ namespace UMusic
         bool grabbed = false;
 
         MiniPlayer miniPlayer;
+        Form1 main;
 
-        public Player(string filePath)
+        public Player(string filePath, Form1 main)
         {
+            this.main = main;
             InitializeComponent();
 
             LockButton.BackgroundImage = Image.FromFile("Resources\\Unlock.png");
@@ -68,7 +70,10 @@ namespace UMusic
             gkh.KeyDown += new KeyEventHandler(gkh_KeyDown);
 
             this.filePath = filePath;
-            PlaySong(filePath);
+            wplayer = new WMPLib.WindowsMediaPlayer();
+            playlist = wplayer.playlistCollection.newPlaylist("myplaylist");
+
+            PlaySong(filePath, false);
 
             settings = File.ReadAllText("settings.txt", Encoding.UTF8);
 
@@ -85,16 +90,20 @@ namespace UMusic
             VolumeBar.Value = volumeValue;
         }
 
-        public void PlaySong(string filePath)
+        public void PlaySong(string filePath, bool replace)
         {
             try { wplayer.controls.stop(); }
             catch { }
 
             playing = true;
 
-            wplayer = new WMPLib.WindowsMediaPlayer();
-            playlist = wplayer.playlistCollection.newPlaylist("myplaylist");
             WMPLib.IWMPMedia currentSong = wplayer.newMedia(filePath);
+            
+            if (replace == true)
+            {
+                wplayer.currentPlaylist.clear();
+                playlist.clear();
+            }
             
             playlist.appendItem(currentSong);
             wplayer.currentPlaylist = playlist;
@@ -176,7 +185,7 @@ namespace UMusic
                 TitleLabel.Text = fileName;
             }
 
-            ArtistLabel.Text = currentFile.Tag.FirstAlbumArtist;
+            ArtistLabel.Text = currentFile.Tag.FirstPerformer;
 
             AlbumLabel.Text = "Album: " + currentFile.Tag.Album;
             if (currentFile.Tag.Album == null)
@@ -538,8 +547,6 @@ namespace UMusic
 
         private void Player_FormClosed(object sender, FormClosedEventArgs e)
         {
-            wplayer.controls.stop();
-
             string segment1 = settings.Substring(0, settings.IndexOf("Loop=") + 5);
             
             TextWriter tw = new StreamWriter("settings.txt");
@@ -547,6 +554,10 @@ namespace UMusic
             tw.WriteLine("Shuffle=" + shuffle.ToString());
             tw.WriteLine("Volume=\"" + volumeValue.ToString() + "\"");
             tw.Close();
+
+            wplayer.controls.stop();
+            wplayer.settings.volume = 0;
+            wplayer.currentPlaylist.clear();
 
             this.Dispose();
         }
