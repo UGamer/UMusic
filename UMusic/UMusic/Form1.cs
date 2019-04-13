@@ -11,7 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 using VideoLibrary;
 
@@ -26,6 +26,8 @@ namespace UMusic
         private string sortColumn;
         string sortOrder;
 
+        Timer refreshTimer;
+
         public Form1()
         {
             InitializeComponent();
@@ -34,6 +36,10 @@ namespace UMusic
 
             GetFiles();
             InitializeBrowser();
+
+            refreshTimer = new Timer();
+            refreshTimer.Interval = 1000;
+
         }
 
         public void GetFiles()
@@ -74,12 +80,16 @@ namespace UMusic
             TagLib.File currentFile;
             for (index = 0; index < titles.Length; index++)
             {
-                currentFile = TagLib.File.Create(files[index]);
-                titles[index] = currentFile.Tag.Title;
-                artists[index] = currentFile.Tag.FirstPerformer;
-                albums[index] = currentFile.Tag.Album;
-                albumArtists[index] = currentFile.Tag.FirstAlbumArtist;
-                genres[index] = currentFile.Tag.FirstGenre;
+                try
+                {
+                    currentFile = TagLib.File.Create(files[index]);
+                    titles[index] = currentFile.Tag.Title;
+                    artists[index] = currentFile.Tag.FirstPerformer;
+                    albums[index] = currentFile.Tag.Album;
+                    albumArtists[index] = currentFile.Tag.FirstAlbumArtist;
+                    genres[index] = currentFile.Tag.FirstGenre;
+                }
+                catch (TagLib.UnsupportedFormatException) { }
             }
 
             string[,] twoD = new string[files.Length, 6];
@@ -162,10 +172,14 @@ namespace UMusic
                     if (DGV.Columns[index].HeaderText == sortColumn)
                     {
                         columnFound = true;
-                        if (sortOrder == "Ascending")
-                            DGV.Sort(DGV.Columns[index], ListSortDirection.Ascending);
-                        else
-                            DGV.Sort(DGV.Columns[index], ListSortDirection.Descending);
+                        try
+                        {
+                            if (sortOrder == "Ascending")
+                                DGV.Sort(DGV.Columns[index], ListSortDirection.Ascending);
+                            else
+                                DGV.Sort(DGV.Columns[index], ListSortDirection.Descending);
+                        }
+                        catch { }
                     }
                 }
             }
@@ -386,7 +400,15 @@ namespace UMusic
             DGV.Visible = false;
         }
 
+        Thread downloadThread;
+
         private void DownloadButton_Click(object sender, EventArgs e)
+        {
+            downloadThread = new Thread(DownloadMethod);
+            downloadThread.Start();
+        }
+
+        private void DownloadMethod()
         {
             if (chromeBrowser.Address.IndexOf("soundcloud") != -1)
             {
@@ -425,10 +447,19 @@ namespace UMusic
                     }
                     else
                     {
-                        File.Delete("music\\download\\" + vid.FullName);
+                        if (File.Exists("music\\download\\" + vid.FullName))
+                        {
+                            File.Delete("music\\download\\" + vid.FullName);
+                        }
                     }
 
                     GetFiles();
+                }
+                catch (System.InvalidOperationException)
+                {
+                    string message = "Could not refresh DGV.";
+                    string caption = "Refresh Failed";
+                    MessageBox.Show(message, caption);
                 }
                 catch
                 {
@@ -436,7 +467,7 @@ namespace UMusic
                     {
                         // This is thrown when the video attempting to be downloaded is either age-restricted or
                         // requires Music Premium.
-
+                        
                         string message = "Your download failed.";
                         string caption = "Download Failed";
                         MessageBox.Show(message, caption);
@@ -451,6 +482,8 @@ namespace UMusic
             {
 
             }
+
+            downloadThread.Abort();
         }
         
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
