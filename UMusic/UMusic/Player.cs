@@ -556,7 +556,7 @@ namespace UMusic
             tw.Close();
 
             wplayer.controls.stop();
-            wplayer.settings.volume = 0;
+            wplayer.settings.volume = 100;
             wplayer.currentPlaylist.clear();
 
             this.Dispose();
