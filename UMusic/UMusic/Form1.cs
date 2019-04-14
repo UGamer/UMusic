@@ -26,7 +26,10 @@ namespace UMusic
         private string sortColumn;
         string sortOrder;
 
-        Timer refreshTimer;
+        System.Windows.Forms.Timer refreshTimer;
+        DataTable dataTable;
+
+        string currentLayout;
 
         public Form1()
         {
@@ -37,9 +40,8 @@ namespace UMusic
             GetFiles();
             InitializeBrowser();
 
-            refreshTimer = new Timer();
+            refreshTimer = new System.Windows.Forms.Timer();
             refreshTimer.Interval = 1000;
-
         }
 
         public void GetFiles()
@@ -97,28 +99,18 @@ namespace UMusic
             int height = twoD.GetLength(0);
             int width = twoD.GetLength(1);
 
-            DGV.ColumnCount = width;
-            DGV.Columns[0].HeaderText = "Title";
-            DGV.Columns[1].HeaderText = "Artist(s)";
-            DGV.Columns[2].HeaderText = "Album";
-            DGV.Columns[3].HeaderText = "Album Artist(s)";
-            DGV.Columns[4].HeaderText = "Genre";
-            DGV.Columns[5].HeaderText = "File";
-            
-            DGV.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            DGV.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            DGV.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            DGV.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            DGV.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            DGV.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataTable = new DataTable();
 
+            dataTable.Columns.Add("Title");
+            dataTable.Columns.Add("Artist(s)");
+            dataTable.Columns.Add("Album");
+            dataTable.Columns.Add("Album Artist(s)");
+            dataTable.Columns.Add("Genre");
+            dataTable.Columns.Add("File");
             for (int r = 0; r < height; r++)
             {
                 if (files[r].IndexOf(".jpg") == -1)
                 {
-                    DataGridViewRow row = new DataGridViewRow();
-                    row.CreateCells(this.DGV);
-
                     twoD[r, 0] = titles[r];
                     twoD[r, 1] = artists[r];
                     twoD[r, 2] = albums[r];
@@ -145,14 +137,14 @@ namespace UMusic
                         twoD[r, 0] = fileName;
                     }
 
-                    row.Cells[0].Value = twoD[r, 0];
-                    row.Cells[1].Value = twoD[r, 1];
-                    row.Cells[2].Value = twoD[r, 2];
-                    row.Cells[3].Value = twoD[r, 3];
-                    row.Cells[4].Value = twoD[r, 4];
-                    row.Cells[5].Value = twoD[r, 5];
-
-                    this.DGV.Rows.Add(row);
+                    DataRow dRow = dataTable.NewRow();
+                    dRow[0] = twoD[r, 0];
+                    dRow[1] = twoD[r, 1];
+                    dRow[2] = twoD[r, 2];
+                    dRow[3] = twoD[r, 3];
+                    dRow[4] = twoD[r, 4];
+                    dRow[5] = twoD[r, 5];
+                    dataTable.Rows.Add(dRow);
                 }
 
                 settings = File.ReadAllText("settings.txt", Encoding.UTF8);
@@ -182,6 +174,15 @@ namespace UMusic
                         catch { }
                     }
                 }
+
+                DGV.DataSource = dataTable;
+
+                DGV.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DGV.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DGV.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DGV.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DGV.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                DGV.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             }
         }
 
@@ -214,41 +215,33 @@ namespace UMusic
         private void DGV_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             int rowIndex = e.RowIndex;
-            string filePath = DGV.Rows[rowIndex].Cells[5].Value.ToString();
 
-            try
+            if (e.ColumnIndex == 0 || e.ColumnIndex == 5)
             {
-                player.PlaySong(filePath, true);
-                /*
-                WMPLib.IWMPMedia newSong = player.wplayer.newMedia(filePath);
-                player.playlist.appendItem(newSong);
-                player.wplayer.currentPlaylist = player.playlist;
-                */
-                player.Show();
-            }
-            catch
-            {
+                string filePath = DGV.Rows[rowIndex].Cells[5].Value.ToString();
                 try
                 {
-                    player.wplayer.controls.stop();
-                    player = new Player(filePath, this);
-                    /*
-                    WMPLib.IWMPMedia newSong = player.wplayer.newMedia(filePath);
-                    player.playlist.appendItem(newSong);
-                    player.wplayer.currentPlaylist = player.playlist;
-                    */
+                    player.PlaySong(filePath, true);
                     player.Show();
                 }
                 catch
                 {
-                    player = new Player(filePath, this);
-                    /*
-                    WMPLib.IWMPMedia newSong = player.wplayer.newMedia(filePath);
-                    player.playlist.appendItem(newSong);
-                    player.wplayer.currentPlaylist = player.playlist;
-                    */
-                    player.Show();
+                    try
+                    {
+                        player.wplayer.controls.stop();
+                        player = new Player(filePath, this);
+                        player.Show();
+                    }
+                    catch
+                    {
+                        player = new Player(filePath, this);
+                        player.Show();
+                    }
                 }
+            }
+            else if (e.ColumnIndex == 1)
+            {
+
             }
         }
 
@@ -276,13 +269,22 @@ namespace UMusic
             {
                 player.Show();
                 WMPLib.IWMPMedia newSong = player.wplayer.newMedia(fileName);
-                player.playlist.appendItem(newSong);
-                player.wplayer.currentPlaylist = player.playlist;
+                player.wplayer.currentPlaylist.appendItem(newSong);
             }
             catch
             {
-                player = new Player(fileName, this);
-                player.Show();
+                try
+                {
+                    player.Show();
+                    WMPLib.IWMPMedia newSong = player.wplayer.newMedia(fileName);
+                    player.playlist.appendItem(newSong);
+                    player.wplayer.currentPlaylist = player.playlist;
+                }
+                catch
+                {
+                    player = new Player(fileName, this);
+                    player.Show();
+                }
             }
         }
 
@@ -296,60 +298,21 @@ namespace UMusic
             tagEditor.Show();
         }
 
-        private void UMusicPic_Click(object sender, EventArgs e)
+        private void UMusicButton_Click(object sender, EventArgs e)
         {
             BrowserDock.Visible = false;
             DGV.Visible = true;
+            LeftPanel.Visible = true;
             chromeBrowser.Load("google.com");
         }
-
-        private void YouTubeMusicPic_Click(object sender, EventArgs e)
-        {
-            chromeBrowser.Load("https://music.youtube.com/");
-            BrowserDock.Visible = true;
-            DGV.Visible = false;
-
-            try
-            {
-                if (player.playing == true)
-                    player.PlayPause();
-            }
-            catch { }
-        }
-
-        private void YouTubeBox_Click(object sender, EventArgs e)
-        {
-            chromeBrowser.Load("https://www.youtube.com/");
-            BrowserDock.Visible = true;
-            DGV.Visible = false;
-
-            try
-            {
-                if (player.playing == true)
-                    player.PlayPause();
-            }
-            catch { }
-        }
-
-        private void SpotifyPic_Click(object sender, EventArgs e)
-        {
-            chromeBrowser.Load("https://open.spotify.com");
-            BrowserDock.Visible = true;
-            DGV.Visible = false;
-
-            try
-            {
-                if (player.playing == true)
-                    player.PlayPause();
-            }
-            catch { }
-        }
-
-        private void SoundCloudPic_Click(object sender, EventArgs e)
+        
+        private void SoundCloudButton_Click(object sender, EventArgs e)
         {
             chromeBrowser.Load("https://soundcloud.com/");
             BrowserDock.Visible = true;
             DGV.Visible = false;
+            LeftPanel.Visible = false;
+            GridPanel.Visible = false;
 
             try
             {
@@ -358,39 +321,53 @@ namespace UMusic
             }
             catch { }
         }
-        
-        private void CollapseExpandButton_Click(object sender, EventArgs e)
+
+        private void SpotifyButton_Click(object sender, EventArgs e)
         {
-            int originalLinksWidth;
-            int originalPanelWidth;
-            int originalDGVWidth;
+            chromeBrowser.Load("https://open.spotify.com");
+            BrowserDock.Visible = true;
+            DGV.Visible = false;
+            LeftPanel.Visible = false;
+            GridPanel.Visible = false;
 
-            if (CollapseExtendButton.Text == "^")
+            try
             {
-                originalLinksWidth = LinksPanel.Width;
-                originalPanelWidth = LocalPanel.Width;
-                originalDGVWidth = DGV.Width;
-
-                LinksPanel.Size = new Size(originalLinksWidth, 33);
-                CollapseExtendButton.Size = new Size(28, 16);
-                // LocalPanel.Location = new Point(0, 33);
-                DGV.Size = new Size(originalDGVWidth, 421);
-
-                CollapseExtendButton.Text = "...";
+                if (player.playing == true)
+                    player.PlayPause();
             }
-            else
+            catch { }
+        }
+
+        private void YouTubeButton_Click(object sender, EventArgs e)
+        {
+            chromeBrowser.Load("https://www.youtube.com/");
+            BrowserDock.Visible = true;
+            DGV.Visible = false;
+            LeftPanel.Visible = false;
+            GridPanel.Visible = false;
+
+            try
             {
-                originalLinksWidth = LinksPanel.Width;
-                originalPanelWidth = LocalPanel.Width;
-                originalDGVWidth = DGV.Width;
-
-                LinksPanel.Size = new Size(originalLinksWidth, 88);
-                CollapseExtendButton.Size = new Size(28, 71);
-                LocalPanel.Size = new Size(originalPanelWidth, 365);
-                DGV.Size = new Size(originalDGVWidth, 365);
-
-                CollapseExtendButton.Text = "^";
+                if (player.playing == true)
+                    player.PlayPause();
             }
+            catch { }
+        }
+
+        private void YouTubeMusicButton_Click(object sender, EventArgs e)
+        {
+            chromeBrowser.Load("https://music.youtube.com/");
+            BrowserDock.Visible = true;
+            DGV.Visible = false;
+            LeftPanel.Visible = false;
+            GridPanel.Visible = false;
+
+            try
+            {
+                if (player.playing == true)
+                    player.PlayPause();
+            }
+            catch { }
         }
 
         private void GoogleButton_Click(object sender, EventArgs e)
@@ -398,6 +375,8 @@ namespace UMusic
             chromeBrowser.Load("https://www.google.com/");
             BrowserDock.Visible = true;
             DGV.Visible = false;
+            LeftPanel.Visible = false;
+            GridPanel.Visible = false;
         }
 
         Thread downloadThread;
@@ -426,17 +405,17 @@ namespace UMusic
                     var youtube = YouTube.Default;
                     var vid = youtube.GetVideo(address);
                     File.WriteAllBytes(source + vid.FullName, vid.GetBytes());
-
+                    
                     var inputFile = new MediaFile { Filename = source + vid.FullName };
                     var outputFile = new MediaFile { Filename = $"{source + vid.FullName}.mp3" };
-
+                    
                     using (var engine = new Engine())
                     {
                         engine.GetMetadata(inputFile);
 
                         engine.Convert(inputFile, outputFile);
                     }
-
+                    
                     string message = "Your download for \"" + vid.FullName + "\" has completed. Would you like to keep the video file?";
                     string caption = "Download Complete";
                     MessageBoxButtons buttons = MessageBoxButtons.YesNo;
@@ -489,6 +468,95 @@ namespace UMusic
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             Cef.Shutdown();
+        }
+
+        private void SongsButton_Click(object sender, EventArgs e)
+        {
+            GetFiles();
+        }
+
+        private void ArtistsButton_Click(object sender, EventArgs e)
+        {
+            GetFiles();
+
+            if (currentLayout == "List")
+            {
+                DGV.Columns.Remove("Title");
+                DGV.Columns.Remove("Album");
+                DGV.Columns.Remove("Album Artist(s)");
+                DGV.Columns.Remove("Genre");
+                DGV.Columns.Remove("File");
+
+                /*
+                bool unknown = false;
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    if (row. == null)
+                    {
+                        unknown = true;
+                        dataTable.Rows.Remove(row);
+                    }
+                }
+
+                if (unknown == true)
+                {
+                    DataRow dRow = dataTable.NewRow();
+                    dRow[0] = "Unknown Artist";
+                    dataTable.Rows.Add();
+                }
+                */
+            }
+            else
+            {
+
+            }
+
+        }
+
+        private void SearchBox_TextChanged(object sender, EventArgs e)
+        {
+            Filter();
+        }
+
+        private void Filter()
+        {
+            DataView DV = new DataView(dataTable);
+            // DV.RowFilter = string.Format("WHERE concat(city, name) like '%adelaide%'", SearchBox.Text); 
+            DV.RowFilter = string.Format("Title LIKE '%{0}%' OR [Artist(s)] LIKE '%{0}%' OR Album LIKE '%{0}%' OR [Album Artist(s)] LIKE '%{0}%' OR Genre LIKE '%{0}%'", SearchBox.Text);
+
+            DGV.DataSource = DV;
+            bool columnFound = false;
+
+            for (int index = 0; index<DGV.Columns.Count && columnFound == false; index++)
+            {
+                if (DGV.Columns[index].HeaderText == sortColumn)
+                {
+                    columnFound = true;
+                    try
+                    {
+                        if (sortOrder == "Ascending")
+                            DGV.Sort(DGV.Columns[index], ListSortDirection.Ascending);
+                        else
+                            DGV.Sort(DGV.Columns[index], ListSortDirection.Descending);
+                    }
+                    catch { }
+                }
+            }
+        }
+
+        private void LayoutListButton_Click(object sender, EventArgs e)
+        {
+            DGV.Visible = true;
+        }
+
+        private void LayoutGridButton_Click(object sender, EventArgs e)
+        {
+            DGV.Visible = false;
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

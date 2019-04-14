@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -52,6 +53,12 @@ namespace UMusic
         MiniPlayer miniPlayer;
         Form1 main;
 
+        ProcessStartInfo discordRichPresenceStartInfo = new ProcessStartInfo("easyrp.exe");
+        Process discordRichPresence = new Process();
+        string richPresenceConfig;
+        int richStartTimeStamp;
+        int richEndTimeStamp;
+
         public Player(string filePath, Form1 main)
         {
             this.main = main;
@@ -73,6 +80,7 @@ namespace UMusic
             wplayer = new WMPLib.WindowsMediaPlayer();
             playlist = wplayer.playlistCollection.newPlaylist("myplaylist");
 
+
             PlaySong(filePath, false);
 
             settings = File.ReadAllText("settings.txt", Encoding.UTF8);
@@ -88,6 +96,10 @@ namespace UMusic
             volumeValue = Convert.ToInt32(volume);
             wplayer.settings.volume = volumeValue;
             VolumeBar.Value = volumeValue;
+            
+            discordRichPresenceStartInfo.WindowStyle = ProcessWindowStyle.Minimized;
+            try { discordRichPresence = Process.Start(discordRichPresenceStartInfo); }
+            catch { }
         }
 
         public void PlaySong(string filePath, bool replace)
@@ -108,7 +120,9 @@ namespace UMusic
             playlist.appendItem(currentSong);
             wplayer.currentPlaylist = playlist;
 
-            WMPLib.IWMPMedia playlistItem = playlist.Item[0];
+            WMPLib.IWMPMedia playlistItem;
+            if (playing == false)
+                playlistItem = playlist.Item[0];
 
             wplayer.controls.play();
 
@@ -131,11 +145,39 @@ namespace UMusic
             {
                 PlayPauseButton.BackgroundImage = Image.FromFile("Resources\\Play.png");
                 playing = false;
+                
+                if (ArtistLabel.Text != "")
+                    richPresenceConfig = "[Identifiers]\nClientID=566600570509459469\n\n[State]\nState=" + ArtistLabel.Text + "\nDetails=" + TitleLabel.Text +
+                    "\nStartTimestamp=\nEndTimestamp=\n\n\n[Images]\nLargeImage=logo\nLargeImageTooltip=\nSmallImage=pause\nSmallImageTooltip=";
+                else
+                    richPresenceConfig = "[Identifiers]\nClientID=566600570509459469\n\n[State]\nState=Unknown Artist\nDetails=" + TitleLabel.Text +
+                    "\nStartTimestamp=\nEndTimestamp=\n\n\n[Images]\nLargeImage=logo\nLargeImageTooltip=\nSmallImage=pause\nSmallImageTooltip=";
+
+                TextWriter tw = new StreamWriter("config.ini");
+                tw.WriteLine(richPresenceConfig);
+                tw.Close();
             }
             else if (playState == "wmppsPlaying")
             {
                 PlayPauseButton.BackgroundImage = Image.FromFile("Resources\\Pause.png");
                 playing = true;
+
+                TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
+
+                richStartTimeStamp = (int)t.TotalSeconds;
+                richEndTimeStamp = richStartTimeStamp;
+                richEndTimeStamp += (int) currentFile.Properties.Duration.TotalSeconds - ProgressBar.Value;
+
+                if (ArtistLabel.Text != "")
+                    richPresenceConfig = "[Identifiers]\nClientID=566600570509459469\n\n[State]\nState=" + ArtistLabel.Text + "\nDetails=" + TitleLabel.Text +
+                    "\nStartTimestamp=" + richStartTimeStamp + "\nEndTimestamp=" + richEndTimeStamp + "\n\n\n[Images]\nLargeImage=logo\nLargeImageTooltip=\nSmallImage=play\nSmallImageTooltip=";
+                else
+                    richPresenceConfig = "[Identifiers]\nClientID=566600570509459469\n\n[State]\nState=Unknown Artist\nDetails=" + TitleLabel.Text +
+                    "\nStartTimestamp=" + richStartTimeStamp + "\nEndTimestamp=" + richEndTimeStamp + "\n\n\n[Images]\nLargeImage=logo\nLargeImageTooltip=\nSmallImage=play\nSmallImageTooltip=";
+                
+                TextWriter tw = new StreamWriter("config.ini");
+                tw.WriteLine(richPresenceConfig);
+                tw.Close();
             }
             else if (playState == "wmppsStopped")
             {
@@ -146,6 +188,23 @@ namespace UMusic
 
         private void wplayer_MediaChange(object Item)
         {
+            TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
+
+            richStartTimeStamp = (int)t.TotalSeconds;
+            richEndTimeStamp = richStartTimeStamp;
+            richEndTimeStamp += (int)currentFile.Properties.Duration.TotalSeconds - ProgressBar.Value;
+
+            if (ArtistLabel.Text != "")
+                richPresenceConfig = "[Identifiers]\nClientID=566600570509459469\n\n[State]\nState=" + ArtistLabel.Text + "\nDetails=" + TitleLabel.Text +
+                "\nStartTimestamp=" + richStartTimeStamp + "\nEndTimestamp=" + richEndTimeStamp + "\n\n\n[Images]\nLargeImage=logo\nLargeImageTooltip=\nSmallImage=play\nSmallImageTooltip=";
+            else
+                richPresenceConfig = "[Identifiers]\nClientID=566600570509459469\n\n[State]\nState=Unknown Artist\nDetails=" + TitleLabel.Text +
+                "\nStartTimestamp=" + richStartTimeStamp + "\nEndTimestamp=" + richEndTimeStamp + "\n\n\n[Images]\nLargeImage=logo\nLargeImageTooltip=\nSmallImage=play\nSmallImageTooltip=";
+
+            TextWriter tw = new StreamWriter("config.ini");
+            tw.WriteLine(richPresenceConfig);
+            tw.Close();
+
             DisplayInfo();
         }
 
@@ -265,6 +324,7 @@ namespace UMusic
             }
 
             TimeSpan fullLength = currentFile.Properties.Duration;
+
             string fullString = fullLength.ToString();
             string hms = fullString.Substring(0, fullString.IndexOf("."));
 
@@ -436,6 +496,25 @@ namespace UMusic
                     CurrentTimeLabel.Text = h + ":" + m + ":" + s;
                 }
             }
+            if (playing == true)
+            {
+                TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
+
+                richStartTimeStamp = (int)t.TotalSeconds;
+                richEndTimeStamp = richStartTimeStamp;
+                richEndTimeStamp += (int)currentFile.Properties.Duration.TotalSeconds - ProgressBar.Value;
+
+                if (ArtistLabel.Text != "")
+                    richPresenceConfig = "[Identifiers]\nClientID=566600570509459469\n\n[State]\nState=" + ArtistLabel.Text + "\nDetails=" + TitleLabel.Text +
+                    "\nStartTimestamp=" + richStartTimeStamp + "\nEndTimestamp=" + richEndTimeStamp + "\n\n\n[Images]\nLargeImage=logo\nLargeImageTooltip=\nSmallImage=play\nSmallImageTooltip=";
+                else
+                    richPresenceConfig = "[Identifiers]\nClientID=566600570509459469\n\n[State]\nState=Unknown Artist\nDetails=" + TitleLabel.Text +
+                    "\nStartTimestamp=" + richStartTimeStamp + "\nEndTimestamp=" + richEndTimeStamp + "\n\n\n[Images]\nLargeImage=logo\nLargeImageTooltip=\nSmallImage=play\nSmallImageTooltip=";
+
+                TextWriter tw = new StreamWriter("config.ini");
+                tw.WriteLine(richPresenceConfig);
+                tw.Close();
+            }
         }
 
         private void scrollingTimer_Tick(object sender, EventArgs e)
@@ -557,7 +636,17 @@ namespace UMusic
 
             wplayer.controls.stop();
             wplayer.settings.volume = 100;
-            wplayer.currentPlaylist.clear();
+
+            // wplayer.currentPlaylist.clear();
+
+            wplayer.playlistCollection.remove(wplayer.currentPlaylist);
+
+            try
+            {
+                discordRichPresence.CloseMainWindow();
+                discordRichPresence.Close();
+            }
+            catch { }
 
             this.Dispose();
         }
