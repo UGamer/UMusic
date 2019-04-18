@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UMusic", "UMusic\UMusic.csproj", "{4E2D3F15-CFD0-402B-BE83-2181697C7020}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4E2D3F15-CFD0-402B-BE83-2181697C7020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E2D3F15-CFD0-402B-BE83-2181697C7020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E2D3F15-CFD0-402B-BE83-2181697C7020}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4E2D3F15-CFD0-402B-BE83-2181697C7020}.Debug|x86.Build.0 = Debug|Any CPU
+		{4E2D3F15-CFD0-402B-BE83-2181697C7020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E2D3F15-CFD0-402B-BE83-2181697C7020}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E2D3F15-CFD0-402B-BE83-2181697C7020}.Release|x86.ActiveCfg = Release|x86
+		{4E2D3F15-CFD0-402B-BE83-2181697C7020}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1DDB7FBB-4927-4B90-9A3E-BF5A9418FBB8}
+	EndGlobalSection
+EndGlobal
