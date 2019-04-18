@@ -1,4 +1,4 @@
-![Logo](https://raw.githubusercontent.com/UGamer/UMusic/master/Art/new%20logo.png)
+![Logo](https://raw.githubusercontent.com/UGamer/UMusic/NEWBRANCH/Art/new%20logo.png)
 
 # UMusic
 
