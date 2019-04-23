@@ -199,6 +199,12 @@
     <Compile Include="MiniPlayer.Designer.cs">
       <DependentUpon>MiniPlayer.cs</DependentUpon>
     </Compile>
+    <Compile Include="PictureEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PictureEditor.Designer.cs">
+      <DependentUpon>PictureEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Player.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -236,6 +242,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MiniPlayer.resx">
       <DependentUpon>MiniPlayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PictureEditor.resx">
+      <DependentUpon>PictureEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Player.resx">
       <DependentUpon>Player.cs</DependentUpon>

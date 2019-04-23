@@ -419,7 +419,12 @@ namespace UMusic
             object value = DGV.Rows[this.rowIndex].Cells[7].Value;
             fileName = value.ToString();
 
-            try { tagEditor.FillFields(fileName); }
+            try
+            {
+                tagEditor.Close();
+                tagEditor = new TagEditor(fileName, this);
+                tagEditor.Show();
+            }
             catch
             {
                 tagEditor = new TagEditor(fileName, this);

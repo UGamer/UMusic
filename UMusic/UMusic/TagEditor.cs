@@ -16,7 +16,7 @@ namespace UMusic
         Player reference;
         Form1 main;
         Database databaseWindow;
-
+        TagLib.File currentFile;
         public bool refresh = false;
 
         public TagEditor(Player reference, Form1 main)
@@ -46,7 +46,7 @@ namespace UMusic
         public void FillFields(string filePath)
         {
             FileNameBox.Text = filePath;
-            TagLib.File currentFile = TagLib.File.Create(filePath);
+            currentFile = TagLib.File.Create(filePath);
 
             TitleBox.Text = currentFile.Tag.Title;
 
@@ -74,11 +74,17 @@ namespace UMusic
 
             if (currentFile.Tag.Pictures.Length >= 1)
             {
+                AlbumArtBox.Enabled = false;
+                BrowseButton.Text = "Clear";
                 var bin = (byte[])(currentFile.Tag.Pictures[0].Data.Data);
                 AlbumArtPic.BackgroundImage = System.Drawing.Image.FromStream(new MemoryStream(bin)).GetThumbnailImage(500, 500, null, IntPtr.Zero);
             }
             else
+            {
+                AlbumArtBox.Enabled = true;
+                BrowseButton.Text = "Browse";
                 AlbumArtPic.BackgroundImage = System.Drawing.Image.FromFile("Resources\\Unknown Album Art.png");
+            }
         }
 
         private void SubmitButton_Click(object sender, EventArgs e)
@@ -98,11 +104,19 @@ namespace UMusic
 
             try { currentFile.Tag.Year = (uint)Convert.ToInt32(YearBox.Text); } catch { }
 
-            try
+            if (BrowseButton.Text == "Clear")
             {
-                currentFile.Tag.Pictures = new[] { new Picture(AlbumArtBox.Text) };
+                try
+                {
+                    currentFile.Tag.Pictures = new[] { new Picture(AlbumArtBox.Text) };
+                }
+                catch (ArgumentException) { }
             }
-            catch (ArgumentException) { }
+            else
+            {
+                currentFile.Tag.Pictures = new IPicture[0];
+            }
+            
 
             if (ExplicitBox.Checked == true)
                 currentFile.Tag.Comment = "EXPLICIT";
@@ -113,7 +127,7 @@ namespace UMusic
                 MessageBox.Show("Your file has been successfully tagged.", "Tagging Success");
                 main.GetFiles();
             }
-            catch (System.IO.IOException)
+            catch (IOException)
             {
                 string message = "Tagging for \"" + TitleBox.Text + "\" has failed. Would you like to try clearing the queue to tag this song?";
                 string caption = "Clear the Queue?";
@@ -138,8 +152,22 @@ namespace UMusic
 
         private void BrowseArtButton_Click(object sender, EventArgs e)
         {
-            if (AlbumArtDialog.ShowDialog() == DialogResult.OK)
-                AlbumArtBox.Text = AlbumArtDialog.FileName;
+            if (BrowseButton.Text == "Browse")
+            {
+                if (AlbumArtDialog.ShowDialog() == DialogResult.OK)
+                {
+                    AlbumArtBox.Text = AlbumArtDialog.FileName;
+                    AlbumArtPic.BackgroundImage = System.Drawing.Image.FromFile(AlbumArtBox.Text);
+                    BrowseButton.Text = "Clear";
+                    AlbumArtBox.Enabled = false;
+                }
+            }
+            else
+            {
+                BrowseButton.Text = "Browse";
+                AlbumArtBox.Enabled = true;
+                AlbumArtPic.BackgroundImage = System.Drawing.Image.FromFile("Resources\\Unknown Album Art.png");
+            }
         }
 
         private void BrowseFileNameButton_Click(object sender, EventArgs e)
@@ -240,6 +268,21 @@ namespace UMusic
             }
             else
                 AlbumArtPic.BackgroundImage = System.Drawing.Image.FromFile("Resources\\Unknown Album Art.png");
+        }
+
+        private void AlbumArtPic_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                this.PictureBoxContextMenu.Show(this.AlbumArtPic, e.Location);
+                PictureBoxContextMenu.Show(Cursor.Position);
+            }
+        }
+
+        private void EditPictureButton_Click(object sender, EventArgs e)
+        {
+            PictureEditor pictureEditor = new PictureEditor(AlbumArtPic.BackgroundImage);
+            pictureEditor.Show();
         }
     }
 }
