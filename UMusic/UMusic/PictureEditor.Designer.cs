@@ -46,6 +46,7 @@
             // 
             // PictureBox
             // 
+            this.PictureBox.BackColor = System.Drawing.Color.Transparent;
             this.PictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.PictureBox.Location = new System.Drawing.Point(78, 13);
             this.PictureBox.Name = "PictureBox";
