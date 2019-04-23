@@ -45,7 +45,7 @@ namespace UMusic
 
         public bool playing = false;
         bool looping = false;
-        bool shuffle = false;
+        public bool shuffle = false;
         bool locked = false;
         int volumeValue = 100;
         string settings;
@@ -54,6 +54,7 @@ namespace UMusic
 
         MiniPlayer miniPlayer;
         Form1 main;
+        TagEditor tagEditor;
 
         ProcessStartInfo discordRichPresenceStartInfo = new ProcessStartInfo("easyrp.exe");
         Process discordRichPresence = new Process();
@@ -173,6 +174,9 @@ namespace UMusic
         private void wplayer_MediaChange(object sender, _WMPOCXEvents_MediaChangeEvent e)
         {
             DisplayInfo();
+
+            try { miniPlayer.DisplayInfo(); }
+            catch { }
 
             int index = 0;
             for (int i = 0; i < playlist.count; i++)
@@ -514,7 +518,7 @@ namespace UMusic
             ShuffleMethod();
         }
 
-        private void ShuffleMethod()
+        public void ShuffleMethod()
         {
             if (shuffle == false)
             {
@@ -534,16 +538,13 @@ namespace UMusic
         {
             if (grabbed == false)
             {
-                try 
-                { 
-                    ProgressBar.Value = (int)wplayer.Ctlcontrols.currentPosition;
-                }
-                catch { }
+                try { ProgressBar.Value = (int)wplayer.Ctlcontrols.currentPosition; }
+                catch { this.Close(); }
             }
 
             int sec = 0;
             try { sec = (int)wplayer.Ctlcontrols.currentPosition; }
-            catch { }
+            catch { this.Close(); }
 
             int min = sec / 60;
             sec %= 60;
@@ -737,9 +738,14 @@ namespace UMusic
 
         private void TagEditorButton_Click(object sender, EventArgs e)
         {
-            Form1 main = new Form1();
-            TagEditor tagEditor = new TagEditor(this, main);
-            tagEditor.Show();
+            string fileName = wplayer.currentMedia.sourceURL;
+            
+            try { tagEditor.FillFields(fileName); }
+            catch
+            {
+                tagEditor = new TagEditor(this, main);
+                tagEditor.Show();
+            }
         }
 
         private void Player_FormClosed(object sender, FormClosedEventArgs e)

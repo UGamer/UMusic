@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Utilities;
 
 namespace UMusic
 {
@@ -15,6 +16,7 @@ namespace UMusic
     {
         Player reference;
         Timer leavingTimer;
+        globalKeyboardHook gkh;
 
         public MiniPlayer(Player reference)
         {
@@ -26,7 +28,22 @@ namespace UMusic
             else
                 PlayPauseButton.BackgroundImage = Image.FromFile("Resources\\Play.png");
 
+            LockButton.BackgroundImage = Image.FromFile("Resources\\Unlock.png");
+
             DisplayInfo();
+
+            gkh = new globalKeyboardHook();
+            
+            gkh.HookedKeys.Add(Keys.Tab);
+            gkh.KeyDown += new KeyEventHandler(gkh_KeyDown);
+        }
+
+        private void gkh_KeyDown(object sender, KeyEventArgs e)
+        {
+            // if (shiftDown == true)
+            {
+
+            }
         }
 
         public void DisplayInfo()
@@ -66,6 +83,25 @@ namespace UMusic
         private void PlayPauseButton_Click(object sender, EventArgs e)
         {
             reference.PlayPause();
+        }
+
+        private void SyncButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void LockButton_Click(object sender, EventArgs e)
+        {
+            if (this.TopMost == false)
+            {
+                LockButton.BackgroundImage = Image.FromFile("Resources\\Lock.png");
+                this.TopMost = true;
+            }
+            else
+            {
+                LockButton.BackgroundImage = Image.FromFile("Resources\\Unlock.png");
+                this.TopMost = false;
+            }
         }
     }
 }

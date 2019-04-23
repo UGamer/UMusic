@@ -53,7 +53,12 @@ namespace UMusic
         DownloadPrompt downloadPrompt;
         string videoName;
 
+        TagEditor tagEditor;
+
         string currentLayout;
+
+        string[] folders;
+        ArrayList files;
 
         public Form1()
         {
@@ -66,26 +71,6 @@ namespace UMusic
 
             // if (settings.IndexOf(""))
 
-            GetFiles();
-            InitializeBrowser();
-
-            refreshTimer = new System.Windows.Forms.Timer();
-            refreshTimer.Interval = 1000;
-        }
-
-        public void GetFiles()
-        {
-            // Removes all rows from the DGV
-            do
-            {
-                foreach (DataGridViewRow row in DGV.Rows)
-                {
-                    try { DGV.Rows.Remove(row); }
-                    catch (Exception) { }
-                }
-            } while (DGV.Rows.Count > 1);
-
-            // Gets a full list of the folders in settings.
             string fullFolderList = settings.Substring(settings.IndexOf("[Folders]") + 11);
             fullFolderList = fullFolderList.Substring(0, fullFolderList.IndexOf("[Local Music]") - 2);
 
@@ -99,23 +84,36 @@ namespace UMusic
                 count++;
             }
 
-            string[] folders = new string[count];
+            folders = new string[count];
             string folderListSegment = fullFolderList;
             int newFolderIndex;
-
-            int index;
-            for (index = 0; index < count; index++)
+            
+            for (int index = 0; index < count; index++)
             {
                 newFolderIndex = folderListSegment.IndexOf("\n");
 
                 folders[index] = folderListSegment.Substring(folderListSegment.IndexOf("\"") + 1, newFolderIndex);
                 folders[index] = folders[index].Substring(0, folders[index].IndexOf("\""));
-                
+
                 folderListSegment = folderListSegment.Substring(newFolderIndex + 1);
             }
 
+            GetFiles();
+
+            InitializeBrowser();
+
+            refreshTimer = new System.Windows.Forms.Timer();
+            refreshTimer.Interval = 1000;
+        }
+
+        public void GetFiles()
+        {
+            DGV.DataSource = null;
+            DGV.Update();
+            DGV.Refresh();
+
             // Takes the "folders" array and gets all of the files from each folder then puts them into the "files" array.
-            ArrayList files = new ArrayList();
+            files = new ArrayList();
             for (int folderIndex = 0; folderIndex < folders.Length; folderIndex++)
             {
                 string[] directoryFiles = Directory.GetFiles(folders[folderIndex]);
@@ -130,6 +128,7 @@ namespace UMusic
             string[] genres = new string[files.Count];
             string[] dateAdded = new string[files.Count];
 
+            int index;
             DateTime fileCreated;
             TagLib.File currentFile;
             for (index = 0; index < titles.Length; index++)
@@ -232,47 +231,47 @@ namespace UMusic
                     }
                 }
                 */
+            }
 
-                settings = File.ReadAllText("settings.txt", Encoding.UTF8);
+            DGV.DataSource = dataTable;
 
-                int sortColumnIndex = settings.IndexOf("SortBy=");
-                int sortOrderIndex = settings.IndexOf("Order=");
+            DGV.Columns[0].Width = 50;
+            ((DataGridViewImageColumn)DGV.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Zoom;
 
-                sortColumn = settings.Substring(sortColumnIndex + 8);
-                sortColumn = sortColumn.Substring(0, sortColumn.IndexOf("\""));
+            DGV.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DGV.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DGV.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DGV.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DGV.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DGV.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DGV.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
-                sortOrder = settings.Substring(sortOrderIndex + 7);
-                sortOrder = sortOrder.Substring(0, sortOrder.IndexOf("\""));
+            settings = File.ReadAllText("settings.txt", Encoding.UTF8);
 
-                bool columnFound = false;
-                for (index = 0; index < DGV.Columns.Count && columnFound == false; index++)
+            int sortColumnIndex = settings.IndexOf("SortBy=");
+            int sortOrderIndex = settings.IndexOf("Order=");
+
+            sortColumn = settings.Substring(sortColumnIndex + 8);
+            sortColumn = sortColumn.Substring(0, sortColumn.IndexOf("\""));
+
+            sortOrder = settings.Substring(sortOrderIndex + 7);
+            sortOrder = sortOrder.Substring(0, sortOrder.IndexOf("\""));
+
+            bool columnFound = false;
+            for (index = 0; index < DGV.Columns.Count && columnFound == false; index++)
+            {
+                if (DGV.Columns[index].HeaderText == sortColumn)
                 {
-                    if (DGV.Columns[index].HeaderText == sortColumn)
+                    columnFound = true;
+                    try
                     {
-                        columnFound = true;
-                        try
-                        {
-                            if (sortOrder == "Ascending")
-                                DGV.Sort(DGV.Columns[index], ListSortDirection.Ascending);
-                            else
-                                DGV.Sort(DGV.Columns[index], ListSortDirection.Descending);
-                        }
-                        catch { }
+                        if (sortOrder == "Ascending")
+                            DGV.Sort(DGV.Columns[index], ListSortDirection.Ascending);
+                        else
+                            DGV.Sort(DGV.Columns[index], ListSortDirection.Descending);
                     }
+                    catch { }
                 }
-
-                DGV.DataSource = dataTable;
-
-                DGV.Columns[0].Width = 50;
-                ((DataGridViewImageColumn)DGV.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Zoom;
-                
-                DGV.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                DGV.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                DGV.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                DGV.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                DGV.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                DGV.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                DGV.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             }
         }
 
@@ -313,35 +312,62 @@ namespace UMusic
 
         private void DGV_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            int rowIndex = e.RowIndex;
+            int firstSongIndex = e.RowIndex;
+            string[] fileName = new string[dataTable.Rows.Count];
+            object[] value = new object[dataTable.Rows.Count];
+            int index;
 
-            if (e.ColumnIndex == 1 || e.ColumnIndex == 7)
+            try { player.wplayer.currentPlaylist.clear(); }
+            catch { }
+
+            for (index = 0; index < value.Length; index++)
             {
-                string filePath = DGV.Rows[rowIndex].Cells[7].Value.ToString();
                 try
                 {
-                    player.PlaySong(filePath, true);
-                    player.Show();
-                }
-                catch
-                {
+                    value[index] = DGV.Rows[index].Cells[7].Value;
+                    fileName[index] = value[index].ToString();
+
                     try
                     {
-                        player.wplayer.Ctlcontrols.stop();
-                        player = new Player(filePath, this);
                         player.Show();
+                        WMPLib.IWMPMedia newSong = player.wplayer.newMedia(fileName[index]);
+                        player.wplayer.currentPlaylist.appendItem(newSong);
+                        player.wplayer.Ctlcontrols.play();
                     }
                     catch
                     {
-                        player = new Player(filePath, this);
-                        player.Show();
+                        try
+                        {
+                            player.Show();
+                            WMPLib.IWMPMedia newSong = player.wplayer.newMedia(fileName[index]);
+                            player.playlist.appendItem(newSong);
+                            player.wplayer.currentPlaylist = player.playlist;
+                            player.wplayer.Ctlcontrols.play();
+                        }
+                        catch
+                        {
+                            player = new Player(fileName[index], this);
+                            player.Show();
+                        }
                     }
                 }
+                catch { }
             }
-            else if (e.ColumnIndex == 2)
-            {
 
+            bool wasShuffling = false;
+            for (index = 0; index < firstSongIndex; index++)
+            {
+                if (player.shuffle == true)
+                {
+                    wasShuffling = true;
+                    player.ShuffleMethod();
+                }
+
+                player.wplayer.Ctlcontrols.next();
             }
+
+            if (wasShuffling == true)
+                player.ShuffleMethod();
         }
 
         int rowIndex;
@@ -393,8 +419,12 @@ namespace UMusic
             object value = DGV.Rows[this.rowIndex].Cells[7].Value;
             fileName = value.ToString();
 
-            TagEditor tagEditor = new TagEditor(fileName, this);
-            tagEditor.Show();
+            try { tagEditor.FillFields(fileName); }
+            catch
+            {
+                tagEditor = new TagEditor(fileName, this);
+                tagEditor.Show();
+            }
         }
 
         private void UMusicButton_Click(object sender, EventArgs e)

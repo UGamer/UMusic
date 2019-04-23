@@ -61,8 +61,10 @@
             this.DiscCountBox = new System.Windows.Forms.TextBox();
             this.SearchDatabaseButton = new System.Windows.Forms.Button();
             this.DGV = new System.Windows.Forms.DataGridView();
+            this.AlbumArtPic = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AlbumArtPic)).BeginInit();
             this.SuspendLayout();
             // 
             // TitleLabel
@@ -91,7 +93,7 @@
             this.panel1.Controls.Add(this.TitleLabel);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(213, 304);
+            this.panel1.Size = new System.Drawing.Size(213, 539);
             this.panel1.TabIndex = 0;
             // 
             // DiscNumberLabel
@@ -241,9 +243,9 @@
             // 
             // SubmitButton
             // 
-            this.SubmitButton.Location = new System.Drawing.Point(487, 67);
+            this.SubmitButton.Location = new System.Drawing.Point(358, 512);
             this.SubmitButton.Name = "SubmitButton";
-            this.SubmitButton.Size = new System.Drawing.Size(75, 249);
+            this.SubmitButton.Size = new System.Drawing.Size(123, 39);
             this.SubmitButton.TabIndex = 14;
             this.SubmitButton.Text = "Submit";
             this.SubmitButton.UseVisualStyleBackColor = true;
@@ -332,10 +334,10 @@
             // 
             // SearchDatabaseButton
             // 
-            this.SearchDatabaseButton.Location = new System.Drawing.Point(487, 8);
+            this.SearchDatabaseButton.Location = new System.Drawing.Point(232, 512);
             this.SearchDatabaseButton.Margin = new System.Windows.Forms.Padding(2);
             this.SearchDatabaseButton.Name = "SearchDatabaseButton";
-            this.SearchDatabaseButton.Size = new System.Drawing.Size(75, 47);
+            this.SearchDatabaseButton.Size = new System.Drawing.Size(120, 39);
             this.SearchDatabaseButton.TabIndex = 15;
             this.SearchDatabaseButton.Text = "Search Database";
             this.SearchDatabaseButton.UseVisualStyleBackColor = true;
@@ -349,18 +351,28 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGV.Location = new System.Drawing.Point(568, 8);
+            this.DGV.Location = new System.Drawing.Point(487, 8);
             this.DGV.Name = "DGV";
             this.DGV.ReadOnly = true;
-            this.DGV.Size = new System.Drawing.Size(388, 308);
+            this.DGV.Size = new System.Drawing.Size(469, 543);
             this.DGV.TabIndex = 16;
             this.DGV.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_CellDoubleClick);
+            // 
+            // AlbumArtPic
+            // 
+            this.AlbumArtPic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.AlbumArtPic.Location = new System.Drawing.Point(264, 317);
+            this.AlbumArtPic.Name = "AlbumArtPic";
+            this.AlbumArtPic.Size = new System.Drawing.Size(190, 190);
+            this.AlbumArtPic.TabIndex = 17;
+            this.AlbumArtPic.TabStop = false;
             // 
             // TagEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(968, 335);
+            this.ClientSize = new System.Drawing.Size(968, 570);
+            this.Controls.Add(this.AlbumArtPic);
             this.Controls.Add(this.DGV);
             this.Controls.Add(this.SearchDatabaseButton);
             this.Controls.Add(this.DiscCountBox);
@@ -383,10 +395,10 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TagEditor";
             this.Text = "Tag Editor";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TagEditor_FormClosed);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AlbumArtPic)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -426,5 +438,6 @@
         private System.Windows.Forms.TextBox DiscCountBox;
         private System.Windows.Forms.Button SearchDatabaseButton;
         private System.Windows.Forms.DataGridView DGV;
+        private System.Windows.Forms.PictureBox AlbumArtPic;
     }
 }
