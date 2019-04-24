@@ -33,7 +33,6 @@
             this.PictureBox = new System.Windows.Forms.PictureBox();
             this.CancelButton = new System.Windows.Forms.Button();
             this.SaveButton = new System.Windows.Forms.Button();
-            this.CropBox = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -72,32 +71,11 @@
             this.SaveButton.Text = "Save";
             this.SaveButton.UseVisualStyleBackColor = true;
             // 
-            // CropBox
-            // 
-            this.CropBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.CropBox.BackColor = System.Drawing.Color.Transparent;
-            this.CropBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.CropBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.CropBox.Cursor = System.Windows.Forms.Cursors.SizeNWSE;
-            this.CropBox.ForeColor = System.Drawing.Color.Transparent;
-            this.CropBox.Location = new System.Drawing.Point(78, 13);
-            this.CropBox.MaximumSize = new System.Drawing.Size(500, 500);
-            this.CropBox.MinimumSize = new System.Drawing.Size(10, 10);
-            this.CropBox.Name = "CropBox";
-            this.CropBox.Size = new System.Drawing.Size(200, 200);
-            this.CropBox.TabIndex = 4;
-            this.CropBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CropBox_MouseDown);
-            this.CropBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.CropBox_MouseMove);
-            this.CropBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.CropBox_MouseUp);
-            // 
             // PictureEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(593, 575);
-            this.Controls.Add(this.CropBox);
             this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.PictureBox);
@@ -116,6 +94,5 @@
         private System.Windows.Forms.PictureBox PictureBox;
         private System.Windows.Forms.Button CancelButton;
         private System.Windows.Forms.Button SaveButton;
-        private System.Windows.Forms.Panel CropBox;
     }
 }
