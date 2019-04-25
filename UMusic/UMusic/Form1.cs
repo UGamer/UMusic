@@ -48,6 +48,7 @@ namespace UMusic
         System.Windows.Forms.Timer refreshTimer;
         DataTable dataTable;
         
+        string downloadLocation;
         Thread downloadThread;
         System.Timers.Timer promptTimer;
         DownloadPrompt downloadPrompt;
@@ -68,6 +69,9 @@ namespace UMusic
 
             if (settings.IndexOf("DiscordRichPresence=\"Enabled\"") != -1)
                 DiscordRichPresenceButton.Checked = true;
+
+            downloadLocation = settings.Substring(settings.IndexOf("DownloadLocation=") + 18);
+            downloadLocation = downloadLocation.Substring(0, downloadLocation.IndexOf("\""));
 
             // if (settings.IndexOf(""))
 
@@ -376,11 +380,15 @@ namespace UMusic
         {
             if (e.Button == MouseButtons.Right)
             {
-                this.DGV.Rows[e.RowIndex].Selected = true;
-                this.rowIndex = e.RowIndex;
-                this.DGV.CurrentCell = this.DGV.Rows[e.RowIndex].Cells[1];
-                this.LocalContextMenu.Show(this.DGV, e.Location);
-                LocalContextMenu.Show(Cursor.Position);
+                try
+                {
+                    this.DGV.Rows[e.RowIndex].Selected = true;
+                    this.rowIndex = e.RowIndex;
+                    this.DGV.CurrentCell = this.DGV.Rows[e.RowIndex].Cells[1];
+                    this.LocalContextMenu.Show(this.DGV, e.Location);
+                    LocalContextMenu.Show(Cursor.Position);
+                }
+                catch { }
             }
         }
 
@@ -533,43 +541,55 @@ namespace UMusic
 
                 // try
                 {
-                    var source = @"music\\download\\";
                     var youtube = YouTube.Default;
-                    var vid = youtube.GetVideo(address);
-                    File.WriteAllBytes(source + vid.FullName, vid.GetBytes());
-                    
-                    var inputFile = new MediaFile { Filename = source + vid.FullName };
-                    var outputFile = new MediaFile { Filename = $"{source + vid.FullName}.mp3" };
-                    
-                    using (var engine = new Engine())
+
+                    try
                     {
-                        engine.GetMetadata(inputFile);
+                        var vid = youtube.GetVideo(address);
+                        File.WriteAllBytes(downloadLocation + vid.FullName, vid.GetBytes());
 
-                        engine.Convert(inputFile, outputFile);
+                        var inputFile = new MediaFile { Filename = downloadLocation + vid.FullName };
+                        var outputFile = new MediaFile { Filename = $"{downloadLocation + vid.FullName}.mp3" };
+
+                        using (var engine = new Engine())
+                        {
+                            engine.GetMetadata(inputFile);
+
+                            engine.Convert(inputFile, outputFile);
+                        }
+
+                        string mp3File = $"{downloadLocation + vid.FullName}.mp3";
+                        string wavFile = $"{downloadLocation + vid.FullName}.wav";
+
+                        using (Mp3FileReader reader = new Mp3FileReader(mp3File))
+                        {
+                            WaveFileWriter.CreateWaveFile(wavFile, reader);
+                        }
+
+                        using (var reader = new AudioFileReader(wavFile))
+                        using (var writer = new LameMP3FileWriter(mp3File, reader.WaveFormat, 320))
+                            reader.CopyTo(writer);
+
+                        File.Delete(wavFile);
+                        videoName = vid.FullName;
+
+                        string message = "File successfully downloaded. Could not refresh DGV.";
+                        string caption = "Refresh Failed";
+                        MessageBox.Show(message, caption);
+
+                        downloadPrompt = new DownloadPrompt();
+                        downloadPrompt.Show();
+
+                        promptTimer = new System.Timers.Timer();
+                        promptTimer.Interval = 1;
+                        promptTimer.Elapsed += promptTimer_Elapsed;
+                        promptTimer.Start();
                     }
-
-                    string mp3File = $"{source + vid.FullName}.mp3";
-                    string wavFile = $"{source + vid.FullName}.wav";
-
-                    using (Mp3FileReader reader = new Mp3FileReader(mp3File))
+                    catch (ArgumentException)
                     {
-                        WaveFileWriter.CreateWaveFile(wavFile, reader);
+                        MessageBox.Show("Video could not be downloaded. If you're downloading from YouTube Music, you must be in your Queue.", "Download Failed");
                     }
-
-                    using (var reader = new AudioFileReader(wavFile))
-                    using (var writer = new LameMP3FileWriter(mp3File, reader.WaveFormat, 320))
-                        reader.CopyTo(writer);
-
-                    File.Delete(wavFile);
-                    videoName = vid.FullName;
-
-                    downloadPrompt = new DownloadPrompt();
-                    downloadPrompt.Show();
-
-                    promptTimer = new System.Timers.Timer();
-                    promptTimer.Interval = 1;
-                    promptTimer.Elapsed += promptTimer_Elapsed;
-                    promptTimer.Start();
+                    
                 }
                 /*
                 catch (InvalidOperationException)

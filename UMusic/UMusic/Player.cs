@@ -115,7 +115,13 @@ namespace UMusic
         {
             try
             {
-                playlistWindow.items = null;
+                playlistWindow.items = new IWMPMedia[wplayer.currentPlaylist.count];
+
+                for (int index = 0; index < playlistWindow.items.Length; index++)
+                {
+                    playlistWindow.items[index] = wplayer.newMedia(wplayer.currentPlaylist.Item[index].sourceURL);
+                }
+
                 playlistWindow.FillItems();
                 playlistWindow.FillList();
             }

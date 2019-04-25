@@ -64,7 +64,7 @@ namespace UMusic
                     try { DGV.Rows.Remove(row); }
                     catch (Exception) { }
                 }
-            } while (DGV.Rows.Count > 1);
+            } while (DGV.Rows.Count > 0);
 
             string[] songNames = new string[items.Length];
             files = new string[items.Length];
@@ -135,7 +135,8 @@ namespace UMusic
                 DGV.Rows[index].Cells[0].Style = new DataGridViewCellStyle { ForeColor = Color.Black };
             }
 
-            DGV.Rows[songIndex].Cells[0].Style = new DataGridViewCellStyle { ForeColor = Color.Blue };
+            try { DGV.Rows[songIndex].Cells[0].Style = new DataGridViewCellStyle { ForeColor = Color.Blue }; }
+            catch { }
         }
 
         private void LoadButton_Click(object sender, EventArgs e)
@@ -152,7 +153,7 @@ namespace UMusic
                     i += pattern.Length;
                     count++;
                 }
-
+                
                 string[] fileNames = new string[count];
                 string playlistSegment = fullPlaylist;
                 int newSongIndex;
@@ -164,19 +165,26 @@ namespace UMusic
                     playlistSegment = playlistSegment.Substring(newSongIndex + 1);
                 }
 
-                items = new WMPLib.IWMPMedia[count];
+
                 reference.wplayer.currentPlaylist.clear();
-                reference.playlist.clear();
+                // reference.playlist.clear();
+
+                items = new WMPLib.IWMPMedia[count];
+
+                IWMPPlaylist newPlaylist = reference.wplayer.currentPlaylist;
 
                 for (int index = 0; index < items.Length; index++)
                 {
                     WMPLib.IWMPMedia newSong = reference.wplayer.newMedia(fileNames[index]);
                     items[index] = newSong;
-                    reference.playlist.appendItem(newSong);
                 }
 
-                reference.wplayer.currentPlaylist = reference.playlist;
+                for (int index = 0; index < items.Length; index++)
+                    newPlaylist.appendItem(items[index]);
 
+                reference.wplayer.currentPlaylist = newPlaylist;
+
+                // this.Text = items[0].name.ToString();
                 FillList();
             }
         }
