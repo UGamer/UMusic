@@ -460,6 +460,8 @@ namespace UMusic
             {
                 if (player.playing == true)
                     player.PlayPause();
+                if (player.TopMost == false)
+                    player.Close();
             }
             catch { }
         }
@@ -476,6 +478,8 @@ namespace UMusic
             {
                 if (player.playing == true)
                     player.PlayPause();
+                if (player.TopMost == false)
+                    player.Close();
             }
             catch { }
         }
@@ -492,6 +496,8 @@ namespace UMusic
             {
                 if (player.playing == true)
                     player.PlayPause();
+                if (player.TopMost == false)
+                    player.Close();
             }
             catch { }
         }
@@ -508,6 +514,8 @@ namespace UMusic
             {
                 if (player.playing == true)
                     player.PlayPause();
+                if (player.TopMost == false)
+                    player.Close();
             }
             catch { }
         }

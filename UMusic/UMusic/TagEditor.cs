@@ -19,6 +19,7 @@ namespace UMusic
         TagLib.File currentFile;
         public bool refresh = false;
 
+        string originalFilePath;
         public TagEditor(Player reference, Form1 main)
         {
             this.reference = reference;
@@ -46,6 +47,8 @@ namespace UMusic
         public void FillFields(string filePath)
         {
             FileNameBox.Text = filePath;
+            originalFilePath = filePath;
+
             currentFile = TagLib.File.Create(filePath);
 
             TitleBox.Text = currentFile.Tag.Title;
@@ -117,7 +120,6 @@ namespace UMusic
                 currentFile.Tag.Pictures = new IPicture[0];
             }
             
-
             if (ExplicitBox.Checked == true)
                 currentFile.Tag.Comment = "EXPLICIT";
 
@@ -126,6 +128,7 @@ namespace UMusic
                 currentFile.Save();
                 MessageBox.Show("Your file has been successfully tagged.", "Tagging Success");
                 main.GetFiles();
+                System.IO.File.Delete(originalFilePath);
             }
             catch (IOException)
             {
