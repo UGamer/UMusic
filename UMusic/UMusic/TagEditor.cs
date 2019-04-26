@@ -49,7 +49,7 @@ namespace UMusic
             FileNameBox.Text = filePath;
             originalFilePath = filePath;
 
-            currentFile = TagLib.File.Create(filePath);
+            currentFile = TagLib.File.Create(originalFilePath);
 
             TitleBox.Text = currentFile.Tag.Title;
 
@@ -92,7 +92,7 @@ namespace UMusic
 
         private void SubmitButton_Click(object sender, EventArgs e)
         {
-            TagLib.File currentFile = TagLib.File.Create(FileNameBox.Text);
+            TagLib.File currentFile = TagLib.File.Create(originalFilePath);
 
             currentFile.Tag.Title = TitleBox.Text;
             currentFile.Tag.Performers = new[] { ArtistBox.Text };
@@ -127,8 +127,10 @@ namespace UMusic
             {
                 currentFile.Save();
                 MessageBox.Show("Your file has been successfully tagged.", "Tagging Success");
-                main.GetFiles();
+                System.IO.File.Copy(originalFilePath, FileNameBox.Text);
                 System.IO.File.Delete(originalFilePath);
+                main.GetFiles();
+                originalFilePath = FileNameBox.Text;
             }
             catch (IOException)
             {
