@@ -36,10 +36,10 @@
             this.LoadButton = new System.Windows.Forms.Button();
             this.SaveButton = new System.Windows.Forms.Button();
             this.DGV = new System.Windows.Forms.DataGridView();
-            this.LockButton = new System.Windows.Forms.Button();
-            this.LoadFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.RemoveFromQueueButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.LockButton = new System.Windows.Forms.Button();
+            this.LoadFileDialog = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.DGV)).BeginInit();
             this.ContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -48,9 +48,10 @@
             // 
             this.MoveUpButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.MoveUpButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.MoveUpButton.Location = new System.Drawing.Point(52, 280);
+            this.MoveUpButton.Location = new System.Drawing.Point(78, 431);
+            this.MoveUpButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MoveUpButton.Name = "MoveUpButton";
-            this.MoveUpButton.Size = new System.Drawing.Size(33, 33);
+            this.MoveUpButton.Size = new System.Drawing.Size(50, 51);
             this.MoveUpButton.TabIndex = 0;
             this.MoveUpButton.Text = "/\\";
             this.MoveUpButton.UseVisualStyleBackColor = true;
@@ -59,9 +60,10 @@
             // 
             this.MoveDownButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.MoveDownButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.MoveDownButton.Location = new System.Drawing.Point(13, 280);
+            this.MoveDownButton.Location = new System.Drawing.Point(20, 431);
+            this.MoveDownButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MoveDownButton.Name = "MoveDownButton";
-            this.MoveDownButton.Size = new System.Drawing.Size(33, 33);
+            this.MoveDownButton.Size = new System.Drawing.Size(50, 51);
             this.MoveDownButton.TabIndex = 1;
             this.MoveDownButton.Text = "V";
             this.MoveDownButton.UseVisualStyleBackColor = true;
@@ -70,9 +72,10 @@
             // 
             this.ClearButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ClearButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.ClearButton.Location = new System.Drawing.Point(139, 280);
+            this.ClearButton.Location = new System.Drawing.Point(208, 431);
+            this.ClearButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ClearButton.Name = "ClearButton";
-            this.ClearButton.Size = new System.Drawing.Size(33, 33);
+            this.ClearButton.Size = new System.Drawing.Size(50, 51);
             this.ClearButton.TabIndex = 2;
             this.ClearButton.UseVisualStyleBackColor = true;
             this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
@@ -81,9 +84,10 @@
             // 
             this.LoadButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.LoadButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.LoadButton.Location = new System.Drawing.Point(178, 280);
+            this.LoadButton.Location = new System.Drawing.Point(267, 431);
+            this.LoadButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.LoadButton.Name = "LoadButton";
-            this.LoadButton.Size = new System.Drawing.Size(33, 33);
+            this.LoadButton.Size = new System.Drawing.Size(50, 51);
             this.LoadButton.TabIndex = 3;
             this.LoadButton.UseVisualStyleBackColor = true;
             this.LoadButton.Click += new System.EventHandler(this.LoadButton_Click);
@@ -92,9 +96,10 @@
             // 
             this.SaveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.SaveButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.SaveButton.Location = new System.Drawing.Point(217, 280);
+            this.SaveButton.Location = new System.Drawing.Point(326, 431);
+            this.SaveButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(33, 33);
+            this.SaveButton.Size = new System.Drawing.Size(50, 51);
             this.SaveButton.TabIndex = 4;
             this.SaveButton.UseVisualStyleBackColor = true;
             this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
@@ -107,42 +112,46 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV.ContextMenuStrip = this.ContextMenuStrip;
-            this.DGV.Location = new System.Drawing.Point(13, 12);
+            this.DGV.Location = new System.Drawing.Point(20, 18);
+            this.DGV.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.DGV.Name = "DGV";
             this.DGV.ReadOnly = true;
-            this.DGV.Size = new System.Drawing.Size(237, 262);
+            this.DGV.Size = new System.Drawing.Size(356, 403);
             this.DGV.TabIndex = 5;
             this.DGV.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_CellDoubleClick);
+            this.DGV.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DGV_CellMouseUp);
+            // 
+            // ContextMenuStrip
+            // 
+            this.ContextMenuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.ContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.RemoveFromQueueButton});
+            this.ContextMenuStrip.Name = "ContextMenuStrip";
+            this.ContextMenuStrip.Size = new System.Drawing.Size(250, 34);
+            // 
+            // RemoveFromQueueButton
+            // 
+            this.RemoveFromQueueButton.Name = "RemoveFromQueueButton";
+            this.RemoveFromQueueButton.Size = new System.Drawing.Size(249, 30);
+            this.RemoveFromQueueButton.Text = "Remove from Queue";
+            this.RemoveFromQueueButton.Click += new System.EventHandler(this.RemoveFromQueueButton_Click);
             // 
             // LockButton
             // 
             this.LockButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.LockButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.LockButton.Location = new System.Drawing.Point(91, 280);
+            this.LockButton.Location = new System.Drawing.Point(136, 431);
+            this.LockButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.LockButton.Name = "LockButton";
-            this.LockButton.Size = new System.Drawing.Size(33, 33);
+            this.LockButton.Size = new System.Drawing.Size(50, 51);
             this.LockButton.TabIndex = 6;
             this.LockButton.UseVisualStyleBackColor = true;
             // 
-            // ContextMenuStrip
-            // 
-            this.ContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.RemoveFromQueueButton});
-            this.ContextMenuStrip.Name = "ContextMenuStrip";
-            this.ContextMenuStrip.Size = new System.Drawing.Size(185, 26);
-            // 
-            // RemoveFromQueueButton
-            // 
-            this.RemoveFromQueueButton.Name = "RemoveFromQueueButton";
-            this.RemoveFromQueueButton.Size = new System.Drawing.Size(184, 22);
-            this.RemoveFromQueueButton.Text = "Remove from Queue";
-            this.RemoveFromQueueButton.Click += new System.EventHandler(this.RemoveFromQueueButton_Click);
-            // 
             // Playlist
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(262, 319);
+            this.ClientSize = new System.Drawing.Size(393, 491);
             this.Controls.Add(this.LockButton);
             this.Controls.Add(this.DGV);
             this.Controls.Add(this.SaveButton);
@@ -151,6 +160,7 @@
             this.Controls.Add(this.MoveDownButton);
             this.Controls.Add(this.MoveUpButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Playlist";
             this.Text = "Playlist";
             ((System.ComponentModel.ISupportInitialize)(this.DGV)).EndInit();

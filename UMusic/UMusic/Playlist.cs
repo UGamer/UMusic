@@ -17,6 +17,7 @@ namespace UMusic
         Player reference;
         public IWMPMedia[] items;
 
+        int rowIndex = 0;
         int songIndex = 0;
         string[] files;
 
@@ -245,34 +246,62 @@ namespace UMusic
             int oldSongIndex = 0;
             for (int i = 0; i < reference.playlist.count; i++)
             {
+                /*
                 if (reference.wplayer.currentMedia.isIdentical[reference.playlist.Item[i]])
                 {
                     oldSongIndex = i;
                     break;
                 }
+                */
+                if (DGV.Rows[i].Cells[0].Style.ForeColor == Color.Blue)
+                {
+                    oldSongIndex = i;
+                    break;
+                }
+                
             }
             
             songIndex = e.RowIndex;
+            int songsToSkip;
             
             if (oldSongIndex < songIndex) // If the new song is ahead in the playlist
             {
-                for (; oldSongIndex != songIndex; oldSongIndex++)
+                songsToSkip = songIndex - oldSongIndex;
+                for (int i = 0; i < songsToSkip; i++)
                 {
                     reference.wplayer.Ctlcontrols.next();
                 }
             }
             else // If the new song is behind in the playlist
             {
-                for (; oldSongIndex != songIndex; oldSongIndex--)
+                songsToSkip = oldSongIndex - songIndex;
+                for (int i = 0; i < songsToSkip; i++)
                 {
                     reference.wplayer.Ctlcontrols.previous();
                 }
             }
         }
+        
+        private void DGV_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                try
+                {
+                    this.DGV.Rows[e.RowIndex].Selected = true;
+                    this.rowIndex = e.RowIndex;
+                    this.DGV.CurrentCell = this.DGV.Rows[e.RowIndex].Cells[0];
+                    this.ContextMenuStrip.Show(this.DGV, e.Location);
+                    ContextMenuStrip.Show(Cursor.Position);
+                }
+                catch { }
+            }
+        }
 
         private void RemoveFromQueueButton_Click(object sender, EventArgs e)
         {
-            
+            IWMPMedia removedSong = reference.wplayer.currentPlaylist.Item[rowIndex];
+            reference.wplayer.currentPlaylist.removeItem(removedSong);
         }
     }
 }

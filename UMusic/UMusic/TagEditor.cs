@@ -127,8 +127,12 @@ namespace UMusic
             {
                 currentFile.Save();
                 MessageBox.Show("Your file has been successfully tagged.", "Tagging Success");
-                System.IO.File.Copy(originalFilePath, FileNameBox.Text);
-                System.IO.File.Delete(originalFilePath);
+                try
+                {
+                    System.IO.File.Copy(originalFilePath, FileNameBox.Text);
+                    System.IO.File.Delete(originalFilePath);
+                }
+                catch { }
                 main.GetFiles();
                 originalFilePath = FileNameBox.Text;
             }

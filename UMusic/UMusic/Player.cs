@@ -45,6 +45,7 @@ namespace UMusic
 
         public bool playing = false;
         bool looping = false;
+        bool loopingSingleSong = false;
         public bool shuffle = false;
         bool locked = false;
         int volumeValue = 100;
@@ -177,25 +178,41 @@ namespace UMusic
              // DisplayInfo();
         }
 
+        bool wasLoopingSingle = false;
+
         private void wplayer_MediaChange(object sender, _WMPOCXEvents_MediaChangeEvent e)
         {
-            DisplayInfo();
-
-            try { miniPlayer.DisplayInfo(); }
-            catch { }
-
-            int index = 0;
-            for (int i = 0; i < playlist.count; i++)
+            if (loopingSingleSong == true && wasLoopingSingle == false)
             {
-                if (wplayer.currentMedia.isIdentical[playlist.Item[i]])
-                {
-                    index = i;
-                    break;
-                }
+                wasLoopingSingle = true;
+                loopingSingleSong = false;
+                wplayer.Ctlcontrols.previous();
             }
+            else if (wasLoopingSingle == true)
+            {
+                wasLoopingSingle = false;
+                loopingSingleSong = true;
+            }
+            else
+            {
+                DisplayInfo();
 
-            try { playlistWindow.HighlightSong(index); }
-            catch { }
+                try { miniPlayer.DisplayInfo(); }
+                catch { }
+
+                int index = 0;
+                for (int i = 0; i < playlist.count; i++)
+                {
+                    if (wplayer.currentMedia.isIdentical[playlist.Item[i]])
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+
+                try { playlistWindow.HighlightSong(index); }
+                catch { }
+            }
         }
 
         private void wplayer_PlayStateChange(object sender, _WMPOCXEvents_PlayStateChangeEvent e)
@@ -404,14 +421,18 @@ namespace UMusic
                Title, Album (move album up one)
                Title, Genre (move genre up two)
                Title
+               
+            ArtistPanel.Location = new Point(445, 60);
+            AlbumPanel.Location = new Point(445, 96);
+            GenrePanel.Location = new Point(445, 132);
              */
             if (ArtistLabel.Text != "" && AlbumLabel.Text != "" && GenreLabel.Text != "") { }
             else if (ArtistLabel.Text != "" && AlbumLabel.Text != "")
                 GenrePanel.Visible = false;
             else if (ArtistLabel.Text != "" && GenreLabel.Text != "")
             {
-
                 AlbumPanel.Visible = false;
+                GenrePanel.Location = new Point(445, 96);
             }
             else if (ArtistLabel.Text != "")
             {
@@ -419,16 +440,22 @@ namespace UMusic
                 GenrePanel.Visible = false;
             }
             else if (AlbumLabel.Text != "" && GenreLabel.Text != "")
+            {
                 ArtistPanel.Visible = false;
+                AlbumPanel.Location = new Point(445, 60);
+                GenrePanel.Location = new Point(445, 96);
+            }
             else if (AlbumLabel.Text != "")
             {
                 ArtistPanel.Visible = false;
                 GenrePanel.Visible = false;
+                AlbumPanel.Location = new Point(445, 60);
             }
             else if (GenreLabel.Text != "")
             {
                 ArtistPanel.Visible = false;
                 AlbumPanel.Visible = false;
+                GenrePanel.Location = new Point(445, 60);
             }
             else
             {
@@ -566,9 +593,18 @@ namespace UMusic
             }
             else
             {
-                looping = false;
-                wplayer.settings.setMode("loop", false);
-                LoopButton.FlatStyle = FlatStyle.Standard;
+                if (loopingSingleSong == false)
+                {
+                    loopingSingleSong = true;
+                    LoopButton.BackgroundImage = Image.FromFile("Resources\\LoopSingle.png");
+                }
+                else
+                {
+                    looping = false;
+                    wplayer.settings.setMode("loop", false);
+                    LoopButton.FlatStyle = FlatStyle.Standard;
+                    LoopButton.BackgroundImage = Image.FromFile("Resources\\Loop.png");
+                }
             }
         }
         
@@ -598,12 +634,12 @@ namespace UMusic
             if (grabbed == false)
             {
                 try { ProgressBar.Value = (int)wplayer.Ctlcontrols.currentPosition; }
-                catch { this.Close(); }
+                catch { ProgressBar.Value = 0; positionTimer.Stop(); this.Close(); }
             }
 
             int sec = 0;
             try { sec = (int)wplayer.Ctlcontrols.currentPosition; }
-            catch { this.Close(); }
+            catch { sec = 0; positionTimer.Stop(); this.Close(); }
 
             int min = sec / 60;
             sec %= 60;
@@ -807,7 +843,7 @@ namespace UMusic
             }
         }
 
-        private void Player_FormClosed(object sender, FormClosedEventArgs e)
+        private void Player_FormClosing(object sender, FormClosingEventArgs e)
         {
             string segment1 = settings.Substring(0, settings.IndexOf("Loop=") + 5);
             
@@ -830,6 +866,7 @@ namespace UMusic
             }
             catch { }
 
+            wplayer.close();
             this.Dispose();
         }
     }

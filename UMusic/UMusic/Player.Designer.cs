@@ -361,7 +361,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Player";
             this.Text = "Player";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Player_FormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Player_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.AlbumArtBox)).EndInit();
             this.TitlePanel.ResumeLayout(false);
             this.TitlePanel.PerformLayout();
