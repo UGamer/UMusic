@@ -37,24 +37,28 @@
             // QuestionLabel
             // 
             this.QuestionLabel.AutoSize = true;
-            this.QuestionLabel.Location = new System.Drawing.Point(53, 9);
+            this.QuestionLabel.Location = new System.Drawing.Point(35, 6);
+            this.QuestionLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.QuestionLabel.Name = "QuestionLabel";
-            this.QuestionLabel.Size = new System.Drawing.Size(304, 20);
+            this.QuestionLabel.Size = new System.Drawing.Size(207, 13);
             this.QuestionLabel.TabIndex = 0;
             this.QuestionLabel.Text = "What would you like to name your playlist?";
             // 
             // NameBox
             // 
-            this.NameBox.Location = new System.Drawing.Point(17, 37);
+            this.NameBox.Location = new System.Drawing.Point(11, 24);
+            this.NameBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.NameBox.Name = "NameBox";
-            this.NameBox.Size = new System.Drawing.Size(378, 26);
+            this.NameBox.Size = new System.Drawing.Size(253, 20);
             this.NameBox.TabIndex = 1;
+            this.NameBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.NameBox_KeyDown);
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(160, 69);
+            this.SaveButton.Location = new System.Drawing.Point(107, 45);
+            this.SaveButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(75, 29);
+            this.SaveButton.Size = new System.Drawing.Size(50, 19);
             this.SaveButton.TabIndex = 2;
             this.SaveButton.Text = "Save";
             this.SaveButton.UseVisualStyleBackColor = true;
@@ -62,14 +66,15 @@
             // 
             // SavePanel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(409, 117);
+            this.ClientSize = new System.Drawing.Size(273, 76);
             this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.NameBox);
             this.Controls.Add(this.QuestionLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "SavePanel";
             this.Text = "Saving...";
             this.ResumeLayout(false);

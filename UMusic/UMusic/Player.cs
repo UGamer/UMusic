@@ -282,10 +282,12 @@ namespace UMusic
 
         public void DisplayInfo()
         {
-            TitlePanel.Location = new Point(445, 13);
-            ArtistPanel.Location = new Point(445, 60);
-            AlbumPanel.Location = new Point(445, 96);
-            GenrePanel.Location = new Point(445, 132);
+            int xPos = panel1.Location.X + panel1.Size.Width + 7;
+
+            TitlePanel.Location = new Point(xPos, 13);
+            ArtistPanel.Location = new Point(xPos, 60);
+            AlbumPanel.Location = new Point(xPos, 96);
+            GenrePanel.Location = new Point(xPos, 132);
 
             TitlePanel.Visible = true;
             ArtistPanel.Visible = true;
@@ -411,28 +413,13 @@ namespace UMusic
                 }
             }
 
-
-            /*
-               Title, Artist, Album, Genre
-               Title, Artist, Album
-               Title, Artist, Genre (move genre up one)
-               Title, Artist
-               Title, Album, Genre (move album and genre up one each)
-               Title, Album (move album up one)
-               Title, Genre (move genre up two)
-               Title
-               
-            ArtistPanel.Location = new Point(445, 60);
-            AlbumPanel.Location = new Point(445, 96);
-            GenrePanel.Location = new Point(445, 132);
-             */
             if (ArtistLabel.Text != "" && AlbumLabel.Text != "" && GenreLabel.Text != "") { }
             else if (ArtistLabel.Text != "" && AlbumLabel.Text != "")
                 GenrePanel.Visible = false;
             else if (ArtistLabel.Text != "" && GenreLabel.Text != "")
             {
                 AlbumPanel.Visible = false;
-                GenrePanel.Location = new Point(445, 96);
+                GenrePanel.Location = new Point(xPos, 96);
             }
             else if (ArtistLabel.Text != "")
             {
@@ -442,20 +429,20 @@ namespace UMusic
             else if (AlbumLabel.Text != "" && GenreLabel.Text != "")
             {
                 ArtistPanel.Visible = false;
-                AlbumPanel.Location = new Point(445, 60);
-                GenrePanel.Location = new Point(445, 96);
+                AlbumPanel.Location = new Point(xPos, 60);
+                GenrePanel.Location = new Point(xPos, 96);
             }
             else if (AlbumLabel.Text != "")
             {
                 ArtistPanel.Visible = false;
                 GenrePanel.Visible = false;
-                AlbumPanel.Location = new Point(445, 60);
+                AlbumPanel.Location = new Point(xPos, 60);
             }
             else if (GenreLabel.Text != "")
             {
                 ArtistPanel.Visible = false;
                 AlbumPanel.Visible = false;
-                GenrePanel.Location = new Point(445, 60);
+                GenrePanel.Location = new Point(xPos, 60);
             }
             else
             {

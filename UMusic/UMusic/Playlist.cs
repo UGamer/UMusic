@@ -21,6 +21,8 @@ namespace UMusic
         int songIndex = 0;
         string[] files;
 
+        SavePanel savePanel;
+
         public Playlist(Player reference)
         {
             this.reference = reference;
@@ -168,29 +170,24 @@ namespace UMusic
 
 
                 reference.wplayer.currentPlaylist.clear();
-                // reference.playlist.clear();
 
-                items = new WMPLib.IWMPMedia[count];
-
-                IWMPPlaylist newPlaylist = reference.wplayer.currentPlaylist;
+                items = new IWMPMedia[count];
 
                 for (int index = 0; index < items.Length; index++)
                 {
-                    WMPLib.IWMPMedia newSong = reference.wplayer.newMedia(fileNames[index]);
+                    IWMPMedia newSong = reference.wplayer.newMedia(fileNames[index]);
                     items[index] = newSong;
                 }
 
-                for (int index = 0; index < items.Length; index++)
-                    newPlaylist.appendItem(items[index]);
+                foreach (IWMPMedia song in items)
+                {
+                    reference.wplayer.currentPlaylist.appendItem(song);
+                }
 
-                reference.wplayer.currentPlaylist = newPlaylist;
-
-                // this.Text = items[0].name.ToString();
+                reference.wplayer.Ctlcontrols.play();
                 FillList();
             }
         }
-
-        SavePanel savePanel;
 
         private void SaveButton_Click(object sender, EventArgs e)
         {

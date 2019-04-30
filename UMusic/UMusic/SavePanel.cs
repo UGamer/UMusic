@@ -24,5 +24,14 @@ namespace UMusic
             playlistName = NameBox.Text;
             this.Close();
         }
+
+        private void NameBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Enter)
+            {
+                playlistName = NameBox.Text;
+                this.Close();
+            }
+        }
     }
 }
