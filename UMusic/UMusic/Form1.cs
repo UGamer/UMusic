@@ -698,7 +698,8 @@ namespace UMusic
         private void Filter()
         {
             DataView DV = new DataView(dataTable);
-            DV.RowFilter = string.Format("Title LIKE '%{0}%' OR [Artist(s)] LIKE '%{0}%' OR Album LIKE '%{0}%' OR [Album Artist(s)] LIKE '%{0}%' OR Genre LIKE '%{0}%'", SearchBox.Text);
+            try { DV.RowFilter = string.Format("Title LIKE '%{0}%' OR [Artist(s)] LIKE '%{0}%' OR Album LIKE '%{0}%' OR [Album Artist(s)] LIKE '%{0}%' OR Genre LIKE '%{0}%'", SearchBox.Text); }
+            catch { }
 
             DGV.DataSource = DV;
 

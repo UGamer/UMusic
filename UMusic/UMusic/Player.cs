@@ -265,6 +265,16 @@ namespace UMusic
 
         public void DisplayInfo()
         {
+            TitlePanel.Location = new Point(445, 13);
+            ArtistPanel.Location = new Point(445, 60);
+            AlbumPanel.Location = new Point(445, 96);
+            GenrePanel.Location = new Point(445, 132);
+
+            TitlePanel.Visible = true;
+            ArtistPanel.Visible = true;
+            AlbumPanel.Visible = true;
+            GenrePanel.Visible = true;
+
             string currentMedia = wplayer.currentMedia.sourceURL;
 
             currentFile = null;
@@ -382,6 +392,49 @@ namespace UMusic
                     scrollingTimerGenre.Tick += scrollingTimerGenre_Tick;
                     scrollingTimerGenre.Start();
                 }
+            }
+
+
+            /*
+               Title, Artist, Album, Genre
+               Title, Artist, Album
+               Title, Artist, Genre (move genre up one)
+               Title, Artist
+               Title, Album, Genre (move album and genre up one each)
+               Title, Album (move album up one)
+               Title, Genre (move genre up two)
+               Title
+             */
+            if (ArtistLabel.Text != "" && AlbumLabel.Text != "" && GenreLabel.Text != "") { }
+            else if (ArtistLabel.Text != "" && AlbumLabel.Text != "")
+                GenrePanel.Visible = false;
+            else if (ArtistLabel.Text != "" && GenreLabel.Text != "")
+            {
+
+                AlbumPanel.Visible = false;
+            }
+            else if (ArtistLabel.Text != "")
+            {
+                AlbumPanel.Visible = false;
+                GenrePanel.Visible = false;
+            }
+            else if (AlbumLabel.Text != "" && GenreLabel.Text != "")
+                ArtistPanel.Visible = false;
+            else if (AlbumLabel.Text != "")
+            {
+                ArtistPanel.Visible = false;
+                GenrePanel.Visible = false;
+            }
+            else if (GenreLabel.Text != "")
+            {
+                ArtistPanel.Visible = false;
+                AlbumPanel.Visible = false;
+            }
+            else
+            {
+                ArtistPanel.Visible = false;
+                AlbumPanel.Visible = false;
+                GenrePanel.Visible = false;
             }
 
             TimeSpan fullLength = currentFile.Properties.Duration;
