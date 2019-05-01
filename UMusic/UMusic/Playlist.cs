@@ -243,23 +243,22 @@ namespace UMusic
             int oldSongIndex = 0;
             for (int i = 0; i < reference.playlist.count; i++)
             {
-                /*
-                if (reference.wplayer.currentMedia.isIdentical[reference.playlist.Item[i]])
-                {
-                    oldSongIndex = i;
-                    break;
-                }
-                */
                 if (DGV.Rows[i].Cells[0].Style.ForeColor == Color.Blue)
                 {
                     oldSongIndex = i;
                     break;
                 }
-                
             }
             
             songIndex = e.RowIndex;
             int songsToSkip;
+
+            bool wasShuffling = false;
+            if (reference.shuffle == true)
+            {
+                wasShuffling = true;
+                reference.ShuffleMethod();
+            }
             
             if (oldSongIndex < songIndex) // If the new song is ahead in the playlist
             {
@@ -276,6 +275,11 @@ namespace UMusic
                 {
                     reference.wplayer.Ctlcontrols.previous();
                 }
+            }
+
+            if (wasShuffling == true)
+            {
+                reference.ShuffleMethod();
             }
         }
         

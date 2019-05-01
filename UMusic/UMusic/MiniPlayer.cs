@@ -18,6 +18,10 @@ namespace UMusic
         Timer leavingTimer;
         globalKeyboardHook gkh;
 
+        globalKeyboardHook shiftGKH = new globalKeyboardHook();
+        bool shiftDown = false;
+        bool hidden = false;
+
         public MiniPlayer(Player reference)
         {
             this.reference = reference;
@@ -33,16 +37,32 @@ namespace UMusic
             DisplayInfo();
 
             gkh = new globalKeyboardHook();
-            
+
+            shiftGKH.HookedKeys.Add(Keys.LShiftKey);
+            shiftGKH.KeyDown += new KeyEventHandler(shiftGKH_KeyDown);
+            shiftGKH.KeyUp += new KeyEventHandler(shiftGKH_KeyUp);
+
             gkh.HookedKeys.Add(Keys.Tab);
             gkh.KeyDown += new KeyEventHandler(gkh_KeyDown);
         }
 
         private void gkh_KeyDown(object sender, KeyEventArgs e)
         {
-            // if (shiftDown == true)
+            if (shiftDown == true)
             {
-
+                if (this.TopMost == false)
+                {
+                    if (hidden == false)
+                    {
+                        this.Hide();
+                        hidden = true;
+                    }
+                    else
+                    {
+                        this.Show();
+                        hidden = false;
+                    }
+                }
             }
         }
 
@@ -88,6 +108,16 @@ namespace UMusic
         private void SyncButton_Click(object sender, EventArgs e)
         {
 
+        }
+        
+        private void shiftGKH_KeyDown(object sender, KeyEventArgs e)
+        {
+            shiftDown = true;
+        }
+
+        private void shiftGKH_KeyUp(object sender, KeyEventArgs e)
+        {
+            shiftDown = false;
         }
 
         private void LockButton_Click(object sender, EventArgs e)
