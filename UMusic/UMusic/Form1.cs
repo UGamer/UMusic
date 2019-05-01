@@ -91,8 +91,9 @@ namespace UMusic
             folders = new string[count];
             string folderListSegment = fullFolderList;
             int newFolderIndex;
-            
-            for (int index = 0; index < count; index++)
+
+            int index = 0;
+            for (; index < count; index++)
             {
                 newFolderIndex = folderListSegment.IndexOf("\n");
 
@@ -108,6 +109,24 @@ namespace UMusic
 
             refreshTimer = new System.Windows.Forms.Timer();
             refreshTimer.Interval = 1000;
+
+            string[] playlistNames = Directory.GetFiles("playlists\\");
+            ToolStripMenuItem[] playlistButtons = new ToolStripMenuItem[playlistNames.Length + 1];
+
+            for (index = 0; index < playlistButtons.Length - 1; index++)
+            {
+                playlistButtons[index] = new ToolStripMenuItem();
+                playlistButtons[index].Text = playlistNames[index].Substring(0, playlistNames[index].Length - 4);
+                playlistButtons[index].Text = playlistButtons[index].Text.Substring(10);
+                playlistButtons[index].Tag = playlistNames[index];
+                playlistButtons[index].Click += AddToPlaylistButton_Click;
+                AddToPlaylistButton.DropDownItems.Add(playlistButtons[index]);
+            }
+
+            playlistButtons[index] = new ToolStripMenuItem();
+            playlistButtons[index].Text = "+ New Playlist...";
+            playlistButtons[index].Click += NewPlaylistButton;
+            AddToPlaylistButton.DropDownItems.Add(playlistButtons[index]);
         }
 
         public void GetFiles()
@@ -828,6 +847,64 @@ namespace UMusic
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             Cef.Shutdown();
+        }
+
+        private void AddToPlaylistButton_Click(object sender, EventArgs e)
+        {
+            string filePath = DGV.Rows[rowIndex].Cells[7].Value.ToString();
+            ToolStripMenuItem tempButton = (ToolStripMenuItem)sender;
+
+            string playlistPath = tempButton.Tag.ToString();
+            string playlistName = tempButton.Text;
+
+            AddToPlaylist(filePath, playlistPath, playlistName);
+        }
+
+        SavePanel savePanel;
+
+        private void NewPlaylistButton(object sender, EventArgs e)
+        {
+            savePanel = new SavePanel();
+            savePanel.Show();
+            savePanel.FormClosed += savePanel_FormClosed;
+        }
+
+        private void savePanel_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            string folderPath = "playlists\\";
+            string playlistName = savePanel.playlistName + ".txt";
+            
+            TextWriter tw;
+            try
+            {
+                tw = new StreamWriter(folderPath + playlistName);
+            }
+            catch
+            {
+                Directory.CreateDirectory("playlists\\");
+                tw = new StreamWriter(folderPath + playlistName);
+            }
+
+            string filePath = DGV.Rows[rowIndex].Cells[7].Value.ToString();
+
+            tw.Write(filePath);
+
+            tw.Close();
+
+            MessageBox.Show("Added \"" + filePath + "\" to \"" + playlistName.Substring(0, playlistName.Length - 4) + "\"", "Added to Playlist", MessageBoxButtons.OK, 
+                MessageBoxIcon.Information);
+        }
+
+        public void AddToPlaylist(string filePath, string playlistPath, string playlistName)
+        {
+            string oldPlaylist = File.ReadAllText(playlistPath, Encoding.UTF8);
+            
+            TextWriter tw = new StreamWriter(playlistPath);
+            tw.Write(oldPlaylist);
+            tw.WriteLine();
+            tw.Write(filePath);
+            tw.Close();
+            MessageBox.Show("Added \"" + filePath + "\" to \"" + playlistName + "\"", "Added to Playlist", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
