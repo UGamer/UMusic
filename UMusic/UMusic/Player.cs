@@ -110,6 +110,25 @@ namespace UMusic
                 try { discordRichPresence = Process.Start(discordRichPresenceStartInfo); }
                 catch { }
             }
+
+            string[] playlistNames = Directory.GetFiles("playlists\\");
+            ToolStripMenuItem[] playlistButtons = new ToolStripMenuItem[playlistNames.Length + 1];
+
+            int index;
+            for (index = 0; index < playlistButtons.Length - 1; index++)
+            {
+                playlistButtons[index] = new ToolStripMenuItem();
+                playlistButtons[index].Text = playlistNames[index].Substring(0, playlistNames[index].Length - 4);
+                playlistButtons[index].Text = playlistButtons[index].Text.Substring(10);
+                playlistButtons[index].Tag = playlistNames[index];
+                playlistButtons[index].Click += PlaylistButtonStrip_Click;
+                AddToPlaylistStrip.Items.Add(playlistButtons[index]);
+            }
+
+            playlistButtons[index] = new ToolStripMenuItem();
+            playlistButtons[index].Text = "+ New Playlist...";
+            playlistButtons[index].Click += NewPlaylistButton;
+            AddToPlaylistStrip.Items.Add(playlistButtons[index]);
         }
 
         private void wplayer_CurrentPlaylistChange(object sender, _WMPOCXEvents_CurrentPlaylistChangeEvent e)
@@ -828,6 +847,69 @@ namespace UMusic
                 tagEditor = new TagEditor(this, main);
                 tagEditor.Show();
             }
+        }
+        
+        private void AddToPlaylistButton_Click(object sender, EventArgs e)
+        {
+            AddToPlaylistStrip.Show(Cursor.Position);
+        }
+
+        private void PlaylistButtonStrip_Click(object sender, EventArgs e)
+        {
+            string filePath = wplayer.currentMedia.sourceURL;
+            ToolStripMenuItem tempButton = (ToolStripMenuItem)sender;
+
+            string playlistPath = tempButton.Tag.ToString();
+            string playlistName = tempButton.Text;
+
+            AddToPlaylist(filePath, playlistPath, playlistName);
+        }
+
+        public void AddToPlaylist(string filePath, string playlistPath, string playlistName)
+        {
+            string oldPlaylist = File.ReadAllText(playlistPath, Encoding.UTF8);
+
+            TextWriter tw = new StreamWriter(playlistPath);
+            tw.Write(oldPlaylist);
+            tw.WriteLine();
+            tw.Write(filePath);
+            tw.Close();
+            MessageBox.Show("Added \"" + filePath + "\" to \"" + playlistName + "\"", "Added to Playlist", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        SavePanel savePanel;
+
+        private void NewPlaylistButton(object sender, EventArgs e)
+        {
+            savePanel = new SavePanel();
+            savePanel.Show();
+            savePanel.FormClosed += savePanel_FormClosed;
+        }
+
+        private void savePanel_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            string folderPath = "playlists\\";
+            string playlistName = savePanel.playlistName + ".txt";
+
+            TextWriter tw;
+            try
+            {
+                tw = new StreamWriter(folderPath + playlistName);
+            }
+            catch
+            {
+                Directory.CreateDirectory("playlists\\");
+                tw = new StreamWriter(folderPath + playlistName);
+            }
+
+            string filePath = wplayer.currentMedia.sourceURL;
+
+            tw.Write(filePath);
+
+            tw.Close();
+
+            MessageBox.Show("Added \"" + filePath + "\" to \"" + playlistName.Substring(0, playlistName.Length - 4) + "\"", "Added to Playlist", MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
 
         private void Player_FormClosing(object sender, FormClosingEventArgs e)

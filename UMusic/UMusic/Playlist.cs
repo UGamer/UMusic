@@ -156,7 +156,9 @@ namespace UMusic
                     i += pattern.Length;
                     count++;
                 }
-                
+
+                count++;
+
                 string[] fileNames = new string[count];
                 string playlistSegment = fullPlaylist;
                 int newSongIndex;
@@ -164,8 +166,15 @@ namespace UMusic
                 for (int index = 0; index < count; index++)
                 {
                     newSongIndex = playlistSegment.IndexOf("\n");
-                    fileNames[index] = playlistSegment.Substring(0, newSongIndex);
-                    playlistSegment = playlistSegment.Substring(newSongIndex + 1);
+                    try
+                    {
+                        fileNames[index] = playlistSegment.Substring(0, newSongIndex);
+                        playlistSegment = playlistSegment.Substring(newSongIndex + 1);
+                    }
+                    catch
+                    {
+                        fileNames[index] = playlistSegment;
+                    }
                 }
 
 

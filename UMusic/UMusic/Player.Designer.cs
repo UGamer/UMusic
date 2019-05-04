@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Player));
             this.AlbumArtBox = new System.Windows.Forms.PictureBox();
             this.TitlePanel = new System.Windows.Forms.Panel();
@@ -53,6 +54,8 @@
             this.TagEditorButton = new System.Windows.Forms.Button();
             this.wplayer = new AxWMPLib.AxWindowsMediaPlayer();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.AddToPlaylistButton = new System.Windows.Forms.Button();
+            this.AddToPlaylistStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.AlbumArtBox)).BeginInit();
             this.TitlePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeBar)).BeginInit();
@@ -157,7 +160,7 @@
             // 
             this.VolumeBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.VolumeBar.Location = new System.Drawing.Point(727, 388);
-            this.VolumeBar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.VolumeBar.Margin = new System.Windows.Forms.Padding(2);
             this.VolumeBar.Maximum = 100;
             this.VolumeBar.Name = "VolumeBar";
             this.VolumeBar.Size = new System.Drawing.Size(115, 45);
@@ -169,7 +172,7 @@
             // 
             this.ProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ProgressBar.Location = new System.Drawing.Point(451, 338);
-            this.ProgressBar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ProgressBar.Margin = new System.Windows.Forms.Padding(2);
             this.ProgressBar.Name = "ProgressBar";
             this.ProgressBar.Size = new System.Drawing.Size(391, 45);
             this.ProgressBar.TabIndex = 8;
@@ -303,7 +306,7 @@
             this.TagEditorButton.Name = "TagEditorButton";
             this.TagEditorButton.Size = new System.Drawing.Size(50, 50);
             this.TagEditorButton.TabIndex = 14;
-            this.TagEditorButton.Text = "Tag Editor";
+            this.TagEditorButton.Text = "Edit Tags";
             this.TagEditorButton.UseVisualStyleBackColor = true;
             this.TagEditorButton.Click += new System.EventHandler(this.TagEditorButton_Click);
             // 
@@ -312,7 +315,7 @@
             this.wplayer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.wplayer.Enabled = true;
             this.wplayer.Location = new System.Drawing.Point(0, 0);
-            this.wplayer.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.wplayer.Margin = new System.Windows.Forms.Padding(2);
             this.wplayer.MaximumSize = new System.Drawing.Size(9999, 9999);
             this.wplayer.MinimumSize = new System.Drawing.Size(425, 425);
             this.wplayer.Name = "wplayer";
@@ -330,16 +333,34 @@
             this.panel1.Controls.Add(this.wplayer);
             this.panel1.Controls.Add(this.AlbumArtBox);
             this.panel1.Location = new System.Drawing.Point(13, 13);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(425, 425);
             this.panel1.TabIndex = 16;
+            // 
+            // AddToPlaylistButton
+            // 
+            this.AddToPlaylistButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.AddToPlaylistButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.AddToPlaylistButton.Location = new System.Drawing.Point(936, 276);
+            this.AddToPlaylistButton.Name = "AddToPlaylistButton";
+            this.AddToPlaylistButton.Size = new System.Drawing.Size(50, 50);
+            this.AddToPlaylistButton.TabIndex = 17;
+            this.AddToPlaylistButton.Text = "Add to Playlist";
+            this.AddToPlaylistButton.UseVisualStyleBackColor = true;
+            this.AddToPlaylistButton.Click += new System.EventHandler(this.AddToPlaylistButton_Click);
+            // 
+            // AddToPlaylistStrip
+            // 
+            this.AddToPlaylistStrip.Name = "AddToPlaylistStrip";
+            this.AddToPlaylistStrip.Size = new System.Drawing.Size(61, 4);
             // 
             // Player
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(998, 450);
+            this.Controls.Add(this.AddToPlaylistButton);
             this.Controls.Add(this.TagEditorButton);
             this.Controls.Add(this.PlaylistButton);
             this.Controls.Add(this.GenrePanel);
@@ -406,5 +427,7 @@
         private System.Windows.Forms.Button TagEditorButton;
         public AxWMPLib.AxWindowsMediaPlayer wplayer;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button AddToPlaylistButton;
+        private System.Windows.Forms.ContextMenuStrip AddToPlaylistStrip;
     }
 }

@@ -139,9 +139,13 @@ namespace UMusic
             files = new ArrayList();
             for (int folderIndex = 0; folderIndex < folders.Length; folderIndex++)
             {
-                string[] directoryFiles = Directory.GetFiles(folders[folderIndex]);
-                for (int filesIndex = 0; filesIndex < directoryFiles.Length; filesIndex++)
-                    files.Add(directoryFiles[filesIndex]);
+                try
+                {
+                    string[] directoryFiles = Directory.GetFiles(folders[folderIndex]);
+                    for (int filesIndex = 0; filesIndex < directoryFiles.Length; filesIndex++)
+                        files.Add(directoryFiles[filesIndex]);
+                }
+                catch { }
             }
 
             string[] titles = new string[files.Count];
@@ -844,11 +848,6 @@ namespace UMusic
             }
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Cef.Shutdown();
-        }
-
         private void AddToPlaylistButton_Click(object sender, EventArgs e)
         {
             string filePath = DGV.Rows[rowIndex].Cells[7].Value.ToString();
@@ -905,6 +904,11 @@ namespace UMusic
             tw.Write(filePath);
             tw.Close();
             MessageBox.Show("Added \"" + filePath + "\" to \"" + playlistName + "\"", "Added to Playlist", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Cef.Shutdown();
         }
     }
 }
