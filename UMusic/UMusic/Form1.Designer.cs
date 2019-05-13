@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.DGV = new System.Windows.Forms.DataGridView();
             this.LocalContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.AddToPlaylistButton = new System.Windows.Forms.ToolStripMenuItem();
             this.addToQueueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DeleteSongButton = new System.Windows.Forms.ToolStripMenuItem();
             this.editTagsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,7 +72,6 @@
             this.LayoutDropDown = new System.Windows.Forms.ToolStripMenuItem();
             this.LayoutListButton = new System.Windows.Forms.ToolStripMenuItem();
             this.LayoutGridButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.AddToPlaylistButton = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.DGV)).BeginInit();
             this.LocalContextMenu.SuspendLayout();
             this.LocalPanel.SuspendLayout();
@@ -95,11 +95,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DGV.ContextMenuStrip = this.LocalContextMenu;
-            this.DGV.Location = new System.Drawing.Point(157, 1);
+            this.DGV.Location = new System.Drawing.Point(236, 2);
+            this.DGV.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.DGV.Name = "DGV";
             this.DGV.ReadOnly = true;
+            this.DGV.RowHeadersVisible = false;
             this.DGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.DGV.Size = new System.Drawing.Size(643, 423);
+            this.DGV.Size = new System.Drawing.Size(964, 651);
             this.DGV.TabIndex = 0;
             this.DGV.VirtualMode = true;
             this.DGV.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_CellDoubleClick);
@@ -115,19 +117,25 @@
             this.DeleteSongButton,
             this.editTagsToolStripMenuItem});
             this.LocalContextMenu.Name = "LocalContextMenu";
-            this.LocalContextMenu.Size = new System.Drawing.Size(151, 92);
+            this.LocalContextMenu.Size = new System.Drawing.Size(200, 124);
+            // 
+            // AddToPlaylistButton
+            // 
+            this.AddToPlaylistButton.Name = "AddToPlaylistButton";
+            this.AddToPlaylistButton.Size = new System.Drawing.Size(199, 30);
+            this.AddToPlaylistButton.Text = "Add to Playlist";
             // 
             // addToQueueToolStripMenuItem
             // 
             this.addToQueueToolStripMenuItem.Name = "addToQueueToolStripMenuItem";
-            this.addToQueueToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addToQueueToolStripMenuItem.Size = new System.Drawing.Size(199, 30);
             this.addToQueueToolStripMenuItem.Text = "Add to Queue";
             this.addToQueueToolStripMenuItem.Click += new System.EventHandler(this.addToQueueToolStripMenuItem_Click);
             // 
             // DeleteSongButton
             // 
             this.DeleteSongButton.Name = "DeleteSongButton";
-            this.DeleteSongButton.Size = new System.Drawing.Size(180, 22);
+            this.DeleteSongButton.Size = new System.Drawing.Size(199, 30);
             this.DeleteSongButton.Text = "Delete Song";
             this.DeleteSongButton.ToolTipText = "Delete the song you have selected from your system.";
             this.DeleteSongButton.Click += new System.EventHandler(this.DeleteSongButton_Click);
@@ -135,7 +143,7 @@
             // editTagsToolStripMenuItem
             // 
             this.editTagsToolStripMenuItem.Name = "editTagsToolStripMenuItem";
-            this.editTagsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editTagsToolStripMenuItem.Size = new System.Drawing.Size(199, 30);
             this.editTagsToolStripMenuItem.Text = "Edit Tags";
             this.editTagsToolStripMenuItem.Click += new System.EventHandler(this.editTagsToolStripMenuItem_Click);
             // 
@@ -148,10 +156,9 @@
             this.LocalPanel.Controls.Add(this.LeftPanel);
             this.LocalPanel.Controls.Add(this.BrowserDock);
             this.LocalPanel.Controls.Add(this.DGV);
-            this.LocalPanel.Location = new System.Drawing.Point(0, 27);
-            this.LocalPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.LocalPanel.Location = new System.Drawing.Point(0, 42);
             this.LocalPanel.Name = "LocalPanel";
-            this.LocalPanel.Size = new System.Drawing.Size(800, 423);
+            this.LocalPanel.Size = new System.Drawing.Size(1200, 651);
             this.LocalPanel.TabIndex = 2;
             // 
             // LeftPanel
@@ -166,51 +173,57 @@
             this.LeftPanel.Controls.Add(this.ArtistsButton);
             this.LeftPanel.Controls.Add(this.SongsButton);
             this.LeftPanel.Controls.Add(this.PlayAllButton);
-            this.LeftPanel.Location = new System.Drawing.Point(0, 1);
+            this.LeftPanel.Location = new System.Drawing.Point(0, 2);
+            this.LeftPanel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.LeftPanel.Name = "LeftPanel";
-            this.LeftPanel.Size = new System.Drawing.Size(158, 422);
+            this.LeftPanel.Size = new System.Drawing.Size(237, 649);
             this.LeftPanel.TabIndex = 2;
             // 
             // SearchBox
             // 
-            this.SearchBox.Location = new System.Drawing.Point(5, 13);
+            this.SearchBox.Location = new System.Drawing.Point(8, 20);
+            this.SearchBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.SearchBox.Name = "SearchBox";
-            this.SearchBox.Size = new System.Drawing.Size(146, 20);
+            this.SearchBox.Size = new System.Drawing.Size(217, 26);
             this.SearchBox.TabIndex = 6;
             this.SearchBox.TextChanged += new System.EventHandler(this.SearchBox_TextChanged);
             // 
             // PlaylistsButton
             // 
-            this.PlaylistsButton.Location = new System.Drawing.Point(5, 239);
+            this.PlaylistsButton.Location = new System.Drawing.Point(8, 368);
+            this.PlaylistsButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.PlaylistsButton.Name = "PlaylistsButton";
-            this.PlaylistsButton.Size = new System.Drawing.Size(147, 29);
+            this.PlaylistsButton.Size = new System.Drawing.Size(220, 45);
             this.PlaylistsButton.TabIndex = 5;
             this.PlaylistsButton.Text = "Playlists";
             this.PlaylistsButton.UseVisualStyleBackColor = true;
             // 
             // GenresButton
             // 
-            this.GenresButton.Location = new System.Drawing.Point(5, 204);
+            this.GenresButton.Location = new System.Drawing.Point(8, 314);
+            this.GenresButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.GenresButton.Name = "GenresButton";
-            this.GenresButton.Size = new System.Drawing.Size(147, 29);
+            this.GenresButton.Size = new System.Drawing.Size(220, 45);
             this.GenresButton.TabIndex = 4;
             this.GenresButton.Text = "Genres";
             this.GenresButton.UseVisualStyleBackColor = true;
             // 
             // AlbumsButton
             // 
-            this.AlbumsButton.Location = new System.Drawing.Point(5, 169);
+            this.AlbumsButton.Location = new System.Drawing.Point(8, 260);
+            this.AlbumsButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.AlbumsButton.Name = "AlbumsButton";
-            this.AlbumsButton.Size = new System.Drawing.Size(147, 29);
+            this.AlbumsButton.Size = new System.Drawing.Size(220, 45);
             this.AlbumsButton.TabIndex = 3;
             this.AlbumsButton.Text = "Albums";
             this.AlbumsButton.UseVisualStyleBackColor = true;
             // 
             // ArtistsButton
             // 
-            this.ArtistsButton.Location = new System.Drawing.Point(5, 134);
+            this.ArtistsButton.Location = new System.Drawing.Point(8, 206);
+            this.ArtistsButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ArtistsButton.Name = "ArtistsButton";
-            this.ArtistsButton.Size = new System.Drawing.Size(147, 29);
+            this.ArtistsButton.Size = new System.Drawing.Size(220, 45);
             this.ArtistsButton.TabIndex = 2;
             this.ArtistsButton.Text = "Artists";
             this.ArtistsButton.UseVisualStyleBackColor = true;
@@ -218,9 +231,10 @@
             // 
             // SongsButton
             // 
-            this.SongsButton.Location = new System.Drawing.Point(5, 99);
+            this.SongsButton.Location = new System.Drawing.Point(8, 152);
+            this.SongsButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.SongsButton.Name = "SongsButton";
-            this.SongsButton.Size = new System.Drawing.Size(147, 29);
+            this.SongsButton.Size = new System.Drawing.Size(220, 45);
             this.SongsButton.TabIndex = 1;
             this.SongsButton.Text = "Songs";
             this.SongsButton.UseVisualStyleBackColor = true;
@@ -228,9 +242,10 @@
             // 
             // PlayAllButton
             // 
-            this.PlayAllButton.Location = new System.Drawing.Point(5, 47);
+            this.PlayAllButton.Location = new System.Drawing.Point(8, 72);
+            this.PlayAllButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.PlayAllButton.Name = "PlayAllButton";
-            this.PlayAllButton.Size = new System.Drawing.Size(147, 29);
+            this.PlayAllButton.Size = new System.Drawing.Size(220, 45);
             this.PlayAllButton.TabIndex = 0;
             this.PlayAllButton.Text = "Play All";
             this.PlayAllButton.UseVisualStyleBackColor = true;
@@ -243,9 +258,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.BrowserDock.BackColor = System.Drawing.Color.White;
             this.BrowserDock.Controls.Add(this.GridPanel);
-            this.BrowserDock.Location = new System.Drawing.Point(0, 1);
+            this.BrowserDock.Location = new System.Drawing.Point(0, 2);
+            this.BrowserDock.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.BrowserDock.Name = "BrowserDock";
-            this.BrowserDock.Size = new System.Drawing.Size(800, 423);
+            this.BrowserDock.Size = new System.Drawing.Size(1200, 651);
             this.BrowserDock.TabIndex = 1;
             this.BrowserDock.Visible = false;
             // 
@@ -256,9 +272,10 @@
             this.GridPanel.Controls.Add(this.pictureBox3);
             this.GridPanel.Controls.Add(this.pictureBox2);
             this.GridPanel.Controls.Add(this.pictureBox1);
-            this.GridPanel.Location = new System.Drawing.Point(157, 0);
+            this.GridPanel.Location = new System.Drawing.Point(236, 0);
+            this.GridPanel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.GridPanel.Name = "GridPanel";
-            this.GridPanel.Size = new System.Drawing.Size(643, 423);
+            this.GridPanel.Size = new System.Drawing.Size(964, 651);
             this.GridPanel.TabIndex = 0;
             // 
             // DetailPanel
@@ -267,59 +284,66 @@
             this.DetailPanel.Controls.Add(this.NameLabel);
             this.DetailPanel.Controls.Add(this.DetailPicture);
             this.DetailPanel.Location = new System.Drawing.Point(0, 0);
+            this.DetailPanel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.DetailPanel.Name = "DetailPanel";
-            this.DetailPanel.Size = new System.Drawing.Size(643, 422);
+            this.DetailPanel.Size = new System.Drawing.Size(964, 649);
             this.DetailPanel.TabIndex = 4;
             // 
             // DetailBox
             // 
-            this.DetailBox.Location = new System.Drawing.Point(228, 47);
+            this.DetailBox.Location = new System.Drawing.Point(342, 72);
+            this.DetailBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.DetailBox.Multiline = true;
             this.DetailBox.Name = "DetailBox";
-            this.DetailBox.Size = new System.Drawing.Size(400, 166);
+            this.DetailBox.Size = new System.Drawing.Size(598, 253);
             this.DetailBox.TabIndex = 2;
             // 
             // NameLabel
             // 
             this.NameLabel.AutoSize = true;
             this.NameLabel.Font = new System.Drawing.Font("Microsoft JhengHei", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NameLabel.Location = new System.Drawing.Point(222, 13);
+            this.NameLabel.Location = new System.Drawing.Point(333, 20);
+            this.NameLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.NameLabel.Name = "NameLabel";
-            this.NameLabel.Size = new System.Drawing.Size(167, 34);
+            this.NameLabel.Size = new System.Drawing.Size(251, 51);
             this.NameLabel.TabIndex = 1;
             this.NameLabel.Text = "Artist Name";
             // 
             // DetailPicture
             // 
-            this.DetailPicture.Location = new System.Drawing.Point(16, 13);
+            this.DetailPicture.Location = new System.Drawing.Point(24, 20);
+            this.DetailPicture.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.DetailPicture.Name = "DetailPicture";
-            this.DetailPicture.Size = new System.Drawing.Size(200, 200);
+            this.DetailPicture.Size = new System.Drawing.Size(300, 308);
             this.DetailPicture.TabIndex = 0;
             this.DetailPicture.TabStop = false;
             // 
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("Microsoft JhengHei", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(16, 220);
+            this.textBox1.Location = new System.Drawing.Point(24, 338);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(200, 27);
+            this.textBox1.Size = new System.Drawing.Size(298, 37);
             this.textBox1.TabIndex = 3;
             this.textBox1.Text = "Travis Scott";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // pictureBox3
             // 
-            this.pictureBox3.Location = new System.Drawing.Point(428, 13);
+            this.pictureBox3.Location = new System.Drawing.Point(642, 20);
+            this.pictureBox3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(200, 200);
+            this.pictureBox3.Size = new System.Drawing.Size(300, 308);
             this.pictureBox3.TabIndex = 2;
             this.pictureBox3.TabStop = false;
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(222, 13);
+            this.pictureBox2.Location = new System.Drawing.Point(333, 20);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(200, 200);
+            this.pictureBox2.Size = new System.Drawing.Size(300, 308);
             this.pictureBox2.TabIndex = 1;
             this.pictureBox2.TabStop = false;
             // 
@@ -327,9 +351,10 @@
             // 
             this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox1.Location = new System.Drawing.Point(16, 13);
+            this.pictureBox1.Location = new System.Drawing.Point(24, 20);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(200, 200);
+            this.pictureBox1.Size = new System.Drawing.Size(300, 308);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
@@ -360,7 +385,8 @@
             this.LocalMusicViewDropdown});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(800, 31);
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.toolStrip1.Size = new System.Drawing.Size(1200, 32);
             this.toolStrip1.TabIndex = 9;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -369,7 +395,7 @@
             this.DownloadButton.Image = global::UMusic.Properties.Resources.Load;
             this.DownloadButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.DownloadButton.Name = "DownloadButton";
-            this.DownloadButton.Size = new System.Drawing.Size(89, 28);
+            this.DownloadButton.Size = new System.Drawing.Size(122, 29);
             this.DownloadButton.Text = "Download";
             this.DownloadButton.Click += new System.EventHandler(this.DownloadButton_Click);
             // 
@@ -378,7 +404,7 @@
             this.GoogleButton.Image = global::UMusic.Properties.Resources.Google;
             this.GoogleButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.GoogleButton.Name = "GoogleButton";
-            this.GoogleButton.Size = new System.Drawing.Size(73, 28);
+            this.GoogleButton.Size = new System.Drawing.Size(98, 29);
             this.GoogleButton.Text = "Google";
             this.GoogleButton.Click += new System.EventHandler(this.GoogleButton_Click);
             // 
@@ -388,7 +414,7 @@
             this.RefreshButton.Image = ((System.Drawing.Image)(resources.GetObject("RefreshButton.Image")));
             this.RefreshButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.RefreshButton.Name = "RefreshButton";
-            this.RefreshButton.Size = new System.Drawing.Size(50, 28);
+            this.RefreshButton.Size = new System.Drawing.Size(74, 29);
             this.RefreshButton.Text = "Refresh";
             this.RefreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
             // 
@@ -400,14 +426,15 @@
             this.SettingsDropDown.Image = ((System.Drawing.Image)(resources.GetObject("SettingsDropDown.Image")));
             this.SettingsDropDown.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SettingsDropDown.Name = "SettingsDropDown";
-            this.SettingsDropDown.Size = new System.Drawing.Size(62, 28);
+            this.SettingsDropDown.Size = new System.Drawing.Size(94, 29);
             this.SettingsDropDown.Text = "Settings";
             this.SettingsDropDown.ToolTipText = "Configure settings for UMusic.";
+            this.SettingsDropDown.Click += new System.EventHandler(this.SettingsDropDown_Click);
             // 
             // DiscordRichPresenceButton
             // 
             this.DiscordRichPresenceButton.Name = "DiscordRichPresenceButton";
-            this.DiscordRichPresenceButton.Size = new System.Drawing.Size(190, 22);
+            this.DiscordRichPresenceButton.Size = new System.Drawing.Size(269, 30);
             this.DiscordRichPresenceButton.Text = "Discord Rich Presence";
             this.DiscordRichPresenceButton.ToolTipText = "Enables or disables Discord Rich Presence. This will display information about yo" +
     "ur music listening on your Discord profile.";
@@ -425,7 +452,7 @@
             this.ServicesDropDown.Image = ((System.Drawing.Image)(resources.GetObject("ServicesDropDown.Image")));
             this.ServicesDropDown.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ServicesDropDown.Name = "ServicesDropDown";
-            this.ServicesDropDown.Size = new System.Drawing.Size(62, 28);
+            this.ServicesDropDown.Size = new System.Drawing.Size(93, 29);
             this.ServicesDropDown.Text = "Services";
             this.ServicesDropDown.ToolTipText = "Change which service you would like to use.";
             // 
@@ -433,7 +460,7 @@
             // 
             this.UMusicButton.Image = global::UMusic.Properties.Resources.logo;
             this.UMusicButton.Name = "UMusicButton";
-            this.UMusicButton.Size = new System.Drawing.Size(156, 22);
+            this.UMusicButton.Size = new System.Drawing.Size(215, 30);
             this.UMusicButton.Text = "UMusic (Local)";
             this.UMusicButton.Click += new System.EventHandler(this.UMusicButton_Click);
             // 
@@ -441,7 +468,7 @@
             // 
             this.SoundCloudButton.Image = global::UMusic.Properties.Resources.SoundCloud;
             this.SoundCloudButton.Name = "SoundCloudButton";
-            this.SoundCloudButton.Size = new System.Drawing.Size(156, 22);
+            this.SoundCloudButton.Size = new System.Drawing.Size(215, 30);
             this.SoundCloudButton.Text = "SoundCloud";
             this.SoundCloudButton.Click += new System.EventHandler(this.SoundCloudButton_Click);
             // 
@@ -449,7 +476,7 @@
             // 
             this.SpotifyButton.Image = global::UMusic.Properties.Resources.Spotify;
             this.SpotifyButton.Name = "SpotifyButton";
-            this.SpotifyButton.Size = new System.Drawing.Size(156, 22);
+            this.SpotifyButton.Size = new System.Drawing.Size(215, 30);
             this.SpotifyButton.Text = "Spotify";
             this.SpotifyButton.Click += new System.EventHandler(this.SpotifyButton_Click);
             // 
@@ -457,7 +484,7 @@
             // 
             this.YouTubeButton.Image = global::UMusic.Properties.Resources.YouTube;
             this.YouTubeButton.Name = "YouTubeButton";
-            this.YouTubeButton.Size = new System.Drawing.Size(156, 22);
+            this.YouTubeButton.Size = new System.Drawing.Size(215, 30);
             this.YouTubeButton.Text = "YouTube";
             this.YouTubeButton.Click += new System.EventHandler(this.YouTubeButton_Click);
             // 
@@ -465,7 +492,7 @@
             // 
             this.YouTubeMusicButton.Image = global::UMusic.Properties.Resources.YouTube_Music;
             this.YouTubeMusicButton.Name = "YouTubeMusicButton";
-            this.YouTubeMusicButton.Size = new System.Drawing.Size(156, 22);
+            this.YouTubeMusicButton.Size = new System.Drawing.Size(215, 30);
             this.YouTubeMusicButton.Text = "YouTube Music";
             this.YouTubeMusicButton.Click += new System.EventHandler(this.YouTubeMusicButton_Click);
             // 
@@ -477,7 +504,7 @@
             this.LocalMusicViewDropdown.Image = ((System.Drawing.Image)(resources.GetObject("LocalMusicViewDropdown.Image")));
             this.LocalMusicViewDropdown.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.LocalMusicViewDropdown.Name = "LocalMusicViewDropdown";
-            this.LocalMusicViewDropdown.Size = new System.Drawing.Size(45, 28);
+            this.LocalMusicViewDropdown.Size = new System.Drawing.Size(67, 29);
             this.LocalMusicViewDropdown.Text = "View";
             this.LocalMusicViewDropdown.ToolTipText = "Determine which layout you would like to use for your local music.";
             // 
@@ -487,37 +514,33 @@
             this.LayoutListButton,
             this.LayoutGridButton});
             this.LayoutDropDown.Name = "LayoutDropDown";
-            this.LayoutDropDown.Size = new System.Drawing.Size(110, 22);
+            this.LayoutDropDown.Size = new System.Drawing.Size(149, 30);
             this.LayoutDropDown.Text = "Layout";
             // 
             // LayoutListButton
             // 
             this.LayoutListButton.Name = "LayoutListButton";
-            this.LayoutListButton.Size = new System.Drawing.Size(96, 22);
+            this.LayoutListButton.Size = new System.Drawing.Size(129, 30);
             this.LayoutListButton.Text = "List";
             this.LayoutListButton.Click += new System.EventHandler(this.LayoutListButton_Click);
             // 
             // LayoutGridButton
             // 
             this.LayoutGridButton.Name = "LayoutGridButton";
-            this.LayoutGridButton.Size = new System.Drawing.Size(96, 22);
+            this.LayoutGridButton.Size = new System.Drawing.Size(129, 30);
             this.LayoutGridButton.Text = "Grid";
             this.LayoutGridButton.Click += new System.EventHandler(this.LayoutGridButton_Click);
             // 
-            // AddToPlaylistButton
-            // 
-            this.AddToPlaylistButton.Name = "AddToPlaylistButton";
-            this.AddToPlaylistButton.Size = new System.Drawing.Size(150, 22);
-            this.AddToPlaylistButton.Text = "Add to Playlist";
-            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1200, 692);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.LocalPanel);
+            this.ForeColor = System.Drawing.Color.Black;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
             this.Text = "UMusic";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);

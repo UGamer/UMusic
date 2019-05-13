@@ -22,7 +22,9 @@ namespace UMusic
     {
         public ChromiumWebBrowser chromeBrowser;
         Player player;
-        string settings;
+        Settings settingsWindow;
+        public string settings;
+        public Theme theme;
 
         bool albumArtVisible;
         bool titleVisible;
@@ -58,14 +60,14 @@ namespace UMusic
 
         string currentLayout = "List";
 
-        string[] folders;
+        public string[] folders;
         ArrayList files;
 
         public Form1()
         {
             InitializeComponent();
-
             settings = File.ReadAllText("settings.txt", Encoding.UTF8);
+            InitializeTheme();
 
             if (settings.IndexOf("DiscordRichPresence=\"Enabled\"") != -1)
                 DiscordRichPresenceButton.Checked = true;
@@ -129,6 +131,94 @@ namespace UMusic
             AddToPlaylistButton.DropDownItems.Add(playlistButtons[index]);
         }
 
+        private void InitializeTheme()
+        {
+            string themeType = settings.Substring(settings.IndexOf("Type=") + 5);
+            themeType = themeType.Substring(0, themeType.IndexOf("\n"));
+            string textColor = settings.Substring(settings.IndexOf("TextColor=") + 11);
+            textColor = textColor.Substring(0, textColor.IndexOf("\""));
+            string cellColor = settings.Substring(settings.IndexOf("CellColor=") + 11);
+            cellColor = cellColor.Substring(0, cellColor.IndexOf("\""));
+            string gridColor = settings.Substring(settings.IndexOf("GridColor=") + 11);
+            gridColor = gridColor.Substring(0, gridColor.IndexOf("\""));
+            string buttonColor = settings.Substring(settings.IndexOf("ButtonColor=") + 13);
+            buttonColor = buttonColor.Substring(0, buttonColor.IndexOf("\""));
+            string sidebarColor = settings.Substring(settings.IndexOf("SideBarColor=") + 14);
+            sidebarColor = sidebarColor.Substring(0, sidebarColor.IndexOf("\""));
+
+            string colorString = textColor;
+            int textColor1 = Convert.ToInt32(colorString.Substring(0, textColor.IndexOf(",")));
+            colorString = textColor.Substring(textColor.IndexOf(",") + 2);
+            colorString = colorString.Substring(0, colorString.IndexOf(","));
+            int textColor2 = Convert.ToInt32(colorString.Substring(0, textColor.IndexOf(",")));
+            colorString = textColor.Substring(textColor.IndexOf(",") + 2);
+            colorString = colorString.Substring(0, colorString.IndexOf(","));
+            int textColor3 = Convert.ToInt32(colorString);
+
+            colorString = cellColor;
+            int cellColor1 = Convert.ToInt32(colorString.Substring(0, cellColor.IndexOf(",")));
+            colorString = cellColor.Substring(cellColor.IndexOf(",") + 2);
+            colorString = colorString.Substring(0, colorString.IndexOf(","));
+            int cellColor2 = Convert.ToInt32(colorString.Substring(0, cellColor.IndexOf(",")));
+            colorString = cellColor.Substring(cellColor.IndexOf(",") + 2);
+            colorString = colorString.Substring(0, colorString.IndexOf(","));
+            int cellColor3 = Convert.ToInt32(colorString);
+
+            colorString = gridColor;
+            int gridColor1 = Convert.ToInt32(colorString.Substring(0, gridColor.IndexOf(",")));
+            colorString = gridColor.Substring(gridColor.IndexOf(",") + 2);
+            colorString = colorString.Substring(0, colorString.IndexOf(","));
+            int gridColor2 = Convert.ToInt32(colorString.Substring(0, gridColor.IndexOf(",")));
+            colorString = gridColor.Substring(gridColor.IndexOf(",") + 2);
+            colorString = colorString.Substring(0, colorString.IndexOf(","));
+            int gridColor3 = Convert.ToInt32(colorString);
+            
+            colorString = buttonColor;
+            int buttonColor1 = Convert.ToInt32(colorString.Substring(0, buttonColor.IndexOf(",")));
+            colorString = buttonColor.Substring(buttonColor.IndexOf(",") + 2);
+            colorString = colorString.Substring(0, colorString.IndexOf(","));
+            int buttonColor2 = Convert.ToInt32(colorString.Substring(0, buttonColor.IndexOf(",")));
+            colorString = buttonColor.Substring(buttonColor.IndexOf(",") + 2);
+            colorString = colorString.Substring(0, colorString.IndexOf(","));
+            int buttonColor3 = Convert.ToInt32(colorString);
+
+            colorString = sidebarColor;
+            int sidebarColor1 = Convert.ToInt32(colorString.Substring(0, sidebarColor.IndexOf(",")));
+            colorString = sidebarColor.Substring(sidebarColor.IndexOf(",") + 2);
+            colorString = colorString.Substring(0, colorString.IndexOf(","));
+            int sidebarColor2 = Convert.ToInt32(colorString.Substring(0, sidebarColor.IndexOf(",")));
+            colorString = sidebarColor.Substring(sidebarColor.IndexOf(",") + 2);
+            colorString = colorString.Substring(0, colorString.IndexOf(","));
+            int sidebarColor3 = Convert.ToInt32(colorString);
+
+            theme = new Theme(themeType, textColor1, textColor2, textColor3,
+                cellColor1, cellColor2, cellColor3, gridColor1, gridColor2,
+                gridColor3, buttonColor1, buttonColor2, buttonColor3, sidebarColor1,
+                sidebarColor2, sidebarColor3);
+
+            this.ForeColor = Color.FromArgb(theme.textColor[0], theme.textColor[1], theme.textColor[2]);
+            this.DGV.RowsDefaultCellStyle.BackColor = Color.FromArgb(theme.cellColor[0], theme.cellColor[1], theme.cellColor[2]);
+            DGV.GridColor = Color.FromArgb(theme.gridColor[0], theme.gridColor[1], theme.gridColor[2]);
+
+            PlayAllButton.BackColor = Color.FromArgb(theme.buttonColor[0], theme.buttonColor[1], theme.buttonColor[2]);
+            SongsButton.BackColor = Color.FromArgb(theme.buttonColor[0], theme.buttonColor[1], theme.buttonColor[2]);
+            ArtistsButton.BackColor = Color.FromArgb(theme.buttonColor[0], theme.buttonColor[1], theme.buttonColor[2]);
+            AlbumsButton.BackColor = Color.FromArgb(theme.buttonColor[0], theme.buttonColor[1], theme.buttonColor[2]);
+            GenresButton.BackColor = Color.FromArgb(theme.buttonColor[0], theme.buttonColor[1], theme.buttonColor[2]);
+            PlaylistsButton.BackColor = Color.FromArgb(theme.buttonColor[0], theme.buttonColor[1], theme.buttonColor[2]);
+
+            LeftPanel.BackColor = Color.FromArgb(theme.sidebarColor[0], theme.sidebarColor[1], theme.sidebarColor[2]);
+
+            this.DGV.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(theme.cellColor[0], theme.cellColor[1], theme.cellColor[2]);
+            this.DGV.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(theme.textColor[0], theme.textColor[1], theme.textColor[2]);
+            this.DGV.EnableHeadersVisualStyles = false;
+
+            if (themeType == "Custom")
+            {
+
+            }
+        }
+
         public void GetFiles()
         {
             DGV.DataSource = null;
@@ -169,7 +259,7 @@ namespace UMusic
                 try
                 {
                     currentFile = TagLib.File.Create(files[index].ToString());
-                    /*
+                    
                     if (currentFile.Tag.Pictures.Length > 0)
                     {
                         bin = currentFile.Tag.Pictures[0].Data.Data;
@@ -178,7 +268,6 @@ namespace UMusic
                         albumArts.Add(currentAlbumArt2);
                     }
                     else
-                    */
                         albumArts.Add(albumArt);
 
                     titles[index] = currentFile.Tag.Title;
@@ -242,14 +331,14 @@ namespace UMusic
                     }
 
                     DataRow dRow = dataTable.NewRow();
-                    dRow[0] = albumArts[r];
-                    dRow[1] = twoD[r, 1];
-                    dRow[2] = twoD[r, 2];
-                    dRow[3] = twoD[r, 3];
-                    dRow[4] = twoD[r, 4];
-                    dRow[5] = twoD[r, 5];
-                    dRow[6] = twoD[r, 6];
-                    dRow[7] = twoD[r, 7];
+                    dRow["Album Art"] = albumArts[r];
+                    dRow["Title"] = twoD[r, 1];
+                    dRow["Artist(s)"] = twoD[r, 2];
+                    dRow["Album"] = twoD[r, 3];
+                    dRow["Album Artist(s)"] = twoD[r, 4];
+                    dRow["Genre"] = twoD[r, 5];
+                    dRow["Date Added"] = twoD[r, 6];
+                    dRow["File"] = twoD[r, 7];
 
                     dataTable.Rows.Add(dRow);
                 }
@@ -259,7 +348,7 @@ namespace UMusic
                 {
                     try
                     {
-                        currentFile = TagLib.File.Create(dataTable.Rows[x][7].ToString());
+                        currentFile = TagLib.File.Create(dataTable.Rows[x]["File"].ToString());
                         if (currentFile.Tag.Pictures.Length > 0)
                         {
                             bin = currentFile.Tag.Pictures[0].Data.Data;
@@ -277,24 +366,23 @@ namespace UMusic
                 */
             }
 
-            albumArts = null;
-            bin = null;
+            albumArts.Clear();
             GC.Collect();
             GC.WaitForPendingFinalizers();
 
             DGV.DataSource = dataTable;
 
-            DGV.Columns[0].Width = 50;
+            DGV.Columns["Album Art"].Width = 50;
             ((DataGridViewImageColumn)DGV.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Zoom;
 
-            DGV.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            DGV.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            DGV.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            DGV.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            DGV.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            DGV.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            DGV.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
+            DGV.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DGV.Columns["Artist(s)"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DGV.Columns["Album"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DGV.Columns["Album Artist(s)"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DGV.Columns["Genre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DGV.Columns["Date Added"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            DGV.Columns["File"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            
             settings = File.ReadAllText("settings.txt", Encoding.UTF8);
 
             int sortColumnIndex = settings.IndexOf("SortBy=");
@@ -373,7 +461,7 @@ namespace UMusic
             {
                 try
                 {
-                    value[index] = DGV.Rows[index].Cells[7].Value;
+                    value[index] = DGV.Rows[index].Cells["File"].Value;
                     fileName[index] = value[index].ToString();
 
                     try
@@ -429,7 +517,7 @@ namespace UMusic
                 {
                     this.DGV.Rows[e.RowIndex].Selected = true;
                     this.rowIndex = e.RowIndex;
-                    this.DGV.CurrentCell = this.DGV.Rows[e.RowIndex].Cells[1];
+                    this.DGV.CurrentCell = this.DGV.Rows[e.RowIndex].Cells["Title"];
                     this.LocalContextMenu.Show(this.DGV, e.Location);
                     LocalContextMenu.Show(Cursor.Position);
                 }
@@ -440,7 +528,7 @@ namespace UMusic
         private void addToQueueToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string fileName;
-            object value = DGV.Rows[this.rowIndex].Cells[7].Value;
+            object value = DGV.Rows[this.rowIndex].Cells["File"].Value;
             fileName = value.ToString();
 
             try
@@ -469,7 +557,7 @@ namespace UMusic
         private void editTagsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string fileName;
-            object value = DGV.Rows[this.rowIndex].Cells[7].Value;
+            object value = DGV.Rows[this.rowIndex].Cells["File"].Value;
             fileName = value.ToString();
 
             try
@@ -802,7 +890,7 @@ namespace UMusic
             {
                 try
                 {
-                    value[index] = DGV.Rows[index].Cells[7].Value;
+                    value[index] = DGV.Rows[index].Cells["File"].Value;
                     fileName[index] = value[index].ToString();
 
                     try
@@ -856,8 +944,8 @@ namespace UMusic
 
         private void DeleteSongButton_Click(object sender, EventArgs e)
         {
-            string songTitle = DGV.Rows[rowIndex].Cells[1].Value.ToString();
-            string filePath = DGV.Rows[rowIndex].Cells[7].Value.ToString();
+            string songTitle = DGV.Rows[rowIndex].Cells["Title"].Value.ToString();
+            string filePath = DGV.Rows[rowIndex].Cells["File"].Value.ToString();
 
             string message = "Are you sure you want to delete \"" + songTitle +"\" from your system?";
             string caption = "Are you sure?";
@@ -878,7 +966,7 @@ namespace UMusic
 
         private void AddToPlaylistButton_Click(object sender, EventArgs e)
         {
-            string filePath = DGV.Rows[rowIndex].Cells[7].Value.ToString();
+            string filePath = DGV.Rows[rowIndex].Cells["File"].Value.ToString();
             ToolStripMenuItem tempButton = (ToolStripMenuItem)sender;
 
             string playlistPath = tempButton.Tag.ToString();
@@ -912,7 +1000,7 @@ namespace UMusic
                 tw = new StreamWriter(folderPath + playlistName);
             }
 
-            string filePath = DGV.Rows[rowIndex].Cells[7].Value.ToString();
+            string filePath = DGV.Rows[rowIndex].Cells["File"].Value.ToString();
 
             tw.Write(filePath);
 
@@ -937,6 +1025,12 @@ namespace UMusic
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             Cef.Shutdown();
+        }
+
+        private void SettingsDropDown_Click(object sender, EventArgs e)
+        {
+            settingsWindow = new Settings(this);
+            settingsWindow.Show();
         }
     }
 }

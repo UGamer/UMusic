@@ -226,12 +226,19 @@
     <Compile Include="SavePanel.Designer.cs">
       <DependentUpon>SavePanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
     <Compile Include="TagEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="TagEditor.Designer.cs">
       <DependentUpon>TagEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Theme.cs" />
     <EmbeddedResource Include="Database.resx">
       <DependentUpon>Database.cs</DependentUpon>
     </EmbeddedResource>
@@ -265,6 +272,9 @@
     </Compile>
     <EmbeddedResource Include="SavePanel.resx">
       <DependentUpon>SavePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TagEditor.resx">
       <DependentUpon>TagEditor.cs</DependentUpon>
