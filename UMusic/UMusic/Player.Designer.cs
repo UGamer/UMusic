@@ -90,6 +90,7 @@
             // 
             this.TitleLabel.AutoSize = true;
             this.TitleLabel.Font = new System.Drawing.Font("Microsoft JhengHei", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TitleLabel.ForeColor = System.Drawing.Color.White;
             this.TitleLabel.Location = new System.Drawing.Point(0, 4);
             this.TitleLabel.Name = "TitleLabel";
             this.TitleLabel.Size = new System.Drawing.Size(126, 30);
@@ -100,39 +101,45 @@
             // PlayPauseButton
             // 
             this.PlayPauseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.PlayPauseButton.BackColor = System.Drawing.Color.Black;
             this.PlayPauseButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.PlayPauseButton.Location = new System.Drawing.Point(561, 388);
             this.PlayPauseButton.Name = "PlayPauseButton";
             this.PlayPauseButton.Size = new System.Drawing.Size(50, 50);
             this.PlayPauseButton.TabIndex = 2;
-            this.PlayPauseButton.UseVisualStyleBackColor = true;
+            this.PlayPauseButton.UseVisualStyleBackColor = false;
             this.PlayPauseButton.Click += new System.EventHandler(this.PlayPauseButton_Click);
             // 
             // NextButton
             // 
             this.NextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.NextButton.BackColor = System.Drawing.Color.Black;
+            this.NextButton.ForeColor = System.Drawing.Color.White;
             this.NextButton.Location = new System.Drawing.Point(617, 388);
             this.NextButton.Name = "NextButton";
             this.NextButton.Size = new System.Drawing.Size(50, 50);
             this.NextButton.TabIndex = 3;
             this.NextButton.Text = "--->";
-            this.NextButton.UseVisualStyleBackColor = true;
+            this.NextButton.UseVisualStyleBackColor = false;
             this.NextButton.Click += new System.EventHandler(this.NextButton_Click);
             // 
             // PreviousButton
             // 
             this.PreviousButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.PreviousButton.BackColor = System.Drawing.Color.Black;
+            this.PreviousButton.ForeColor = System.Drawing.Color.White;
             this.PreviousButton.Location = new System.Drawing.Point(506, 388);
             this.PreviousButton.Name = "PreviousButton";
             this.PreviousButton.Size = new System.Drawing.Size(50, 50);
             this.PreviousButton.TabIndex = 4;
             this.PreviousButton.Text = "<---";
-            this.PreviousButton.UseVisualStyleBackColor = true;
+            this.PreviousButton.UseVisualStyleBackColor = false;
             this.PreviousButton.Click += new System.EventHandler(this.PreviousButton_Click);
             // 
             // LoopButton
             // 
             this.LoopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.LoopButton.BackColor = System.Drawing.Color.Black;
             this.LoopButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.LoopButton.FlatAppearance.BorderColor = System.Drawing.Color.Red;
             this.LoopButton.FlatAppearance.BorderSize = 3;
@@ -140,12 +147,13 @@
             this.LoopButton.Name = "LoopButton";
             this.LoopButton.Size = new System.Drawing.Size(50, 50);
             this.LoopButton.TabIndex = 5;
-            this.LoopButton.UseVisualStyleBackColor = true;
+            this.LoopButton.UseVisualStyleBackColor = false;
             this.LoopButton.Click += new System.EventHandler(this.LoopButton_Click);
             // 
             // ShuffleButton
             // 
             this.ShuffleButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ShuffleButton.BackColor = System.Drawing.Color.Black;
             this.ShuffleButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ShuffleButton.FlatAppearance.BorderColor = System.Drawing.Color.Red;
             this.ShuffleButton.FlatAppearance.BorderSize = 3;
@@ -153,7 +161,7 @@
             this.ShuffleButton.Name = "ShuffleButton";
             this.ShuffleButton.Size = new System.Drawing.Size(50, 50);
             this.ShuffleButton.TabIndex = 6;
-            this.ShuffleButton.UseVisualStyleBackColor = true;
+            this.ShuffleButton.UseVisualStyleBackColor = false;
             this.ShuffleButton.Click += new System.EventHandler(this.ShuffleButton_Click);
             // 
             // VolumeBar
@@ -193,6 +201,7 @@
             // 
             this.ArtistLabel.AutoSize = true;
             this.ArtistLabel.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ArtistLabel.ForeColor = System.Drawing.Color.White;
             this.ArtistLabel.Location = new System.Drawing.Point(0, 4);
             this.ArtistLabel.Name = "ArtistLabel";
             this.ArtistLabel.Size = new System.Drawing.Size(49, 20);
@@ -204,6 +213,7 @@
             // 
             this.CurrentTimeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CurrentTimeLabel.AutoSize = true;
+            this.CurrentTimeLabel.ForeColor = System.Drawing.Color.White;
             this.CurrentTimeLabel.Location = new System.Drawing.Point(458, 369);
             this.CurrentTimeLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.CurrentTimeLabel.Name = "CurrentTimeLabel";
@@ -215,6 +225,7 @@
             // 
             this.TotalLengthLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.TotalLengthLabel.AutoSize = true;
+            this.TotalLengthLabel.ForeColor = System.Drawing.Color.White;
             this.TotalLengthLabel.Location = new System.Drawing.Point(815, 369);
             this.TotalLengthLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.TotalLengthLabel.Name = "TotalLengthLabel";
@@ -227,29 +238,33 @@
             // MiniPlayerButton
             // 
             this.MiniPlayerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.MiniPlayerButton.BackColor = System.Drawing.Color.Black;
+            this.MiniPlayerButton.ForeColor = System.Drawing.Color.White;
             this.MiniPlayerButton.Location = new System.Drawing.Point(936, 388);
             this.MiniPlayerButton.Name = "MiniPlayerButton";
             this.MiniPlayerButton.Size = new System.Drawing.Size(50, 50);
             this.MiniPlayerButton.TabIndex = 12;
             this.MiniPlayerButton.Text = "Mini Player";
-            this.MiniPlayerButton.UseVisualStyleBackColor = true;
+            this.MiniPlayerButton.UseVisualStyleBackColor = false;
             this.MiniPlayerButton.Click += new System.EventHandler(this.MiniPlayerButton_Click);
             // 
             // LockButton
             // 
             this.LockButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.LockButton.BackColor = System.Drawing.Color.Black;
             this.LockButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.LockButton.Location = new System.Drawing.Point(881, 388);
             this.LockButton.Name = "LockButton";
             this.LockButton.Size = new System.Drawing.Size(50, 50);
             this.LockButton.TabIndex = 11;
-            this.LockButton.UseVisualStyleBackColor = true;
+            this.LockButton.UseVisualStyleBackColor = false;
             this.LockButton.Click += new System.EventHandler(this.LockButton_Click);
             // 
             // AlbumLabel
             // 
             this.AlbumLabel.AutoSize = true;
             this.AlbumLabel.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AlbumLabel.ForeColor = System.Drawing.Color.White;
             this.AlbumLabel.Location = new System.Drawing.Point(0, 4);
             this.AlbumLabel.Name = "AlbumLabel";
             this.AlbumLabel.Size = new System.Drawing.Size(59, 20);
@@ -279,6 +294,7 @@
             // 
             this.GenreLabel.AutoSize = true;
             this.GenreLabel.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GenreLabel.ForeColor = System.Drawing.Color.White;
             this.GenreLabel.Location = new System.Drawing.Point(0, 4);
             this.GenreLabel.Name = "GenreLabel";
             this.GenreLabel.Size = new System.Drawing.Size(45, 17);
@@ -289,25 +305,29 @@
             // PlaylistButton
             // 
             this.PlaylistButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.PlaylistButton.BackColor = System.Drawing.Color.Black;
             this.PlaylistButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.PlaylistButton.ForeColor = System.Drawing.Color.White;
             this.PlaylistButton.Location = new System.Drawing.Point(936, 332);
             this.PlaylistButton.Name = "PlaylistButton";
             this.PlaylistButton.Size = new System.Drawing.Size(50, 50);
             this.PlaylistButton.TabIndex = 13;
             this.PlaylistButton.Text = "Show Queue";
-            this.PlaylistButton.UseVisualStyleBackColor = true;
+            this.PlaylistButton.UseVisualStyleBackColor = false;
             this.PlaylistButton.Click += new System.EventHandler(this.PlaylistButton_Click);
             // 
             // TagEditorButton
             // 
             this.TagEditorButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.TagEditorButton.BackColor = System.Drawing.Color.Black;
             this.TagEditorButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.TagEditorButton.ForeColor = System.Drawing.Color.White;
             this.TagEditorButton.Location = new System.Drawing.Point(881, 332);
             this.TagEditorButton.Name = "TagEditorButton";
             this.TagEditorButton.Size = new System.Drawing.Size(50, 50);
             this.TagEditorButton.TabIndex = 14;
             this.TagEditorButton.Text = "Edit Tags";
-            this.TagEditorButton.UseVisualStyleBackColor = true;
+            this.TagEditorButton.UseVisualStyleBackColor = false;
             this.TagEditorButton.Click += new System.EventHandler(this.TagEditorButton_Click);
             // 
             // wplayer
@@ -341,13 +361,15 @@
             // AddToPlaylistButton
             // 
             this.AddToPlaylistButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.AddToPlaylistButton.BackColor = System.Drawing.Color.Black;
             this.AddToPlaylistButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.AddToPlaylistButton.ForeColor = System.Drawing.Color.White;
             this.AddToPlaylistButton.Location = new System.Drawing.Point(936, 276);
             this.AddToPlaylistButton.Name = "AddToPlaylistButton";
             this.AddToPlaylistButton.Size = new System.Drawing.Size(50, 50);
             this.AddToPlaylistButton.TabIndex = 17;
             this.AddToPlaylistButton.Text = "Add to Playlist";
-            this.AddToPlaylistButton.UseVisualStyleBackColor = true;
+            this.AddToPlaylistButton.UseVisualStyleBackColor = false;
             this.AddToPlaylistButton.Click += new System.EventHandler(this.AddToPlaylistButton_Click);
             // 
             // AddToPlaylistStrip
@@ -359,6 +381,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.ClientSize = new System.Drawing.Size(998, 450);
             this.Controls.Add(this.AddToPlaylistButton);
             this.Controls.Add(this.TagEditorButton);

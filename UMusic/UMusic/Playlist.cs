@@ -213,9 +213,11 @@ namespace UMusic
             try
             {
                 TextWriter tw = new StreamWriter(folderPath + playlistName);
-                for (int index = 0; index < files.Length; index++)
+                tw.Write(files[0]);
+                for (int index = 1; index < files.Length; index++)
                 {
-                    tw.WriteLine(files[index]);
+                    tw.WriteLine();
+                    tw.Write(files[index]);
                 }
                 tw.Close();
                 MessageBox.Show("Saved.", "Saved Playlist", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -224,9 +226,11 @@ namespace UMusic
             {
                 Directory.CreateDirectory("playlists\\");
                 TextWriter tw = new StreamWriter(folderPath + playlistName);
-                for (int index = 0; index < files.Length; index++)
+                tw.Write(files[0]);
+                for (int index = 1; index < files.Length; index++)
                 {
-                    tw.WriteLine(files[index]);
+                    tw.WriteLine();
+                    tw.Write(files[index]);
                 }
                 tw.Close();
                 MessageBox.Show("Saved.", "Saved Playlist", MessageBoxButtons.OK, MessageBoxIcon.Information);

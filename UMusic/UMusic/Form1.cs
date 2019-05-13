@@ -56,7 +56,7 @@ namespace UMusic
 
         TagEditor tagEditor;
 
-        string currentLayout;
+        string currentLayout = "List";
 
         string[] folders;
         ArrayList files;
@@ -148,6 +148,8 @@ namespace UMusic
                 catch { }
             }
 
+            ArrayList albumArts = new ArrayList();
+            // Image[] albumArts = new Image[files.Count];
             string[] titles = new string[files.Count];
             string[] artists = new string[files.Count];
             string[] albums = new string[files.Count];
@@ -158,11 +160,27 @@ namespace UMusic
             int index;
             DateTime fileCreated;
             TagLib.File currentFile;
+            Image albumArt = Image.FromFile(@"resources\Unknown Album Art.png");
+            Image currentAlbumArt;
+            Bitmap currentAlbumArt2;
+            byte[] bin;
             for (index = 0; index < titles.Length; index++)
             {
                 try
                 {
                     currentFile = TagLib.File.Create(files[index].ToString());
+                    /*
+                    if (currentFile.Tag.Pictures.Length > 0)
+                    {
+                        bin = currentFile.Tag.Pictures[0].Data.Data;
+                        currentAlbumArt2 = (Bitmap)((new ImageConverter()).ConvertFrom(bin));
+                        currentAlbumArt2.SetResolution(1, 1);
+                        albumArts.Add(currentAlbumArt2);
+                    }
+                    else
+                    */
+                        albumArts.Add(albumArt);
+
                     titles[index] = currentFile.Tag.Title;
                     artists[index] = currentFile.Tag.FirstPerformer;
                     albums[index] = currentFile.Tag.Album;
@@ -183,7 +201,8 @@ namespace UMusic
             dataTable = new DataTable();
 
             // if (settings.IndexOf("[Album Art]\nVisible = True") != -1)
-                dataTable.Columns.Add("Album Art", typeof(byte[]));
+                // dataTable.Columns.Add("Album Art", typeof(byte[]));
+            dataTable.Columns.Add("Album Art", typeof(Image));
             dataTable.Columns.Add("Title");
             dataTable.Columns.Add("Artist(s)");
             dataTable.Columns.Add("Album");
@@ -223,6 +242,7 @@ namespace UMusic
                     }
 
                     DataRow dRow = dataTable.NewRow();
+                    dRow[0] = albumArts[r];
                     dRow[1] = twoD[r, 1];
                     dRow[2] = twoD[r, 2];
                     dRow[3] = twoD[r, 3];
@@ -235,9 +255,6 @@ namespace UMusic
                 }
 
                 /*
-                Image albumArt = Image.FromFile(@"resources\Unknown Album Art.png");
-                Image currentAlbumArt;
-                byte[] bin;
                 for (int x = 0; x < dataTable.Rows.Count; x++)
                 {
                     try
@@ -259,6 +276,11 @@ namespace UMusic
                 }
                 */
             }
+
+            albumArts = null;
+            bin = null;
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
 
             DGV.DataSource = dataTable;
 
@@ -577,6 +599,7 @@ namespace UMusic
                     try
                     {
                         var vid = youtube.GetVideo(address);
+                        string fileName = vid.FullName.Substring(0, vid.FullName.Length - vid.FileExtension.Length);
                         File.WriteAllBytes(downloadLocation + vid.FullName, vid.GetBytes());
 
                         var inputFile = new MediaFile { Filename = downloadLocation + vid.FullName };
@@ -597,10 +620,12 @@ namespace UMusic
                             WaveFileWriter.CreateWaveFile(wavFile, reader);
                         }
 
+                        mp3File = $"{downloadLocation + fileName}.mp3";
                         using (var reader = new AudioFileReader(wavFile))
                         using (var writer = new LameMP3FileWriter(mp3File, reader.WaveFormat, 320))
                             reader.CopyTo(writer);
 
+                        File.Delete($"{downloadLocation + vid.FullName}.mp3");
                         File.Delete(wavFile);
                         videoName = vid.FullName;
 
@@ -690,23 +715,26 @@ namespace UMusic
                 DGV.Columns.Remove("Album Artist(s)");
                 DGV.Columns.Remove("Genre");
                 DGV.Columns.Remove("File");
-
-                /*
+                
                 bool unknown = false;
-                foreach (DataRow row in dataTable.Rows)
+                int index = 0;
+                foreach (DataGridViewRow row in DGV.Rows)
                 {
-                    if (row. == null)
+                    if (row.Cells["Artist(s)"].Value.ToString() == "")
                     {
                         unknown = true;
-                        dataTable.Rows.Remove(row);
+                        DGV.Rows.Remove(row);
+                        index--;
                     }
+                    index++;
                 }
-
+                
+                /*
                 if (unknown == true)
                 {
-                    DataRow dRow = dataTable.NewRow();
-                    dRow[0] = "Unknown Artist";
-                    dataTable.Rows.Add();
+                    DataGridViewRow dRow = DGV.Rows[0];
+                    dRow.Cells["Artist(s)"].Value = "Unknown Artist";
+                    DGV.Rows.Add(dRow);
                 }
                 */
             }

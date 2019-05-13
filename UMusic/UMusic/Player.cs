@@ -13,6 +13,12 @@ using System.Windows.Forms;
 using Utilities;
 using WMPLib;
 
+/*
+ * ORIGINAL LOOKS WERE
+ * BACKCOLOR: CONTROL
+ * TEXT COLOR: CONTROLTEXT
+ */
+
 namespace UMusic
 {
     public partial class Player : Form
