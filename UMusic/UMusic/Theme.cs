@@ -12,14 +12,18 @@ namespace UMusic
         public int[] textColor = new int[3];
         public int[] cellColor = new int[3];
         public int[] gridColor = new int[3];
+        public int[] gridBgColor = new int[3];
         public int[] buttonColor = new int[3];
         public int[] sidebarColor = new int[3];
+        public int[] stripColor = new int[3];
 
         public Theme(string themeType, int textColor1, int textColor2,
             int textColor3, int cellColor1, int cellColor2, int cellColor3,
-            int gridColor1, int gridColor2, int gridColor3, int buttonColor1, 
+            int gridColor1, int gridColor2, int gridColor3, int gridBgColor1,
+            int gridBgColor2, int gridBgColor3, int buttonColor1, 
             int buttonColor2, int buttonColor3, int sidebarColor1,
-            int sidebarColor2, int sidebarColor3)
+            int sidebarColor2, int sidebarColor3, int stripColor1, int stripColor2,
+            int stripColor3)
         {
             this.themeType = themeType;
 
@@ -35,6 +39,10 @@ namespace UMusic
             this.gridColor[1] = gridColor2;
             this.gridColor[2] = gridColor3;
 
+            this.gridBgColor[0] = gridBgColor1;
+            this.gridBgColor[1] = gridBgColor2;
+            this.gridBgColor[2] = gridBgColor3;
+
             this.buttonColor[0] = buttonColor1;
             this.buttonColor[1] = buttonColor2;
             this.buttonColor[2] = buttonColor3;
@@ -42,6 +50,10 @@ namespace UMusic
             this.sidebarColor[0] = sidebarColor1;
             this.sidebarColor[1] = sidebarColor2;
             this.sidebarColor[2] = sidebarColor3;
+
+            this.stripColor[0] = stripColor1;
+            this.stripColor[1] = stripColor2;
+            this.stripColor[2] = stripColor3;
         }
     }
 }

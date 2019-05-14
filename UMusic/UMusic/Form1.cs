@@ -141,16 +141,19 @@ namespace UMusic
             cellColor = cellColor.Substring(0, cellColor.IndexOf("\""));
             string gridColor = settings.Substring(settings.IndexOf("GridColor=") + 11);
             gridColor = gridColor.Substring(0, gridColor.IndexOf("\""));
+            string gridBgColor = settings.Substring(settings.IndexOf("GridBgColor=") + 13);
+            gridBgColor = gridBgColor.Substring(0, gridBgColor.IndexOf("\""));
             string buttonColor = settings.Substring(settings.IndexOf("ButtonColor=") + 13);
             buttonColor = buttonColor.Substring(0, buttonColor.IndexOf("\""));
             string sidebarColor = settings.Substring(settings.IndexOf("SideBarColor=") + 14);
             sidebarColor = sidebarColor.Substring(0, sidebarColor.IndexOf("\""));
+            string stripColor = settings.Substring(settings.IndexOf("ToolStripColor=") + 16);
+            stripColor = stripColor.Substring(0, stripColor.IndexOf("\""));
 
             string colorString = textColor;
-            int textColor1 = Convert.ToInt32(colorString.Substring(0, textColor.IndexOf(",")));
+            int textColor1 = Convert.ToInt32(colorString.Substring(0, colorString.IndexOf(",")));
             colorString = textColor.Substring(textColor.IndexOf(",") + 2);
-            colorString = colorString.Substring(0, colorString.IndexOf(","));
-            int textColor2 = Convert.ToInt32(colorString.Substring(0, textColor.IndexOf(",")));
+            int textColor2 = Convert.ToInt32(colorString.Substring(0, colorString.IndexOf(",")));
             colorString = textColor.Substring(textColor.IndexOf(",") + 2);
             colorString = colorString.Substring(0, colorString.IndexOf(","));
             int textColor3 = Convert.ToInt32(colorString);
@@ -158,8 +161,7 @@ namespace UMusic
             colorString = cellColor;
             int cellColor1 = Convert.ToInt32(colorString.Substring(0, cellColor.IndexOf(",")));
             colorString = cellColor.Substring(cellColor.IndexOf(",") + 2);
-            colorString = colorString.Substring(0, colorString.IndexOf(","));
-            int cellColor2 = Convert.ToInt32(colorString.Substring(0, cellColor.IndexOf(",")));
+            int cellColor2 = Convert.ToInt32(colorString.Substring(0, colorString.IndexOf(",")));
             colorString = cellColor.Substring(cellColor.IndexOf(",") + 2);
             colorString = colorString.Substring(0, colorString.IndexOf(","));
             int cellColor3 = Convert.ToInt32(colorString);
@@ -167,17 +169,23 @@ namespace UMusic
             colorString = gridColor;
             int gridColor1 = Convert.ToInt32(colorString.Substring(0, gridColor.IndexOf(",")));
             colorString = gridColor.Substring(gridColor.IndexOf(",") + 2);
-            colorString = colorString.Substring(0, colorString.IndexOf(","));
-            int gridColor2 = Convert.ToInt32(colorString.Substring(0, gridColor.IndexOf(",")));
+            int gridColor2 = Convert.ToInt32(colorString.Substring(0, colorString.IndexOf(",")));
             colorString = gridColor.Substring(gridColor.IndexOf(",") + 2);
             colorString = colorString.Substring(0, colorString.IndexOf(","));
             int gridColor3 = Convert.ToInt32(colorString);
             
+            colorString = gridBgColor;
+            int gridBgColor1 = Convert.ToInt32(colorString.Substring(0, gridBgColor.IndexOf(",")));
+            colorString = gridBgColor.Substring(gridBgColor.IndexOf(",") + 2);
+            int gridBgColor2 = Convert.ToInt32(colorString.Substring(0, colorString.IndexOf(",")));
+            colorString = gridBgColor.Substring(gridBgColor.IndexOf(",") + 2);
+            colorString = colorString.Substring(0, colorString.IndexOf(","));
+            int gridBgColor3 = Convert.ToInt32(colorString);
+
             colorString = buttonColor;
             int buttonColor1 = Convert.ToInt32(colorString.Substring(0, buttonColor.IndexOf(",")));
             colorString = buttonColor.Substring(buttonColor.IndexOf(",") + 2);
-            colorString = colorString.Substring(0, colorString.IndexOf(","));
-            int buttonColor2 = Convert.ToInt32(colorString.Substring(0, buttonColor.IndexOf(",")));
+            int buttonColor2 = Convert.ToInt32(colorString.Substring(0, colorString.IndexOf(",")));
             colorString = buttonColor.Substring(buttonColor.IndexOf(",") + 2);
             colorString = colorString.Substring(0, colorString.IndexOf(","));
             int buttonColor3 = Convert.ToInt32(colorString);
@@ -185,20 +193,29 @@ namespace UMusic
             colorString = sidebarColor;
             int sidebarColor1 = Convert.ToInt32(colorString.Substring(0, sidebarColor.IndexOf(",")));
             colorString = sidebarColor.Substring(sidebarColor.IndexOf(",") + 2);
-            colorString = colorString.Substring(0, colorString.IndexOf(","));
-            int sidebarColor2 = Convert.ToInt32(colorString.Substring(0, sidebarColor.IndexOf(",")));
+            int sidebarColor2 = Convert.ToInt32(colorString.Substring(0, colorString.IndexOf(",")));
             colorString = sidebarColor.Substring(sidebarColor.IndexOf(",") + 2);
             colorString = colorString.Substring(0, colorString.IndexOf(","));
             int sidebarColor3 = Convert.ToInt32(colorString);
 
+            colorString = stripColor;
+            int stripColor1 = Convert.ToInt32(colorString.Substring(0, stripColor.IndexOf(",")));
+            colorString = stripColor.Substring(stripColor.IndexOf(",") + 2);
+            int stripColor2 = Convert.ToInt32(colorString.Substring(0, colorString.IndexOf(",")));
+            colorString = stripColor.Substring(stripColor.IndexOf(",") + 2);
+            colorString = colorString.Substring(0, colorString.IndexOf(","));
+            int stripColor3 = Convert.ToInt32(colorString);
+
             theme = new Theme(themeType, textColor1, textColor2, textColor3,
                 cellColor1, cellColor2, cellColor3, gridColor1, gridColor2,
-                gridColor3, buttonColor1, buttonColor2, buttonColor3, sidebarColor1,
-                sidebarColor2, sidebarColor3);
+                gridColor3, gridBgColor1, gridBgColor2, gridBgColor3, buttonColor1, 
+                buttonColor2, buttonColor3, sidebarColor1, sidebarColor2, sidebarColor3,
+                stripColor1, stripColor2, stripColor3);
 
             this.ForeColor = Color.FromArgb(theme.textColor[0], theme.textColor[1], theme.textColor[2]);
             this.DGV.RowsDefaultCellStyle.BackColor = Color.FromArgb(theme.cellColor[0], theme.cellColor[1], theme.cellColor[2]);
             DGV.GridColor = Color.FromArgb(theme.gridColor[0], theme.gridColor[1], theme.gridColor[2]);
+            DGV.BackgroundColor = Color.FromArgb(theme.gridBgColor[0], theme.gridBgColor[1], theme.gridBgColor[2]);
 
             PlayAllButton.BackColor = Color.FromArgb(theme.buttonColor[0], theme.buttonColor[1], theme.buttonColor[2]);
             SongsButton.BackColor = Color.FromArgb(theme.buttonColor[0], theme.buttonColor[1], theme.buttonColor[2]);
@@ -208,6 +225,7 @@ namespace UMusic
             PlaylistsButton.BackColor = Color.FromArgb(theme.buttonColor[0], theme.buttonColor[1], theme.buttonColor[2]);
 
             LeftPanel.BackColor = Color.FromArgb(theme.sidebarColor[0], theme.sidebarColor[1], theme.sidebarColor[2]);
+            toolStrip1.BackColor = Color.FromArgb(theme.stripColor[0], theme.stripColor[1], theme.stripColor[2]);
 
             this.DGV.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(theme.cellColor[0], theme.cellColor[1], theme.cellColor[2]);
             this.DGV.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(theme.textColor[0], theme.textColor[1], theme.textColor[2]);
@@ -260,6 +278,7 @@ namespace UMusic
                 {
                     currentFile = TagLib.File.Create(files[index].ToString());
                     
+                    /*
                     if (currentFile.Tag.Pictures.Length > 0)
                     {
                         bin = currentFile.Tag.Pictures[0].Data.Data;
@@ -267,7 +286,7 @@ namespace UMusic
                         currentAlbumArt2.SetResolution(1, 1);
                         albumArts.Add(currentAlbumArt2);
                     }
-                    else
+                    else */
                         albumArts.Add(albumArt);
 
                     titles[index] = currentFile.Tag.Title;

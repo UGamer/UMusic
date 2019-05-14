@@ -73,13 +73,7 @@ namespace UMusic
         {
             this.main = main;
             InitializeComponent();
-
-            LockButton.BackgroundImage = Image.FromFile("Resources\\Unlock.png");
-
-            PlayPauseButton.BackgroundImage = Image.FromFile("Resources\\Pause.png");
-
-            LoopButton.BackgroundImage = Image.FromFile("Resources\\Loop.png");
-            ShuffleButton.BackgroundImage = Image.FromFile("Resources\\Shuffle.png");
+            InitializeTheme(); 
 
             gkh = new globalKeyboardHook();
 
@@ -135,6 +129,28 @@ namespace UMusic
             playlistButtons[index].Text = "+ New Playlist...";
             playlistButtons[index].Click += NewPlaylistButton;
             AddToPlaylistStrip.Items.Add(playlistButtons[index]);
+        }
+
+        private void InitializeTheme()
+        {
+            this.ForeColor = Color.FromArgb(main.theme.textColor[0], main.theme.textColor[1], main.theme.textColor[2]);
+            this.BackColor = Color.FromArgb(main.theme.gridBgColor[0], main.theme.gridBgColor[1], main.theme.gridBgColor[2]);
+
+            ShuffleButton.BackColor = Color.FromArgb(main.theme.buttonColor[0], main.theme.buttonColor[1], main.theme.buttonColor[2]);
+            PreviousButton.BackColor = Color.FromArgb(main.theme.buttonColor[0], main.theme.buttonColor[1], main.theme.buttonColor[2]);
+            PlayPauseButton.BackColor = Color.FromArgb(main.theme.buttonColor[0], main.theme.buttonColor[1], main.theme.buttonColor[2]);
+            NextButton.BackColor = Color.FromArgb(main.theme.buttonColor[0], main.theme.buttonColor[1], main.theme.buttonColor[2]);
+            LoopButton.BackColor = Color.FromArgb(main.theme.buttonColor[0], main.theme.buttonColor[1], main.theme.buttonColor[2]);
+            LockButton.BackColor = Color.FromArgb(main.theme.buttonColor[0], main.theme.buttonColor[1], main.theme.buttonColor[2]);
+            MiniPlayerButton.BackColor = Color.FromArgb(main.theme.buttonColor[0], main.theme.buttonColor[1], main.theme.buttonColor[2]);
+            PlaylistButton.BackColor = Color.FromArgb(main.theme.buttonColor[0], main.theme.buttonColor[1], main.theme.buttonColor[2]);
+            TagEditorButton.BackColor = Color.FromArgb(main.theme.buttonColor[0], main.theme.buttonColor[1], main.theme.buttonColor[2]);
+            AddToPlaylistButton.BackColor = Color.FromArgb(main.theme.buttonColor[0], main.theme.buttonColor[1], main.theme.buttonColor[2]);
+
+            LockButton.BackgroundImage = Image.FromFile("Resources\\Unlock.png");
+            PlayPauseButton.BackgroundImage = Image.FromFile("Resources\\Pause.png");
+            LoopButton.BackgroundImage = Image.FromFile("Resources\\Loop.png");
+            ShuffleButton.BackgroundImage = Image.FromFile("Resources\\Shuffle.png");
         }
 
         private void wplayer_CurrentPlaylistChange(object sender, _WMPOCXEvents_CurrentPlaylistChangeEvent e)
@@ -921,11 +937,14 @@ namespace UMusic
         private void Player_FormClosing(object sender, FormClosingEventArgs e)
         {
             string segment1 = settings.Substring(0, settings.IndexOf("Loop=") + 5);
+            string segment2 = settings.Substring(settings.IndexOf("[Theme]"));
             
             TextWriter tw = new StreamWriter("settings.txt");
             tw.WriteLine(segment1 + looping.ToString());
             tw.WriteLine("Shuffle=" + shuffle.ToString());
             tw.WriteLine("Volume=\"" + volumeValue.ToString() + "\"");
+            tw.WriteLine();
+            tw.WriteLine(segment2);
             tw.Close();
 
             wplayer.Ctlcontrols.stop();
