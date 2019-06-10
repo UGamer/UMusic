@@ -56,6 +56,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.AddToPlaylistButton = new System.Windows.Forms.Button();
             this.AddToPlaylistStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.AudioVideoButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.AlbumArtBox)).BeginInit();
             this.TitlePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeBar)).BeginInit();
@@ -377,12 +378,27 @@
             this.AddToPlaylistStrip.Name = "AddToPlaylistStrip";
             this.AddToPlaylistStrip.Size = new System.Drawing.Size(61, 4);
             // 
+            // AudioVideoButton
+            // 
+            this.AudioVideoButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.AudioVideoButton.BackColor = System.Drawing.Color.Black;
+            this.AudioVideoButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.AudioVideoButton.ForeColor = System.Drawing.Color.White;
+            this.AudioVideoButton.Location = new System.Drawing.Point(881, 276);
+            this.AudioVideoButton.Name = "AudioVideoButton";
+            this.AudioVideoButton.Size = new System.Drawing.Size(50, 50);
+            this.AudioVideoButton.TabIndex = 18;
+            this.AudioVideoButton.Text = "Audio";
+            this.AudioVideoButton.UseVisualStyleBackColor = false;
+            this.AudioVideoButton.Click += new System.EventHandler(this.AudioVideoButton_Click);
+            // 
             // Player
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.ClientSize = new System.Drawing.Size(998, 450);
+            this.Controls.Add(this.AudioVideoButton);
             this.Controls.Add(this.AddToPlaylistButton);
             this.Controls.Add(this.TagEditorButton);
             this.Controls.Add(this.PlaylistButton);
@@ -452,5 +468,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button AddToPlaylistButton;
         private System.Windows.Forms.ContextMenuStrip AddToPlaylistStrip;
+        private System.Windows.Forms.Button AudioVideoButton;
     }
 }

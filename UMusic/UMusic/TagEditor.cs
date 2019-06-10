@@ -18,6 +18,7 @@ namespace UMusic
         Database databaseWindow;
         TagLib.File currentFile;
         public bool refresh = false;
+        int rowIndex = -1;
 
         string originalFilePath;
         public TagEditor(Player reference, Form1 main)
@@ -30,9 +31,10 @@ namespace UMusic
             FillList();
         }
 
-        public TagEditor(string filePath, Form1 main)
+        public TagEditor(string filePath, Form1 main, int rowIndex)
         {
             this.main = main;
+            this.rowIndex = rowIndex;
 
             InitializeComponent();
             FillFields(filePath);
@@ -123,6 +125,18 @@ namespace UMusic
             if (ExplicitBox.Checked == true)
                 currentFile.Tag.Comment = "EXPLICIT";
 
+            System.Drawing.Image albumArt;
+
+            try
+            {
+                var bin = (byte[])(currentFile.Tag.Pictures[0].Data.Data);
+                albumArt = System.Drawing.Image.FromStream(new MemoryStream(bin)).GetThumbnailImage(500, 500, null, IntPtr.Zero);
+            }
+            catch
+            {
+                albumArt = System.Drawing.Image.FromFile("Resources\\Unknown Album Art.png");
+            }
+
             try
             {
                 currentFile.Save();
@@ -133,7 +147,47 @@ namespace UMusic
                     System.IO.File.Delete(originalFilePath);
                 }
                 catch { }
-                main.GetFiles();
+                
+                if (rowIndex != -1)
+                {
+                    main.DGV.Rows[rowIndex].Cells[0].Value = albumArt;
+                    main.DGV.Rows[rowIndex].Cells[1].Value = currentFile.Tag.Title;
+                    main.DGV.Rows[rowIndex].Cells[2].Value = currentFile.Tag.FirstPerformer;
+                    main.DGV.Rows[rowIndex].Cells[3].Value = currentFile.Tag.Album;
+                    main.DGV.Rows[rowIndex].Cells[4].Value = currentFile.Tag.FirstAlbumArtist;
+                    main.DGV.Rows[rowIndex].Cells[5].Value = currentFile.Tag.FirstGenre;
+
+                    DGV.Rows[rowIndex].Cells[0].Value = albumArt;
+                    DGV.Rows[rowIndex].Cells[1].Value = currentFile.Tag.Title;
+                    DGV.Rows[rowIndex].Cells[2].Value = currentFile.Tag.FirstPerformer;
+                    DGV.Rows[rowIndex].Cells[3].Value = currentFile.Tag.Album;
+                    DGV.Rows[rowIndex].Cells[4].Value = currentFile.Tag.FirstAlbumArtist;
+                    DGV.Rows[rowIndex].Cells[5].Value = currentFile.Tag.FirstGenre;
+                }
+                else
+                {
+                    for (int index = 0; index < main.dataTable.Rows.Count; index++)
+                    {
+                        if (main.dataTable.Rows[index]["File"].ToString() == reference.wplayer.currentMedia.sourceURL)
+                        {
+                            main.DGV.Rows[index].Cells[0].Value = albumArt;
+                            main.DGV.Rows[index].Cells[1].Value = currentFile.Tag.Title;
+                            main.DGV.Rows[index].Cells[2].Value = currentFile.Tag.FirstPerformer;
+                            main.DGV.Rows[index].Cells[3].Value = currentFile.Tag.Album;
+                            main.DGV.Rows[index].Cells[4].Value = currentFile.Tag.FirstAlbumArtist;
+                            main.DGV.Rows[index].Cells[5].Value = currentFile.Tag.FirstGenre;
+
+                            DGV.Rows[index].Cells[0].Value = albumArt;
+                            DGV.Rows[index].Cells[1].Value = currentFile.Tag.Title;
+                            DGV.Rows[index].Cells[2].Value = currentFile.Tag.FirstPerformer;
+                            DGV.Rows[index].Cells[3].Value = currentFile.Tag.Album;
+                            DGV.Rows[index].Cells[4].Value = currentFile.Tag.FirstAlbumArtist;
+                            DGV.Rows[index].Cells[5].Value = currentFile.Tag.FirstGenre;
+                            break;
+                        }
+                    }
+                }
+
                 originalFilePath = FileNameBox.Text;
             }
             catch (IOException)
@@ -149,7 +203,46 @@ namespace UMusic
                         reference.wplayer.currentPlaylist.clear();
                         reference.wplayer.Ctlcontrols.stop();
                         currentFile.Save();
-                        main.GetFiles();
+                        
+                        if (rowIndex != -1)
+                        {
+                            main.DGV.Rows[rowIndex].Cells[0].Value = albumArt;
+                            main.DGV.Rows[rowIndex].Cells[1].Value = currentFile.Tag.Title;
+                            main.DGV.Rows[rowIndex].Cells[2].Value = currentFile.Tag.FirstPerformer;
+                            main.DGV.Rows[rowIndex].Cells[3].Value = currentFile.Tag.Album;
+                            main.DGV.Rows[rowIndex].Cells[4].Value = currentFile.Tag.FirstAlbumArtist;
+                            main.DGV.Rows[rowIndex].Cells[5].Value = currentFile.Tag.FirstGenre;
+
+                            DGV.Rows[rowIndex].Cells[0].Value = albumArt;
+                            DGV.Rows[rowIndex].Cells[1].Value = currentFile.Tag.Title;
+                            DGV.Rows[rowIndex].Cells[2].Value = currentFile.Tag.FirstPerformer;
+                            DGV.Rows[rowIndex].Cells[3].Value = currentFile.Tag.Album;
+                            DGV.Rows[rowIndex].Cells[4].Value = currentFile.Tag.FirstAlbumArtist;
+                            DGV.Rows[rowIndex].Cells[5].Value = currentFile.Tag.FirstGenre;
+                        }
+                        else
+                        {
+                            for (int index = 0; index < main.dataTable.Rows.Count; index++)
+                            {
+                                if (main.dataTable.Rows[index]["File"].ToString() == reference.wplayer.currentMedia.sourceURL)
+                                {
+                                    main.DGV.Rows[index].Cells[0].Value = albumArt;
+                                    main.DGV.Rows[index].Cells[1].Value = currentFile.Tag.Title;
+                                    main.DGV.Rows[index].Cells[2].Value = currentFile.Tag.FirstPerformer;
+                                    main.DGV.Rows[index].Cells[3].Value = currentFile.Tag.Album;
+                                    main.DGV.Rows[index].Cells[4].Value = currentFile.Tag.FirstAlbumArtist;
+                                    main.DGV.Rows[index].Cells[5].Value = currentFile.Tag.FirstGenre;
+
+                                    DGV.Rows[index].Cells[0].Value = albumArt;
+                                    DGV.Rows[index].Cells[1].Value = currentFile.Tag.Title;
+                                    DGV.Rows[index].Cells[2].Value = currentFile.Tag.FirstPerformer;
+                                    DGV.Rows[index].Cells[3].Value = currentFile.Tag.Album;
+                                    DGV.Rows[index].Cells[4].Value = currentFile.Tag.FirstAlbumArtist;
+                                    DGV.Rows[index].Cells[5].Value = currentFile.Tag.FirstGenre;
+                                    break;
+                                }
+                            }
+                        }
                     }
                     catch
                     {
@@ -243,8 +336,11 @@ namespace UMusic
 
         private void DGV_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            string filePath = DGV.Rows[e.RowIndex].Cells[7].Value.ToString();
-            TagLib.File currentFile = TagLib.File.Create(filePath);
+            rowIndex = e.RowIndex;
+            originalFilePath = DGV.Rows[e.RowIndex].Cells[7].Value.ToString();
+            TagLib.File currentFile = TagLib.File.Create(originalFilePath);
+
+            FileNameBox.Text = originalFilePath;
 
             TitleBox.Text = currentFile.Tag.Title;
 

@@ -1,41 +1,55 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace UMusic
 {
     public partial class DownloadPrompt : Form
     {
-        public DownloadPrompt()
-        {
-            InitializeComponent();
-        }
+        Form1 main;
+        string fileName;
 
-        public bool exist = true;
+        public DownloadPrompt(Form1 main, string fileName, string videoName)
+        {
+            this.main = main;
+            this.fileName = fileName;
+            InitializeComponent();
+            VideoNameBox.Text = videoName;
+        }
+        
         public bool audio;
         public bool video;
 
         private void AudioButton_Click(object sender, EventArgs e)
         {
-            audio = true;
-            exist = false;
+            if (File.Exists(main.downloadLocation + fileName + ".mp4"))
+                File.Delete(main.downloadLocation + fileName + ".mp4");
+
+            this.Close();
         }
 
         private void VideoButton_Click(object sender, EventArgs e)
         {
-            video = true;
-            exist = false;
+            if (File.Exists(main.downloadLocation + fileName + ".mp3"))
+                File.Delete(main.downloadLocation + fileName + ".mp3");
+
+            this.Close();
         }
 
         private void BothButton_Click(object sender, EventArgs e)
         {
-            audio = true;
-            video = true;
-            exist = false;
+            this.Close();
         }
 
         private void NeitherButton_Click(object sender, EventArgs e)
         {
-            exist = false;
-        }
+            if (File.Exists(main.downloadLocation + fileName + ".mp3"))
+                File.Delete(main.downloadLocation + fileName + ".mp3");
+
+            if (File.Exists(main.downloadLocation + fileName + ".mp4"))
+                File.Delete(main.downloadLocation + fileName + ".mp4");
+
+            this.Close();
+        }   
     }
 }

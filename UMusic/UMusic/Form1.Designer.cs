@@ -156,7 +156,7 @@
             this.LocalPanel.Controls.Add(this.BrowserDock);
             this.LocalPanel.Controls.Add(this.DGV);
             this.LocalPanel.Location = new System.Drawing.Point(0, 27);
-            this.LocalPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.LocalPanel.Margin = new System.Windows.Forms.Padding(2);
             this.LocalPanel.Name = "LocalPanel";
             this.LocalPanel.Size = new System.Drawing.Size(800, 423);
             this.LocalPanel.TabIndex = 2;

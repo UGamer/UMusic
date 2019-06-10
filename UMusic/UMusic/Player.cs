@@ -1,4 +1,5 @@
 ﻿using AxWMPLib;
+using Lpfm;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -69,8 +70,15 @@ namespace UMusic
         int richStartTimeStamp;
         int richEndTimeStamp;
 
+        string authURI;
+        Lpfm.LastFmScrobbler.AuthenticationToken AuthToken;
+        Lpfm.LastFmScrobbler.Scrobbler Scrobbler;
+
         public Player(string filePath, Form1 main)
         {
+            // authURI = Scrobbler.GetAuthorisationUri();
+            // AuthToken = new Lpfm.LastFmScrobbler.AuthenticationToken();
+
             this.main = main;
             InitializeComponent();
             InitializeTheme(); 
@@ -223,6 +231,13 @@ namespace UMusic
 
         private void wplayer_MediaChange(object sender, _WMPOCXEvents_MediaChangeEvent e)
         {
+            IWMPMedia currentSong = wplayer.currentMedia;
+
+            if (currentSong.sourceURL.IndexOf(".mp3") != -1 || currentSong.sourceURL.IndexOf(".m4a") != -1 || currentSong.sourceURL.IndexOf(".wav") != -1)
+                AudioVideoButton.Text = "Audio";
+            else if (currentSong.sourceURL.IndexOf(".mp4") != -1 || currentSong.sourceURL.IndexOf(".avi") != -1 || currentSong.sourceURL.IndexOf(".webm") != -1)
+                AudioVideoButton.Text = "Video";
+
             if (loopingSingleSong == true && wasLoopingSingle == false)
             {
                 wasLoopingSingle = true;
@@ -456,40 +471,50 @@ namespace UMusic
 
             if (ArtistLabel.Text != "" && AlbumLabel.Text != "" && GenreLabel.Text != "") { }
             else if (ArtistLabel.Text != "" && AlbumLabel.Text != "")
-                GenrePanel.Visible = false;
+            { 
+                // GenrePanel.Visible = false; 
+            }
             else if (ArtistLabel.Text != "" && GenreLabel.Text != "")
             {
-                AlbumPanel.Visible = false;
+                // AlbumPanel.Visible = false;
                 GenrePanel.Location = new Point(xPos, 96);
             }
             else if (ArtistLabel.Text != "")
             {
+                /*
                 AlbumPanel.Visible = false;
                 GenrePanel.Visible = false;
+                */
             }
             else if (AlbumLabel.Text != "" && GenreLabel.Text != "")
             {
-                ArtistPanel.Visible = false;
+                // ArtistPanel.Visible = false;
                 AlbumPanel.Location = new Point(xPos, 60);
                 GenrePanel.Location = new Point(xPos, 96);
             }
             else if (AlbumLabel.Text != "")
             {
+                /*
                 ArtistPanel.Visible = false;
                 GenrePanel.Visible = false;
+                */
                 AlbumPanel.Location = new Point(xPos, 60);
             }
             else if (GenreLabel.Text != "")
             {
+                /*
                 ArtistPanel.Visible = false;
                 AlbumPanel.Visible = false;
+                */
                 GenrePanel.Location = new Point(xPos, 60);
             }
             else
             {
+                /*
                 ArtistPanel.Visible = false;
                 AlbumPanel.Visible = false;
                 GenrePanel.Visible = false;
+                */
             }
 
             TimeSpan fullLength = currentFile.Properties.Duration;
@@ -962,6 +987,107 @@ namespace UMusic
 
             wplayer.close();
             this.Dispose();
+        }
+
+        private void AudioVideoButton_Click(object sender, EventArgs e)
+        {
+
+            string fileExt = "";
+            bool videoExists = false;
+            bool audioExists = false;
+            int songIndex = 0;
+
+            IWMPMedia songChecker = wplayer.currentPlaylist.Item[0];
+
+            while (songChecker.isIdentical[wplayer.currentMedia] == false)
+            {
+                songIndex++;
+                songChecker = wplayer.currentPlaylist.Item[songIndex];
+            }
+
+            this.Text = songIndex.ToString();
+
+            string currentPath = wplayer.currentMedia.sourceURL;
+
+            string currentTitle = currentPath;
+            while (currentTitle.IndexOf("\\") != -1)
+            {
+                currentTitle = currentTitle.Substring(currentTitle.IndexOf("\\") + 1);
+            }
+            currentTitle = currentTitle.Substring(0, currentTitle.Length - 4);
+
+            if (AudioVideoButton.Text == "Audio")
+            {
+                if (File.Exists("music\\video\\" + currentTitle + ".mp4"))
+                    fileExt = ".mp4";
+                else if (File.Exists("music\\video\\" + currentTitle + ".webm"))
+                    fileExt = ".webm";
+                else if (File.Exists("music\\video\\" + currentTitle + ".avi"))
+                    fileExt = ".avi";
+
+                if (fileExt != "")
+                    videoExists = true;
+
+                if (videoExists)
+                {
+                    TagLib.File otherFile = TagLib.File.Create("music\\video\\" + currentTitle + fileExt);
+
+                    try { otherFile.Tag.Title = currentFile.Tag.Title; } catch { }
+                    try { otherFile.Tag.Performers[0] = currentFile.Tag.FirstPerformer; } catch { }
+                    try { otherFile.Tag.Album = currentFile.Tag.Album; } catch { }
+                    try { otherFile.Tag.AlbumArtists[0] = currentFile.Tag.FirstAlbumArtist; } catch { }
+                    try { otherFile.Tag.Track = currentFile.Tag.Track; } catch { }
+                    try { otherFile.Tag.TrackCount = currentFile.Tag.TrackCount; } catch { }
+                    try { otherFile.Tag.Disc = currentFile.Tag.Disc; } catch { }
+                    try { otherFile.Tag.DiscCount = currentFile.Tag.DiscCount; } catch { }
+                    try { otherFile.Tag.Genres[0] = currentFile.Tag.FirstGenre; } catch { }
+                    try { otherFile.Tag.Year = currentFile.Tag.Year; } catch { }
+                    try { otherFile.Tag.Comment = currentFile.Tag.Comment; } catch { }
+
+                    otherFile.Save();
+
+                    AudioVideoButton.Text = "Video";
+
+                    IWMPMedia video = wplayer.newMedia("music\\video\\" + currentTitle + fileExt);
+                    wplayer.currentPlaylist.appendItem(video);
+                    wplayer.currentPlaylist.removeItem(wplayer.currentMedia);
+                    wplayer.currentPlaylist.moveItem(wplayer.currentPlaylist.count - 1, songIndex);
+                }
+            }
+            else
+            {
+                int index;
+                for (index = 0; index < main.folders.Length; index++)
+                {
+                    if (File.Exists(main.folders[index] + currentTitle + ".mp3"))
+                        fileExt = ".mp3";
+                    else if (File.Exists(main.folders[index] + currentTitle + ".m4a"))
+                        fileExt = ".m4a";
+                    else if (File.Exists(main.folders[index] + currentTitle + ".wav"))
+                        fileExt = ".wav";
+                    else if (File.Exists(main.folders[index] + currentTitle + ".ogg"))
+                        fileExt = ".ogg";
+
+                    if (fileExt != "")
+                    {
+                        audioExists = true;
+                        break;
+                    }
+                }
+
+                if (audioExists)
+                {
+                    AudioVideoButton.Text = "Audio";
+
+                    IWMPMedia audio = wplayer.newMedia(main.folders[index] + currentTitle + fileExt);
+                    wplayer.currentPlaylist.appendItem(audio);
+                    wplayer.currentPlaylist.removeItem(wplayer.currentMedia);
+                    wplayer.currentPlaylist.moveItem(wplayer.currentPlaylist.count - 1, songIndex);
+                }
+            }
+
+            wplayer.Ctlcontrols.previous();
+            wplayer.Ctlcontrols.play();
         }
     }
 }

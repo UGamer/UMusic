@@ -48,9 +48,9 @@ namespace UMusic
         string sortOrder;
 
         System.Windows.Forms.Timer refreshTimer;
-        DataTable dataTable;
+        public DataTable dataTable;
         
-        string downloadLocation;
+        public string downloadLocation;
         Thread downloadThread;
         System.Timers.Timer promptTimer;
         DownloadPrompt downloadPrompt;
@@ -582,12 +582,12 @@ namespace UMusic
             try
             {
                 tagEditor.Close();
-                tagEditor = new TagEditor(fileName, this);
+                tagEditor = new TagEditor(fileName, this, rowIndex);
                 tagEditor.Show();
             }
             catch
             {
-                tagEditor = new TagEditor(fileName, this);
+                tagEditor = new TagEditor(fileName, this, rowIndex);
                 tagEditor.Show();
             }
         }
@@ -695,10 +695,13 @@ namespace UMusic
             }
             else if (chromeBrowser.Address.IndexOf("youtube") != -1)
             {
+                MessageBox.Show("File starting to download...", "Download Starting");
+
                 string address = chromeBrowser.Address;
                 if (address.IndexOf("music") != 1)
                     address = address.Substring(address.IndexOf("music.") + 6);
 
+                string fileName = "";
                 // try
                 {
                     var youtube = YouTube.Default;
@@ -706,53 +709,55 @@ namespace UMusic
                     try
                     {
                         var vid = youtube.GetVideo(address);
-                        string fileName = vid.FullName.Substring(0, vid.FullName.Length - vid.FileExtension.Length);
-                        File.WriteAllBytes(downloadLocation + vid.FullName, vid.GetBytes());
+                        fileName = vid.FullName.Substring(0, vid.FullName.Length - vid.FileExtension.Length);
 
-                        var inputFile = new MediaFile { Filename = downloadLocation + vid.FullName };
-                        var outputFile = new MediaFile { Filename = $"{downloadLocation + vid.FullName}.mp3" };
-
-                        using (var engine = new Engine())
+                        try
                         {
-                            engine.GetMetadata(inputFile);
+                            File.WriteAllBytes(downloadLocation + vid.FullName, vid.GetBytes());
 
-                            engine.Convert(inputFile, outputFile);
+                            var inputFile = new MediaFile { Filename = downloadLocation + vid.FullName };
+                            var outputFile = new MediaFile { Filename = $"{downloadLocation + vid.FullName}.mp3" };
+
+                            using (var engine = new Engine())
+                            {
+                                engine.GetMetadata(inputFile);
+
+                                engine.Convert(inputFile, outputFile);
+                            }
+
+                            string mp3File = $"{downloadLocation + vid.FullName}.mp3";
+                            string wavFile = $"{downloadLocation + vid.FullName}.wav";
+
+                            using (Mp3FileReader reader = new Mp3FileReader(mp3File))
+                            {
+                                WaveFileWriter.CreateWaveFile(wavFile, reader);
+                            }
+
+                            mp3File = $"{downloadLocation + fileName}.mp3";
+                            using (var reader = new AudioFileReader(wavFile))
+                            using (var writer = new LameMP3FileWriter(mp3File, reader.WaveFormat, 320))
+                                reader.CopyTo(writer);
+
+                            File.Delete($"{downloadLocation + vid.FullName}.mp3");
+                            File.Delete(wavFile);
+                            videoName = vid.FullName;
+
+                            downloadPrompt = new DownloadPrompt(this, fileName, videoName);
+                            downloadPrompt.ShowDialog();
+
+                            string message = "File successfully downloaded.";
+                            string caption = "Download Successful";
+                            MessageBox.Show(message, caption);
                         }
-
-                        string mp3File = $"{downloadLocation + vid.FullName}.mp3";
-                        string wavFile = $"{downloadLocation + vid.FullName}.wav";
-
-                        using (Mp3FileReader reader = new Mp3FileReader(mp3File))
+                        catch (ArgumentException)
                         {
-                            WaveFileWriter.CreateWaveFile(wavFile, reader);
+                            MessageBox.Show("Video could not be downloaded. If you're downloading from YouTube Music, you must be in your Queue.", "Download Failed");
                         }
-
-                        mp3File = $"{downloadLocation + fileName}.mp3";
-                        using (var reader = new AudioFileReader(wavFile))
-                        using (var writer = new LameMP3FileWriter(mp3File, reader.WaveFormat, 320))
-                            reader.CopyTo(writer);
-
-                        File.Delete($"{downloadLocation + vid.FullName}.mp3");
-                        File.Delete(wavFile);
-                        videoName = vid.FullName;
-
-                        string message = "File successfully downloaded. Could not refresh DGV.";
-                        string caption = "Refresh Failed";
-                        MessageBox.Show(message, caption);
-
-                        downloadPrompt = new DownloadPrompt();
-                        downloadPrompt.Show();
-
-                        promptTimer = new System.Timers.Timer();
-                        promptTimer.Interval = 1;
-                        promptTimer.Elapsed += promptTimer_Elapsed;
-                        promptTimer.Start();
                     }
-                    catch (ArgumentException)
+                    catch
                     {
-                        MessageBox.Show("Video could not be downloaded. If you're downloading from YouTube Music, you must be in your Queue.", "Download Failed");
+                        MessageBox.Show("This audio/video could not be downloaded. Please try again.", "Download Failed");
                     }
-                    
                 }
                 /*
                 catch (InvalidOperationException)
@@ -775,34 +780,6 @@ namespace UMusic
             else if (chromeBrowser.Address.IndexOf("spotify") != -1)
             {
 
-            }
-        }
-
-        private void promptTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            if (downloadPrompt.exist == false)
-            {
-                if (downloadPrompt.audio == true && downloadPrompt.video == false)
-                {
-                    if (File.Exists("music\\download\\" + videoName))
-                        File.Delete("music\\download\\" + videoName);
-                }
-                if (downloadPrompt.audio == false && downloadPrompt.video == true)
-                {
-                    if (File.Exists("music\\download\\" + videoName + ".mp3"))
-                        File.Delete("music\\download\\" + videoName + ".mp3");
-                }
-                if (downloadPrompt.audio == false && downloadPrompt.video == false)
-                {
-                    if (File.Exists("music\\download\\" + videoName + ".mp3"))
-                        File.Delete("music\\download\\" + videoName + ".mp3");
-
-                    if (File.Exists("music\\download\\" + videoName))
-                        File.Delete("music\\download\\" + videoName);
-                }
-
-                downloadPrompt.Close();
-                promptTimer.Stop();
             }
         }
 
