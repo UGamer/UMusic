@@ -98,7 +98,6 @@
             this.DGV.Location = new System.Drawing.Point(157, 1);
             this.DGV.Name = "DGV";
             this.DGV.ReadOnly = true;
-            this.DGV.RowHeadersVisible = false;
             this.DGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.DGV.Size = new System.Drawing.Size(643, 423);
             this.DGV.TabIndex = 0;
@@ -441,7 +440,7 @@
             // 
             this.UMusicButton.Image = global::UMusic.Properties.Resources.logo;
             this.UMusicButton.Name = "UMusicButton";
-            this.UMusicButton.Size = new System.Drawing.Size(156, 22);
+            this.UMusicButton.Size = new System.Drawing.Size(155, 22);
             this.UMusicButton.Text = "UMusic (Local)";
             this.UMusicButton.Click += new System.EventHandler(this.UMusicButton_Click);
             // 
@@ -449,7 +448,7 @@
             // 
             this.SoundCloudButton.Image = global::UMusic.Properties.Resources.SoundCloud;
             this.SoundCloudButton.Name = "SoundCloudButton";
-            this.SoundCloudButton.Size = new System.Drawing.Size(156, 22);
+            this.SoundCloudButton.Size = new System.Drawing.Size(155, 22);
             this.SoundCloudButton.Text = "SoundCloud";
             this.SoundCloudButton.Click += new System.EventHandler(this.SoundCloudButton_Click);
             // 
@@ -457,7 +456,7 @@
             // 
             this.SpotifyButton.Image = global::UMusic.Properties.Resources.Spotify;
             this.SpotifyButton.Name = "SpotifyButton";
-            this.SpotifyButton.Size = new System.Drawing.Size(156, 22);
+            this.SpotifyButton.Size = new System.Drawing.Size(155, 22);
             this.SpotifyButton.Text = "Spotify";
             this.SpotifyButton.Click += new System.EventHandler(this.SpotifyButton_Click);
             // 
@@ -465,7 +464,7 @@
             // 
             this.YouTubeButton.Image = global::UMusic.Properties.Resources.YouTube;
             this.YouTubeButton.Name = "YouTubeButton";
-            this.YouTubeButton.Size = new System.Drawing.Size(156, 22);
+            this.YouTubeButton.Size = new System.Drawing.Size(155, 22);
             this.YouTubeButton.Text = "YouTube";
             this.YouTubeButton.Click += new System.EventHandler(this.YouTubeButton_Click);
             // 
@@ -473,7 +472,7 @@
             // 
             this.YouTubeMusicButton.Image = global::UMusic.Properties.Resources.YouTube_Music;
             this.YouTubeMusicButton.Name = "YouTubeMusicButton";
-            this.YouTubeMusicButton.Size = new System.Drawing.Size(156, 22);
+            this.YouTubeMusicButton.Size = new System.Drawing.Size(155, 22);
             this.YouTubeMusicButton.Text = "YouTube Music";
             this.YouTubeMusicButton.Click += new System.EventHandler(this.YouTubeMusicButton_Click);
             // 

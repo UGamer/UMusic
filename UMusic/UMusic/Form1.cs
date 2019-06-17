@@ -258,6 +258,7 @@ namespace UMusic
 
             ArrayList albumArts = new ArrayList();
             // Image[] albumArts = new Image[files.Count];
+
             string[] titles = new string[files.Count];
             string[] artists = new string[files.Count];
             string[] albums = new string[files.Count];
@@ -278,7 +279,11 @@ namespace UMusic
                 {
                     currentFile = TagLib.File.Create(files[index].ToString());
                     
-                    /*
+
+
+
+
+
                     if (currentFile.Tag.Pictures.Length > 0)
                     {
                         bin = currentFile.Tag.Pictures[0].Data.Data;
@@ -286,8 +291,12 @@ namespace UMusic
                         currentAlbumArt2.SetResolution(1, 1);
                         albumArts.Add(currentAlbumArt2);
                     }
-                    else */
+                    else
                         albumArts.Add(albumArt);
+
+
+
+
 
                     titles[index] = currentFile.Tag.Title;
                     artists[index] = currentFile.Tag.FirstPerformer;
@@ -702,7 +711,7 @@ namespace UMusic
                     address = address.Substring(address.IndexOf("music.") + 6);
 
                 string fileName = "";
-                // try
+                try
                 {
                     var youtube = YouTube.Default;
 
@@ -754,12 +763,15 @@ namespace UMusic
                             MessageBox.Show("Video could not be downloaded. If you're downloading from YouTube Music, you must be in your Queue.", "Download Failed");
                         }
                     }
+                    catch (System.Net.Http.HttpRequestException)
+                    {
+                        MessageBox.Show("This audio/video is copyrighted material and can not be downloaded.", "Download Failed");
+                    }
                     catch
                     {
                         MessageBox.Show("This audio/video could not be downloaded. Please try again.", "Download Failed");
                     }
                 }
-                /*
                 catch (InvalidOperationException)
                 {
                     string message = "File successfully downloaded. Could not refresh DGV.";
@@ -775,7 +787,6 @@ namespace UMusic
                     string caption = "Download Failed";
                     MessageBox.Show(message, caption);
                 }
-                */
             }
             else if (chromeBrowser.Address.IndexOf("spotify") != -1)
             {
@@ -1016,6 +1027,13 @@ namespace UMusic
             tw.Write(filePath);
             tw.Close();
             MessageBox.Show("Added \"" + filePath + "\" to \"" + playlistName + "\"", "Added to Playlist", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            playlistButtons[index] = new ToolStripMenuItem();
+            playlistButtons[index].Text = playlistNames[index].Substring(0, playlistNames[index].Length - 4);
+            playlistButtons[index].Text = playlistButtons[index].Text.Substring(10);
+            playlistButtons[index].Tag = playlistNames[index];
+            playlistButtons[index].Click += AddToPlaylistButton_Click;
+            AddToPlaylistButton.DropDownItems.Add(playlistButtons[index]);
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
