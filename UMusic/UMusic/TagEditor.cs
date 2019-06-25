@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Net;
 using System.Windows.Forms;
 using TagLib;
 
@@ -111,11 +112,12 @@ namespace UMusic
 
             if (BrowseButton.Text == "Clear")
             {
-                try
+                Console.WriteLine("Jeff");
+                //try
                 {
-                    currentFile.Tag.Pictures = new[] { new Picture(AlbumArtBox.Text) };
+                    currentFile.Tag.Pictures = new[] { new TagLib.Picture(new TagLib.ByteVector((byte[])new System.Drawing.ImageConverter().ConvertTo(AlbumArtPic.BackgroundImage, typeof(byte[])))) };
                 }
-                catch (ArgumentException) { }
+                // catch (ArgumentException) { }
             }
             else
             {
@@ -388,6 +390,30 @@ namespace UMusic
         {
             PictureEditor pictureEditor = new PictureEditor(AlbumArtPic.BackgroundImage);
             pictureEditor.Show();
+        }
+
+        private void FromInternetButton_Click(object sender, EventArgs e)
+        {
+            Browser browser = new Browser();
+            DialogResult dialogResult = browser.ShowDialog();
+            if (dialogResult == DialogResult.Yes)
+            {
+                string fileExt = browser.url;
+                while (fileExt.IndexOf(".") != -1)
+                {
+                    fileExt = fileExt.Substring(fileExt.IndexOf(".") + 1);
+                }
+
+                byte[] imageBytes;
+                using (var client = new WebClient())
+                {
+                    imageBytes = client.DownloadData(browser.url);
+                }
+
+                AlbumArtPic.BackgroundImage = System.Drawing.Image.FromStream(new MemoryStream(imageBytes));
+                AlbumArtBox.Enabled = false;
+                BrowseButton.Text = "Clear";
+            }
         }
     }
 }

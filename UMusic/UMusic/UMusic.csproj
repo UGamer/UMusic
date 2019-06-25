@@ -178,6 +178,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Browser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Browser.Designer.cs">
+      <DependentUpon>Browser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Database.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -197,6 +203,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="globalKeyboardHook.cs" />
+    <Compile Include="MenuHandler.cs" />
     <Compile Include="MiniPlayer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -242,6 +249,9 @@
       <DependentUpon>TagEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Theme.cs" />
+    <EmbeddedResource Include="Browser.resx">
+      <DependentUpon>Browser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Database.resx">
       <DependentUpon>Database.cs</DependentUpon>
     </EmbeddedResource>

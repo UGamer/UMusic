@@ -35,15 +35,6 @@ namespace UMusic
         bool dateAddedVisible;
         bool fileVisible;
 
-        int albumArtIndex;
-        int titleIndex;
-        int artistIndex;
-        int albumindex;
-        int albumArtistIndex;
-        int genreIndex;
-        int dateAddedIndex;
-        int fileIndex;
-
         private string sortColumn;
         string sortOrder;
 
@@ -255,70 +246,14 @@ namespace UMusic
                 }
                 catch { }
             }
-
-            ArrayList albumArts = new ArrayList();
-            // Image[] albumArts = new Image[files.Count];
-
-            string[] titles = new string[files.Count];
-            string[] artists = new string[files.Count];
-            string[] albums = new string[files.Count];
-            string[] albumArtists = new string[files.Count];
-            string[] genres = new string[files.Count];
-            string[] dateAdded = new string[files.Count];
-
+            
             int index;
             DateTime fileCreated;
             TagLib.File currentFile;
             Image albumArt = Image.FromFile(@"resources\Unknown Album Art.png");
-            Image currentAlbumArt;
-            Bitmap currentAlbumArt2;
-            byte[] bin;
-            for (index = 0; index < titles.Length; index++)
-            {
-                try
-                {
-                    currentFile = TagLib.File.Create(files[index].ToString());
-                    
-
-
-
-
-
-                    if (currentFile.Tag.Pictures.Length > 0)
-                    {
-                        bin = currentFile.Tag.Pictures[0].Data.Data;
-                        currentAlbumArt2 = (Bitmap)((new ImageConverter()).ConvertFrom(bin));
-                        currentAlbumArt2.SetResolution(1, 1);
-                        albumArts.Add(currentAlbumArt2);
-                    }
-                    else
-                        albumArts.Add(albumArt);
-
-
-
-
-
-                    titles[index] = currentFile.Tag.Title;
-                    artists[index] = currentFile.Tag.FirstPerformer;
-                    albums[index] = currentFile.Tag.Album;
-                    albumArtists[index] = currentFile.Tag.FirstAlbumArtist;
-                    genres[index] = currentFile.Tag.FirstGenre;
-                    fileCreated = File.GetCreationTime(files[index].ToString());
-                    dateAdded[index] = string.Format("{0:00}/{1:00}/{2:00} {3:00}:{4:00}:{5:00}", fileCreated.Year,
-                        fileCreated.Month, fileCreated.Day, fileCreated.Hour, fileCreated.Minute, fileCreated.Second);
-                }
-                catch (TagLib.UnsupportedFormatException) { }
-            }
-
-            string[,] twoD = new string[files.Count, 8];
-
-            int height = twoD.GetLength(0);
-            int width = twoD.GetLength(1);
+            MemoryStream ms;
 
             dataTable = new DataTable();
-
-            // if (settings.IndexOf("[Album Art]\nVisible = True") != -1)
-                // dataTable.Columns.Add("Album Art", typeof(byte[]));
             dataTable.Columns.Add("Album Art", typeof(Image));
             dataTable.Columns.Add("Title");
             dataTable.Columns.Add("Artist(s)");
@@ -327,21 +262,33 @@ namespace UMusic
             dataTable.Columns.Add("Genre");
             dataTable.Columns.Add("Date Added");
             dataTable.Columns.Add("File");
-            for (int r = 0; r < height; r++)
-            {
-                if (files[r].ToString().IndexOf(".jpg") == -1)
-                {
-                    twoD[r, 1] = titles[r];
-                    twoD[r, 2] = artists[r];
-                    twoD[r, 3] = albums[r];
-                    twoD[r, 4] = albumArtists[r];
-                    twoD[r, 5] = genres[r];
-                    twoD[r, 6] = dateAdded[r];
-                    twoD[r, 7] = files[r].ToString();
 
-                    if (twoD[r, 1] == null)
+            Image albumArt2;
+            ArrayList albumArts = new ArrayList();
+            for (index = 0; index < files.Count; index++)
+            {
+                try
+                {
+                    currentFile = TagLib.File.Create(files[index].ToString());
+                    
+                    DataRow dRow = dataTable.NewRow();
+
+                    /*
+                    if (currentFile.Tag.Pictures.Length > 0)
                     {
-                        string fileName = twoD[r, 7];
+                        MemoryStream mStream = new MemoryStream(currentFile.Tag.Pictures[0].Data.Data);
+                        // albumArts.Add(Image.FromStream(mStream));
+                        albumArt2 = Image.FromStream(mStream);
+                        // dRow["Album Art"] = Image.FromStream(mStream);
+                        mStream.Dispose();
+                    }
+                    else */
+                        dRow["Album Art"] = albumArt;
+                    
+                    string title = currentFile.Tag.Title;
+                    if (currentFile.Tag.Title == null)
+                    {
+                        string fileName = files[index].ToString();
                         for (bool ready = false; ready == false;)
                         {
                             int folderIndex = fileName.IndexOf("\\");
@@ -355,20 +302,42 @@ namespace UMusic
                                 ready = true;
                             }
                         }
-                        twoD[r, 1] = fileName;
+                        title = fileName;
                     }
 
-                    DataRow dRow = dataTable.NewRow();
-                    dRow["Album Art"] = albumArts[r];
-                    dRow["Title"] = twoD[r, 1];
-                    dRow["Artist(s)"] = twoD[r, 2];
-                    dRow["Album"] = twoD[r, 3];
-                    dRow["Album Artist(s)"] = twoD[r, 4];
-                    dRow["Genre"] = twoD[r, 5];
-                    dRow["Date Added"] = twoD[r, 6];
-                    dRow["File"] = twoD[r, 7];
+                    fileCreated = File.GetCreationTime(files[index].ToString());
+
+                    dRow["Title"] = title;
+                    dRow["Artist(s)"] = currentFile.Tag.FirstPerformer;
+                    dRow["Album"] = currentFile.Tag.Album;
+                    dRow["Album Artist(s)"] = currentFile.Tag.FirstAlbumArtist;
+                    dRow["Genre"] = currentFile.Tag.FirstGenre;
+                    dRow["Date Added"] = string.Format("{0:00}/{1:00}/{2:00} {3:00}:{4:00}:{5:00}", fileCreated.Year,
+                        fileCreated.Month, fileCreated.Day, fileCreated.Hour, fileCreated.Minute, fileCreated.Second);
+                    dRow["File"] = files[index].ToString();
 
                     dataTable.Rows.Add(dRow);
+                }
+                catch (TagLib.UnsupportedFormatException) { }
+            }
+
+            string[,] twoD = new string[files.Count, 8];
+
+            int height = twoD.GetLength(0);
+            int width = twoD.GetLength(1);
+
+
+            // if (settings.IndexOf("[Album Art]\nVisible = True") != -1)
+                // dataTable.Columns.Add("Album Art", typeof(byte[]));
+            
+            for (int r = 0; r < height; r++)
+            {
+                if (files[r].ToString().IndexOf(".jpg") == -1)
+                {
+
+                    
+
+                    
                 }
 
                 /*
@@ -393,10 +362,6 @@ namespace UMusic
                 }
                 */
             }
-
-            albumArts.Clear();
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
 
             DGV.DataSource = dataTable;
 
@@ -438,13 +403,6 @@ namespace UMusic
                     catch { }
                 }
             }
-        }
-
-        public byte[] imageToByteArray(Image imageIn)
-        {
-            MemoryStream ms = new MemoryStream();
-            imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
-            return ms.ToArray();
         }
 
         private void DGV_Sorted(object sender, EventArgs e)
@@ -1028,12 +986,14 @@ namespace UMusic
             tw.Close();
             MessageBox.Show("Added \"" + filePath + "\" to \"" + playlistName + "\"", "Added to Playlist", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+            /*
             playlistButtons[index] = new ToolStripMenuItem();
             playlistButtons[index].Text = playlistNames[index].Substring(0, playlistNames[index].Length - 4);
             playlistButtons[index].Text = playlistButtons[index].Text.Substring(10);
             playlistButtons[index].Tag = playlistNames[index];
             playlistButtons[index].Click += AddToPlaylistButton_Click;
             AddToPlaylistButton.DropDownItems.Add(playlistButtons[index]);
+            */
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)

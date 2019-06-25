@@ -98,6 +98,7 @@
             this.DGV.Location = new System.Drawing.Point(157, 1);
             this.DGV.Name = "DGV";
             this.DGV.ReadOnly = true;
+            this.DGV.RowHeadersVisible = false;
             this.DGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.DGV.Size = new System.Drawing.Size(643, 423);
             this.DGV.TabIndex = 0;

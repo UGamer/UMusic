@@ -65,6 +65,7 @@
             this.AlbumArtPic = new System.Windows.Forms.PictureBox();
             this.PictureBoxContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.EditPictureButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.FromInternetButton = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AlbumArtPic)).BeginInit();
@@ -74,10 +75,9 @@
             // TitleLabel
             // 
             this.TitleLabel.AutoSize = true;
-            this.TitleLabel.Location = new System.Drawing.Point(18, 46);
-            this.TitleLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.TitleLabel.Location = new System.Drawing.Point(12, 30);
             this.TitleLabel.Name = "TitleLabel";
-            this.TitleLabel.Size = new System.Drawing.Size(38, 20);
+            this.TitleLabel.Size = new System.Drawing.Size(27, 13);
             this.TitleLabel.TabIndex = 0;
             this.TitleLabel.Text = "Title";
             // 
@@ -96,109 +96,98 @@
             this.panel1.Controls.Add(this.AlbumLabel);
             this.panel1.Controls.Add(this.ArtistLabel);
             this.panel1.Controls.Add(this.TitleLabel);
-            this.panel1.Location = new System.Drawing.Point(18, 18);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(320, 829);
+            this.panel1.Size = new System.Drawing.Size(213, 539);
             this.panel1.TabIndex = 0;
             // 
             // DiscNumberLabel
             // 
             this.DiscNumberLabel.AutoSize = true;
-            this.DiscNumberLabel.Location = new System.Drawing.Point(20, 271);
-            this.DiscNumberLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.DiscNumberLabel.Location = new System.Drawing.Point(13, 176);
             this.DiscNumberLabel.Name = "DiscNumberLabel";
-            this.DiscNumberLabel.Size = new System.Drawing.Size(100, 20);
+            this.DiscNumberLabel.Size = new System.Drawing.Size(68, 13);
             this.DiscNumberLabel.TabIndex = 17;
             this.DiscNumberLabel.Text = "Disc Number";
             // 
             // TrackNumberLabel
             // 
             this.TrackNumberLabel.AutoSize = true;
-            this.TrackNumberLabel.Location = new System.Drawing.Point(18, 231);
-            this.TrackNumberLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.TrackNumberLabel.Location = new System.Drawing.Point(12, 150);
             this.TrackNumberLabel.Name = "TrackNumberLabel";
-            this.TrackNumberLabel.Size = new System.Drawing.Size(108, 20);
+            this.TrackNumberLabel.Size = new System.Drawing.Size(75, 13);
             this.TrackNumberLabel.TabIndex = 15;
             this.TrackNumberLabel.Text = "Track Number";
             // 
             // FileNameLabel
             // 
             this.FileNameLabel.AutoSize = true;
-            this.FileNameLabel.Location = new System.Drawing.Point(18, 5);
-            this.FileNameLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.FileNameLabel.Location = new System.Drawing.Point(12, 3);
             this.FileNameLabel.Name = "FileNameLabel";
-            this.FileNameLabel.Size = new System.Drawing.Size(80, 20);
+            this.FileNameLabel.Size = new System.Drawing.Size(54, 13);
             this.FileNameLabel.TabIndex = 6;
             this.FileNameLabel.Text = "File Name";
             // 
             // AlbumArtistLabel
             // 
             this.AlbumArtistLabel.AutoSize = true;
-            this.AlbumArtistLabel.Location = new System.Drawing.Point(18, 186);
-            this.AlbumArtistLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.AlbumArtistLabel.Location = new System.Drawing.Point(12, 121);
             this.AlbumArtistLabel.Name = "AlbumArtistLabel";
-            this.AlbumArtistLabel.Size = new System.Drawing.Size(113, 20);
+            this.AlbumArtistLabel.Size = new System.Drawing.Size(73, 13);
             this.AlbumArtistLabel.TabIndex = 12;
             this.AlbumArtistLabel.Text = "Album Artist(s)";
             // 
             // AlbumArtLabel
             // 
             this.AlbumArtLabel.AutoSize = true;
-            this.AlbumArtLabel.Location = new System.Drawing.Point(22, 422);
-            this.AlbumArtLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.AlbumArtLabel.Location = new System.Drawing.Point(15, 274);
             this.AlbumArtLabel.Name = "AlbumArtLabel";
-            this.AlbumArtLabel.Size = new System.Drawing.Size(79, 20);
+            this.AlbumArtLabel.Size = new System.Drawing.Size(52, 13);
             this.AlbumArtLabel.TabIndex = 7;
             this.AlbumArtLabel.Text = "Album Art";
             // 
             // ExplicitLabel
             // 
             this.ExplicitLabel.AutoSize = true;
-            this.ExplicitLabel.Location = new System.Drawing.Point(21, 382);
-            this.ExplicitLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.ExplicitLabel.Location = new System.Drawing.Point(14, 248);
             this.ExplicitLabel.Name = "ExplicitLabel";
-            this.ExplicitLabel.Size = new System.Drawing.Size(58, 20);
+            this.ExplicitLabel.Size = new System.Drawing.Size(40, 13);
             this.ExplicitLabel.TabIndex = 5;
             this.ExplicitLabel.Text = "Explicit";
             // 
             // YearLabel
             // 
             this.YearLabel.AutoSize = true;
-            this.YearLabel.Location = new System.Drawing.Point(21, 343);
-            this.YearLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.YearLabel.Location = new System.Drawing.Point(14, 223);
             this.YearLabel.Name = "YearLabel";
-            this.YearLabel.Size = new System.Drawing.Size(43, 20);
+            this.YearLabel.Size = new System.Drawing.Size(29, 13);
             this.YearLabel.TabIndex = 4;
             this.YearLabel.Text = "Year";
             // 
             // GenreLabel
             // 
             this.GenreLabel.AutoSize = true;
-            this.GenreLabel.Location = new System.Drawing.Point(18, 309);
-            this.GenreLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.GenreLabel.Location = new System.Drawing.Point(12, 201);
             this.GenreLabel.Name = "GenreLabel";
-            this.GenreLabel.Size = new System.Drawing.Size(54, 20);
+            this.GenreLabel.Size = new System.Drawing.Size(36, 13);
             this.GenreLabel.TabIndex = 3;
             this.GenreLabel.Text = "Genre";
             // 
             // AlbumLabel
             // 
             this.AlbumLabel.AutoSize = true;
-            this.AlbumLabel.Location = new System.Drawing.Point(18, 142);
-            this.AlbumLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.AlbumLabel.Location = new System.Drawing.Point(12, 92);
             this.AlbumLabel.Name = "AlbumLabel";
-            this.AlbumLabel.Size = new System.Drawing.Size(54, 20);
+            this.AlbumLabel.Size = new System.Drawing.Size(36, 13);
             this.AlbumLabel.TabIndex = 2;
             this.AlbumLabel.Text = "Album";
             // 
             // ArtistLabel
             // 
             this.ArtistLabel.AutoSize = true;
-            this.ArtistLabel.Location = new System.Drawing.Point(18, 89);
-            this.ArtistLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.ArtistLabel.Location = new System.Drawing.Point(12, 58);
             this.ArtistLabel.Name = "ArtistLabel";
-            this.ArtistLabel.Size = new System.Drawing.Size(64, 20);
+            this.ArtistLabel.Size = new System.Drawing.Size(41, 13);
             this.ArtistLabel.TabIndex = 1;
             this.ArtistLabel.Text = "Artist(s)";
             // 
@@ -206,69 +195,62 @@
             // 
             this.TitleBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.TitleBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.TitleBox.Location = new System.Drawing.Point(348, 60);
-            this.TitleBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.TitleBox.Location = new System.Drawing.Point(232, 39);
             this.TitleBox.Name = "TitleBox";
-            this.TitleBox.Size = new System.Drawing.Size(372, 26);
+            this.TitleBox.Size = new System.Drawing.Size(249, 20);
             this.TitleBox.TabIndex = 2;
             // 
             // ArtistBox
             // 
             this.ArtistBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.ArtistBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.ArtistBox.Location = new System.Drawing.Point(348, 103);
-            this.ArtistBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.ArtistBox.Location = new System.Drawing.Point(232, 67);
             this.ArtistBox.Name = "ArtistBox";
-            this.ArtistBox.Size = new System.Drawing.Size(372, 26);
+            this.ArtistBox.Size = new System.Drawing.Size(249, 20);
             this.ArtistBox.TabIndex = 3;
             // 
             // AlbumBox
             // 
             this.AlbumBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.AlbumBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.AlbumBox.Location = new System.Drawing.Point(348, 155);
-            this.AlbumBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.AlbumBox.Location = new System.Drawing.Point(232, 101);
             this.AlbumBox.Name = "AlbumBox";
-            this.AlbumBox.Size = new System.Drawing.Size(372, 26);
+            this.AlbumBox.Size = new System.Drawing.Size(249, 20);
             this.AlbumBox.TabIndex = 4;
             // 
             // GenreBox
             // 
             this.GenreBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.GenreBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.GenreBox.Location = new System.Drawing.Point(348, 323);
-            this.GenreBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.GenreBox.Location = new System.Drawing.Point(232, 210);
             this.GenreBox.Name = "GenreBox";
-            this.GenreBox.Size = new System.Drawing.Size(372, 26);
+            this.GenreBox.Size = new System.Drawing.Size(249, 20);
             this.GenreBox.TabIndex = 10;
             // 
             // YearBox
             // 
             this.YearBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.YearBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.YearBox.Location = new System.Drawing.Point(346, 363);
-            this.YearBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.YearBox.Location = new System.Drawing.Point(231, 236);
             this.YearBox.Name = "YearBox";
-            this.YearBox.Size = new System.Drawing.Size(372, 26);
+            this.YearBox.Size = new System.Drawing.Size(249, 20);
             this.YearBox.TabIndex = 11;
             // 
             // ExplicitBox
             // 
             this.ExplicitBox.AutoSize = true;
-            this.ExplicitBox.Location = new System.Drawing.Point(480, 406);
-            this.ExplicitBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.ExplicitBox.Location = new System.Drawing.Point(320, 264);
             this.ExplicitBox.Name = "ExplicitBox";
-            this.ExplicitBox.Size = new System.Drawing.Size(84, 24);
+            this.ExplicitBox.Size = new System.Drawing.Size(59, 17);
             this.ExplicitBox.TabIndex = 12;
             this.ExplicitBox.Text = "Explicit";
             this.ExplicitBox.UseVisualStyleBackColor = true;
             // 
             // SubmitButton
             // 
-            this.SubmitButton.Location = new System.Drawing.Point(537, 788);
-            this.SubmitButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.SubmitButton.Location = new System.Drawing.Point(358, 512);
             this.SubmitButton.Name = "SubmitButton";
-            this.SubmitButton.Size = new System.Drawing.Size(184, 60);
+            this.SubmitButton.Size = new System.Drawing.Size(123, 39);
             this.SubmitButton.TabIndex = 14;
             this.SubmitButton.Text = "Submit";
             this.SubmitButton.UseVisualStyleBackColor = true;
@@ -276,28 +258,25 @@
             // 
             // FileNameBox
             // 
-            this.FileNameBox.Location = new System.Drawing.Point(348, 18);
-            this.FileNameBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.FileNameBox.Location = new System.Drawing.Point(232, 12);
             this.FileNameBox.Name = "FileNameBox";
-            this.FileNameBox.Size = new System.Drawing.Size(290, 26);
+            this.FileNameBox.Size = new System.Drawing.Size(195, 20);
             this.FileNameBox.TabIndex = 0;
             this.FileNameBox.TabStop = false;
             // 
             // AlbumArtBox
             // 
-            this.AlbumArtBox.Location = new System.Drawing.Point(346, 445);
-            this.AlbumArtBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.AlbumArtBox.Location = new System.Drawing.Point(231, 289);
             this.AlbumArtBox.Name = "AlbumArtBox";
-            this.AlbumArtBox.Size = new System.Drawing.Size(290, 26);
+            this.AlbumArtBox.Size = new System.Drawing.Size(195, 20);
             this.AlbumArtBox.TabIndex = 0;
             this.AlbumArtBox.TabStop = false;
             // 
             // BrowseButton
             // 
-            this.BrowseButton.Location = new System.Drawing.Point(634, 442);
-            this.BrowseButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.BrowseButton.Location = new System.Drawing.Point(423, 287);
             this.BrowseButton.Name = "BrowseButton";
-            this.BrowseButton.Size = new System.Drawing.Size(86, 31);
+            this.BrowseButton.Size = new System.Drawing.Size(57, 20);
             this.BrowseButton.TabIndex = 13;
             this.BrowseButton.Text = "Browse";
             this.BrowseButton.UseVisualStyleBackColor = true;
@@ -305,10 +284,9 @@
             // 
             // BrowseFileNameButton
             // 
-            this.BrowseFileNameButton.Location = new System.Drawing.Point(636, 15);
-            this.BrowseFileNameButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.BrowseFileNameButton.Location = new System.Drawing.Point(424, 10);
             this.BrowseFileNameButton.Name = "BrowseFileNameButton";
-            this.BrowseFileNameButton.Size = new System.Drawing.Size(86, 31);
+            this.BrowseFileNameButton.Size = new System.Drawing.Size(57, 20);
             this.BrowseFileNameButton.TabIndex = 1;
             this.BrowseFileNameButton.Text = "Browse";
             this.BrowseFileNameButton.UseVisualStyleBackColor = true;
@@ -318,57 +296,53 @@
             // 
             this.AlbumArtistBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.AlbumArtistBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.AlbumArtistBox.Location = new System.Drawing.Point(348, 200);
-            this.AlbumArtistBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.AlbumArtistBox.Location = new System.Drawing.Point(232, 130);
             this.AlbumArtistBox.Name = "AlbumArtistBox";
-            this.AlbumArtistBox.Size = new System.Drawing.Size(372, 26);
+            this.AlbumArtistBox.Size = new System.Drawing.Size(249, 20);
             this.AlbumArtistBox.TabIndex = 5;
             // 
             // TrackNumberBox
             // 
             this.TrackNumberBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.TrackNumberBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.TrackNumberBox.Location = new System.Drawing.Point(348, 245);
-            this.TrackNumberBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.TrackNumberBox.Location = new System.Drawing.Point(232, 159);
             this.TrackNumberBox.Name = "TrackNumberBox";
-            this.TrackNumberBox.Size = new System.Drawing.Size(178, 26);
+            this.TrackNumberBox.Size = new System.Drawing.Size(120, 20);
             this.TrackNumberBox.TabIndex = 6;
             // 
             // DiscNumberBox
             // 
             this.DiscNumberBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.DiscNumberBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.DiscNumberBox.Location = new System.Drawing.Point(348, 285);
-            this.DiscNumberBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.DiscNumberBox.Location = new System.Drawing.Point(232, 185);
             this.DiscNumberBox.Name = "DiscNumberBox";
-            this.DiscNumberBox.Size = new System.Drawing.Size(178, 26);
+            this.DiscNumberBox.Size = new System.Drawing.Size(120, 20);
             this.DiscNumberBox.TabIndex = 8;
             // 
             // TrackCountBox
             // 
             this.TrackCountBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.TrackCountBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.TrackCountBox.Location = new System.Drawing.Point(537, 245);
-            this.TrackCountBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.TrackCountBox.Location = new System.Drawing.Point(358, 159);
             this.TrackCountBox.Name = "TrackCountBox";
-            this.TrackCountBox.Size = new System.Drawing.Size(182, 26);
+            this.TrackCountBox.Size = new System.Drawing.Size(123, 20);
             this.TrackCountBox.TabIndex = 7;
             // 
             // DiscCountBox
             // 
             this.DiscCountBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.DiscCountBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.DiscCountBox.Location = new System.Drawing.Point(537, 285);
-            this.DiscCountBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.DiscCountBox.Location = new System.Drawing.Point(358, 185);
             this.DiscCountBox.Name = "DiscCountBox";
-            this.DiscCountBox.Size = new System.Drawing.Size(182, 26);
+            this.DiscCountBox.Size = new System.Drawing.Size(123, 20);
             this.DiscCountBox.TabIndex = 9;
             // 
             // SearchDatabaseButton
             // 
-            this.SearchDatabaseButton.Location = new System.Drawing.Point(348, 788);
+            this.SearchDatabaseButton.Location = new System.Drawing.Point(232, 512);
+            this.SearchDatabaseButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.SearchDatabaseButton.Name = "SearchDatabaseButton";
-            this.SearchDatabaseButton.Size = new System.Drawing.Size(180, 60);
+            this.SearchDatabaseButton.Size = new System.Drawing.Size(120, 39);
             this.SearchDatabaseButton.TabIndex = 15;
             this.SearchDatabaseButton.Text = "Search Database";
             this.SearchDatabaseButton.UseVisualStyleBackColor = true;
@@ -382,11 +356,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGV.Location = new System.Drawing.Point(730, 12);
-            this.DGV.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.DGV.Location = new System.Drawing.Point(487, 8);
             this.DGV.Name = "DGV";
             this.DGV.ReadOnly = true;
-            this.DGV.Size = new System.Drawing.Size(704, 835);
+            this.DGV.Size = new System.Drawing.Size(469, 543);
             this.DGV.TabIndex = 16;
             this.DGV.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGV_CellDoubleClick);
             // 
@@ -394,10 +367,9 @@
             // 
             this.AlbumArtPic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.AlbumArtPic.ContextMenuStrip = this.PictureBoxContextMenu;
-            this.AlbumArtPic.Location = new System.Drawing.Point(396, 488);
-            this.AlbumArtPic.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.AlbumArtPic.Location = new System.Drawing.Point(264, 317);
             this.AlbumArtPic.Name = "AlbumArtPic";
-            this.AlbumArtPic.Size = new System.Drawing.Size(285, 292);
+            this.AlbumArtPic.Size = new System.Drawing.Size(190, 190);
             this.AlbumArtPic.TabIndex = 17;
             this.AlbumArtPic.TabStop = false;
             this.AlbumArtPic.MouseUp += new System.Windows.Forms.MouseEventHandler(this.AlbumArtPic_MouseUp);
@@ -406,22 +378,30 @@
             // 
             this.PictureBoxContextMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.PictureBoxContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.EditPictureButton});
+            this.EditPictureButton,
+            this.FromInternetButton});
             this.PictureBoxContextMenu.Name = "PictureBoxContextMenu";
-            this.PictureBoxContextMenu.Size = new System.Drawing.Size(241, 67);
+            this.PictureBoxContextMenu.Size = new System.Drawing.Size(181, 70);
             // 
             // EditPictureButton
             // 
             this.EditPictureButton.Name = "EditPictureButton";
-            this.EditPictureButton.Size = new System.Drawing.Size(240, 30);
+            this.EditPictureButton.Size = new System.Drawing.Size(180, 22);
             this.EditPictureButton.Text = "Edit Picture";
             this.EditPictureButton.Click += new System.EventHandler(this.EditPictureButton_Click);
             // 
+            // FromInternetButton
+            // 
+            this.FromInternetButton.Name = "FromInternetButton";
+            this.FromInternetButton.Size = new System.Drawing.Size(180, 22);
+            this.FromInternetButton.Text = "From Internet";
+            this.FromInternetButton.Click += new System.EventHandler(this.FromInternetButton_Click);
+            // 
             // TagEditor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1452, 877);
+            this.ClientSize = new System.Drawing.Size(968, 570);
             this.Controls.Add(this.AlbumArtPic);
             this.Controls.Add(this.DGV);
             this.Controls.Add(this.SearchDatabaseButton);
@@ -443,7 +423,6 @@
             this.Controls.Add(this.TitleBox);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "TagEditor";
             this.Text = "Tag Editor";
             this.panel1.ResumeLayout(false);
@@ -493,5 +472,6 @@
         private System.Windows.Forms.PictureBox AlbumArtPic;
         private System.Windows.Forms.ContextMenuStrip PictureBoxContextMenu;
         private System.Windows.Forms.ToolStripMenuItem EditPictureButton;
+        private System.Windows.Forms.ToolStripMenuItem FromInternetButton;
     }
 }
