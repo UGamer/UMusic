@@ -16,9 +16,11 @@ namespace UMusic
     {
         public string url;
 
-        public Browser()
+        public Browser(string url)
         {
             InitializeComponent();
+
+            WebBrowser.Url = new Uri(url);
         }
 
         private void WebBrowser_Navigated(object sender, WebBrowserNavigatedEventArgs e)
