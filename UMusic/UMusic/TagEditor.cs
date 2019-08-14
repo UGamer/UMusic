@@ -394,7 +394,12 @@ namespace UMusic
 
         private void FromInternetButton_Click(object sender, EventArgs e)
         {
-            Browser browser = new Browser();
+            Browser browser;
+            if (AlbumBox.Text != "")
+                browser = new Browser("https://www.google.com/search?q=" + AlbumBox.Text + "&source=lnms&tbm=isch");
+            else
+                browser = new Browser("https://www.google.com/search?q=" + TitleBox.Text + "&source=lnms&tbm=isch");
+
             DialogResult dialogResult = browser.ShowDialog();
             if (dialogResult == DialogResult.Yes)
             {

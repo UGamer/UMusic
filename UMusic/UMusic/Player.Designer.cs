@@ -90,9 +90,9 @@
             // TitleLabel
             // 
             this.TitleLabel.AutoSize = true;
-            this.TitleLabel.Font = new System.Drawing.Font("Microsoft JhengHei", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TitleLabel.Font = new System.Drawing.Font("Century Gothic", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TitleLabel.ForeColor = System.Drawing.Color.White;
-            this.TitleLabel.Location = new System.Drawing.Point(0, 4);
+            this.TitleLabel.Location = new System.Drawing.Point(0, 6);
             this.TitleLabel.Name = "TitleLabel";
             this.TitleLabel.Size = new System.Drawing.Size(126, 30);
             this.TitleLabel.TabIndex = 0;
@@ -201,11 +201,11 @@
             // ArtistLabel
             // 
             this.ArtistLabel.AutoSize = true;
-            this.ArtistLabel.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ArtistLabel.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ArtistLabel.ForeColor = System.Drawing.Color.White;
             this.ArtistLabel.Location = new System.Drawing.Point(0, 4);
             this.ArtistLabel.Name = "ArtistLabel";
-            this.ArtistLabel.Size = new System.Drawing.Size(49, 20);
+            this.ArtistLabel.Size = new System.Drawing.Size(51, 21);
             this.ArtistLabel.TabIndex = 0;
             this.ArtistLabel.Text = "Artist";
             this.ArtistLabel.UseMnemonic = false;
@@ -264,11 +264,11 @@
             // AlbumLabel
             // 
             this.AlbumLabel.AutoSize = true;
-            this.AlbumLabel.Font = new System.Drawing.Font("Microsoft JhengHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AlbumLabel.Font = new System.Drawing.Font("Century Gothic", 12F);
             this.AlbumLabel.ForeColor = System.Drawing.Color.White;
             this.AlbumLabel.Location = new System.Drawing.Point(0, 4);
             this.AlbumLabel.Name = "AlbumLabel";
-            this.AlbumLabel.Size = new System.Drawing.Size(59, 20);
+            this.AlbumLabel.Size = new System.Drawing.Size(62, 21);
             this.AlbumLabel.TabIndex = 0;
             this.AlbumLabel.Text = "Album";
             this.AlbumLabel.UseMnemonic = false;
@@ -294,11 +294,11 @@
             // GenreLabel
             // 
             this.GenreLabel.AutoSize = true;
-            this.GenreLabel.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GenreLabel.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GenreLabel.ForeColor = System.Drawing.Color.White;
-            this.GenreLabel.Location = new System.Drawing.Point(0, 4);
+            this.GenreLabel.Location = new System.Drawing.Point(0, 6);
             this.GenreLabel.Name = "GenreLabel";
-            this.GenreLabel.Size = new System.Drawing.Size(45, 17);
+            this.GenreLabel.Size = new System.Drawing.Size(47, 17);
             this.GenreLabel.TabIndex = 0;
             this.GenreLabel.Text = "Genre";
             this.GenreLabel.UseMnemonic = false;
