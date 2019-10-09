@@ -57,6 +57,8 @@
             this.AddToPlaylistButton = new System.Windows.Forms.Button();
             this.AddToPlaylistStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.AudioVideoButton = new System.Windows.Forms.Button();
+            this.SpeedBar = new System.Windows.Forms.TrackBar();
+            this.SpeedLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.AlbumArtBox)).BeginInit();
             this.TitlePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VolumeBar)).BeginInit();
@@ -66,6 +68,7 @@
             this.GenrePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.wplayer)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SpeedBar)).BeginInit();
             this.SuspendLayout();
             // 
             // AlbumArtBox
@@ -392,12 +395,43 @@
             this.AudioVideoButton.UseVisualStyleBackColor = false;
             this.AudioVideoButton.Click += new System.EventHandler(this.AudioVideoButton_Click);
             // 
+            // SpeedBar
+            // 
+            this.SpeedBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.SpeedBar.LargeChange = 10;
+            this.SpeedBar.Location = new System.Drawing.Point(451, 276);
+            this.SpeedBar.Margin = new System.Windows.Forms.Padding(2);
+            this.SpeedBar.Maximum = 200;
+            this.SpeedBar.Minimum = 1;
+            this.SpeedBar.Name = "SpeedBar";
+            this.SpeedBar.Size = new System.Drawing.Size(391, 45);
+            this.SpeedBar.SmallChange = 5;
+            this.SpeedBar.TabIndex = 19;
+            this.SpeedBar.Value = 100;
+            this.SpeedBar.ValueChanged += new System.EventHandler(this.SpeedBar_ValueChanged);
+            this.SpeedBar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.SpeedBar_MouseDown);
+            this.SpeedBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.SpeedBar_MouseUp);
+            // 
+            // SpeedLabel
+            // 
+            this.SpeedLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.SpeedLabel.AutoSize = true;
+            this.SpeedLabel.ForeColor = System.Drawing.Color.White;
+            this.SpeedLabel.Location = new System.Drawing.Point(633, 313);
+            this.SpeedLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.SpeedLabel.Name = "SpeedLabel";
+            this.SpeedLabel.Size = new System.Drawing.Size(33, 13);
+            this.SpeedLabel.TabIndex = 20;
+            this.SpeedLabel.Text = "100%";
+            // 
             // Player
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(52)))), ((int)(((byte)(52)))));
             this.ClientSize = new System.Drawing.Size(998, 450);
+            this.Controls.Add(this.SpeedLabel);
+            this.Controls.Add(this.SpeedBar);
             this.Controls.Add(this.AudioVideoButton);
             this.Controls.Add(this.AddToPlaylistButton);
             this.Controls.Add(this.TagEditorButton);
@@ -435,6 +469,7 @@
             this.GenrePanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.wplayer)).EndInit();
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.SpeedBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -469,5 +504,7 @@
         private System.Windows.Forms.Button AddToPlaylistButton;
         private System.Windows.Forms.ContextMenuStrip AddToPlaylistStrip;
         private System.Windows.Forms.Button AudioVideoButton;
+        private System.Windows.Forms.TrackBar SpeedBar;
+        private System.Windows.Forms.Label SpeedLabel;
     }
 }

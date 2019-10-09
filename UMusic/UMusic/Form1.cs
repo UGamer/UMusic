@@ -250,11 +250,11 @@ namespace UMusic
             int index;
             DateTime fileCreated;
             TagLib.File currentFile;
-            Image albumArt = Image.FromFile(@"resources\Unknown Album Art.png");
+            // Image albumArt = Image.FromFile(@"resources\Unknown Album Art.png");
             MemoryStream ms;
 
             dataTable = new DataTable();
-            dataTable.Columns.Add("Album Art", typeof(Image));
+            // dataTable.Columns.Add("Album Art", typeof(Image));
             dataTable.Columns.Add("Title");
             dataTable.Columns.Add("Artist(s)");
             dataTable.Columns.Add("Album");
@@ -263,8 +263,8 @@ namespace UMusic
             dataTable.Columns.Add("Date Added");
             dataTable.Columns.Add("File");
 
-            Image albumArt2;
-            ArrayList albumArts = new ArrayList();
+            // Image albumArt2;
+            // ArrayList albumArts = new ArrayList();
             for (index = 0; index < files.Count; index++)
             {
                 try
@@ -283,7 +283,7 @@ namespace UMusic
                         mStream.Dispose();
                     }
                     else */
-                        dRow["Album Art"] = albumArt;
+                        // dRow["Album Art"] = albumArt;
                     
                     string title = currentFile.Tag.Title;
                     if (currentFile.Tag.Title == null)
@@ -365,8 +365,8 @@ namespace UMusic
 
             DGV.DataSource = dataTable;
 
-            DGV.Columns["Album Art"].Width = 50;
-            ((DataGridViewImageColumn)DGV.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Zoom;
+            // DGV.Columns["Album Art"].Width = 50;
+            // ((DataGridViewImageColumn)DGV.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Zoom;
 
             DGV.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             DGV.Columns["Artist(s)"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;

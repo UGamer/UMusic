@@ -58,7 +58,8 @@ namespace UMusic
         int volumeValue = 100;
         string settings;
 
-        bool grabbed = false;
+        bool progressGrabbed = false;
+        bool speedGrabbed = false;
 
         MiniPlayer miniPlayer;
         Form1 main;
@@ -684,10 +685,15 @@ namespace UMusic
 
         private void positionTimer_Tick(object sender, EventArgs e)
         {
-            if (grabbed == false)
+            if (progressGrabbed == false)
             {
                 try { ProgressBar.Value = (int)wplayer.Ctlcontrols.currentPosition; }
                 catch { ProgressBar.Value = 0; positionTimer.Stop(); this.Close(); }
+            }
+
+            if (!speedGrabbed)
+            {
+                wplayer.settings.rate = (double)SpeedBar.Value / 100;
             }
 
             int sec = 0;
@@ -712,7 +718,7 @@ namespace UMusic
                 CurrentTimeLabel.Text = h + ":" + m + ":" + s;
             }
 
-            if (grabbed == true)
+            if (progressGrabbed == true)
             {
                 sec = ProgressBar.Value;
 
@@ -870,12 +876,27 @@ namespace UMusic
 
         private void ProgressBar_MouseDown(object sender, MouseEventArgs e)
         {
-            grabbed = true;
+            progressGrabbed = true;
         }
 
         private void ProgressBar_MouseUp(object sender, MouseEventArgs e)
         {
-            grabbed = false;
+            progressGrabbed = false;
+        }
+
+        private void SpeedBar_ValueChanged(object sender, EventArgs e)
+        {
+            SpeedLabel.Text = SpeedBar.Value.ToString() + "%";
+        }
+
+        private void SpeedBar_MouseDown(object sender, MouseEventArgs e)
+        {
+            speedGrabbed = true;
+        }
+
+        private void SpeedBar_MouseUp(object sender, MouseEventArgs e)
+        {
+            speedGrabbed = false;
         }
 
         private void PlaylistButton_Click(object sender, EventArgs e)
