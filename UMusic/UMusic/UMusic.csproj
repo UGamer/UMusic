@@ -1,401 +1,345 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\CefSharp.WinForms.75.1.141\build\CefSharp.WinForms.props" Condition="Exists('..\packages\CefSharp.WinForms.75.1.141\build\CefSharp.WinForms.props')" />
-  <Import Project="..\packages\CefSharp.Common.75.1.141\build\CefSharp.Common.props" Condition="Exists('..\packages\CefSharp.Common.75.1.141\build\CefSharp.Common.props')" />
-  <Import Project="..\packages\cef.redist.x86.75.1.14\build\cef.redist.x86.props" Condition="Exists('..\packages\cef.redist.x86.75.1.14\build\cef.redist.x86.props')" />
-  <Import Project="..\packages\cef.redist.x64.75.1.14\build\cef.redist.x64.props" Condition="Exists('..\packages\cef.redist.x64.75.1.14\build\cef.redist.x64.props')" />
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4E2D3F15-CFD0-402B-BE83-2181697C7020}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{0A9893D3-FF1A-47FC-8BDC-3598CF583EAE}</ProjectGuid>
+    <OutputType>AppContainerExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UMusic</RootNamespace>
     <AssemblyName>UMusic</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
+    <PackageCertificateKeyFile>UMusic_TemporaryKey.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>NU1603;2008;</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <Optimize>true</Optimize>
+    <NoWarn>NU1603;2008;</NoWarn>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>NU1603;2008;</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>NU1603;2008;</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>NU1603;2008;</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>NU1603;2008;</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AngleSharp, Version=0.12.1.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
-      <HintPath>..\packages\AngleSharp.0.12.1\lib\net46\AngleSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="libvideo, Version=1.5.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VideoLibraryHIG.1.5.3\lib\netstandard1.1\libvideo.dll</HintPath>
-    </Reference>
-    <Reference Include="Lpfm.LastFmScrobbler, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lpfm.LastFmScrobbler.dll.1.3.0\lib\net40\Lpfm.LastFmScrobbler.dll</HintPath>
-    </Reference>
-    <Reference Include="MediaToolkit, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MediaToolkit.1.1.0.1\lib\net40\MediaToolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="MetaBrainz.MusicBrainz, Version=1.1.0.0, Culture=neutral, PublicKeyToken=be12cbb629c03021, processorArchitecture=MSIL">
-      <HintPath>..\packages\MetaBrainz.MusicBrainz.1.1.3\lib\net45\MetaBrainz.MusicBrainz.dll</HintPath>
-    </Reference>
-    <Reference Include="MetaBrainz.MusicBrainz.CoverArt, Version=1.1.0.0, Culture=neutral, PublicKeyToken=be12cbb629c03021, processorArchitecture=MSIL">
-      <HintPath>..\packages\MetaBrainz.MusicBrainz.CoverArt.1.1.1\lib\net45\MetaBrainz.MusicBrainz.CoverArt.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
-    </Reference>
-    <Reference Include="NAudio, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.1.9.0\lib\net35\NAudio.dll</HintPath>
-    </Reference>
-    <Reference Include="NAudio.Lame, Version=1.0.9.26885, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.Lame.1.0.9\lib\net40\NAudio.Lame.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="policy.2.0.taglib-sharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
-      <HintPath>..\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
-    </Reference>
-    <Reference Include="System">
-      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
-    </Reference>
-    <Reference Include="System.AppContext, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.AppContext.4.3.0\lib\net46\System.AppContext.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Console, Version=4.0.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Console.4.3.1\lib\net46\System.Console.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Core" />
-    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Globalization.Calendars, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Globalization.Calendars.4.3.0\lib\net46\System.Globalization.Calendars.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.FileSystem, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.FileSystem.4.3.0\lib\net46\System.IO.FileSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Net.Sockets, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Net.Sockets.4.3.0\lib\net46\System.Net.Sockets.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.4.3.1\lib\net462\System.Runtime.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Extensions, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.Extensions.4.3.1\lib\net462\System.Runtime.Extensions.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.1\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.2\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Text.Encoding.CodePages, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Encoding.CodePages.4.5.1\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Text.RegularExpressions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.RegularExpressions.4.3.1\lib\net463\System.Text.RegularExpressions.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Xml.ReaderWriter.4.3.1\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="taglib-sharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
-      <HintPath>..\packages\taglib.2.1.0.0\lib\taglib-sharp.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>6.2.8</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Services.Store.SDK">
+      <Version>10.1705.16001</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp">
+      <Version>5.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
+      <Version>5.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Animations">
+      <Version>5.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
+      <Version>5.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls.DataGrid">
+      <Version>5.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.UI.Xaml">
+      <Version>2.1.190606001</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
+      <Version>2.0.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Browser.cs">
-      <SubType>Form</SubType>
+    <PRIResource Include="Strings\en-us\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Activation\ActivationHandler.cs" />
+    <Compile Include="BackgroundTasks\BackgroundTask.cs" />
+    <Compile Include="BackgroundTasks\BackgroundTask1.cs" />
+    <Compile Include="Behaviors\NavigationViewHeaderBehavior.cs" />
+    <Compile Include="Behaviors\NavigationViewHeaderMode.cs" />
+    <Compile Include="Helpers\NavHelper.cs" />
+    <Compile Include="Helpers\SettingsStorageExtensions.cs" />
+    <Compile Include="Services\ActivationService.cs" />
+    <Compile Include="Activation\DefaultActivationHandler.cs" />
+    <Compile Include="Services\BackgroundTaskService.cs" />
+    <Compile Include="Services\DevCenterNotificationsService.cs" />
+    <Compile Include="Services\FirstRunDisplayService.cs" />
+    <Compile Include="Services\LiveTileService.cs" />
+    <Compile Include="Services\LiveTileService.Samples.cs" />
+    <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="Services\ThemeSelectorService.cs" />
+    <Compile Include="Services\ToastNotificationsService.cs" />
+    <Compile Include="Services\ToastNotificationsService.Samples.cs" />
+    <Compile Include="Services\ViewLifetimeControl.cs" />
+    <Compile Include="Services\WhatsNewDisplayService.cs" />
+    <Compile Include="Services\WindowManagerService.cs" />
+    <Compile Include="Views\AlbumsDetailPage.xaml.cs">
+      <DependentUpon>AlbumsDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Browser.Designer.cs">
-      <DependentUpon>Browser.cs</DependentUpon>
+    <Compile Include="Views\AlbumsPage.xaml.cs">
+      <DependentUpon>AlbumsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Database.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Views\ArtistsDetailPage.xaml.cs">
+      <DependentUpon>ArtistsDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Database.Designer.cs">
-      <DependentUpon>Database.cs</DependentUpon>
+    <Compile Include="Views\ArtistsPage.xaml.cs">
+      <DependentUpon>ArtistsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DownloadPrompt.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Views\FirstRunDialog.xaml.cs">
+      <DependentUpon>FirstRunDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DownloadPrompt.Designer.cs">
-      <DependentUpon>DownloadPrompt.cs</DependentUpon>
+    <Compile Include="Views\GenresDetailPage.xaml.cs">
+      <DependentUpon>GenresDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Views\GenresPage.xaml.cs">
+      <DependentUpon>GenresPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Views\HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="globalKeyboardHook.cs" />
-    <Compile Include="MenuHandler.cs" />
-    <Compile Include="MiniPlayer.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Views\ListLayoutPage.xaml.cs">
+      <DependentUpon>ListLayoutPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MiniPlayer.Designer.cs">
-      <DependentUpon>MiniPlayer.cs</DependentUpon>
+    <Compile Include="Views\OnlinePage.xaml.cs">
+      <DependentUpon>OnlinePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PictureEditor.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Views\PlayerPage.xaml.cs">
+      <DependentUpon>PlayerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PictureEditor.Designer.cs">
-      <DependentUpon>PictureEditor.cs</DependentUpon>
+    <Compile Include="Views\PlaylistsDetailPage.xaml.cs">
+      <DependentUpon>PlaylistsDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Player.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Views\PlaylistsPage.xaml.cs">
+      <DependentUpon>PlaylistsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Player.Designer.cs">
-      <DependentUpon>Player.cs</DependentUpon>
+    <Compile Include="Views\ShellPage.xaml.cs">
+      <DependentUpon>ShellPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Playlist.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Views\SongsPage.xaml.cs">
+      <DependentUpon>SongsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Playlist.Designer.cs">
-      <DependentUpon>Playlist.cs</DependentUpon>
+    <Compile Include="Views\WhatsNewDialog.xaml.cs">
+      <DependentUpon>WhatsNewDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SavePanel.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SavePanel.Designer.cs">
-      <DependentUpon>SavePanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Settings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Settings.Designer.cs">
-      <DependentUpon>Settings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TagEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TagEditor.Designer.cs">
-      <DependentUpon>TagEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Theme.cs" />
-    <EmbeddedResource Include="Browser.resx">
-      <DependentUpon>Browser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Database.resx">
-      <DependentUpon>Database.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DownloadPrompt.resx">
-      <DependentUpon>DownloadPrompt.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MiniPlayer.resx">
-      <DependentUpon>MiniPlayer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PictureEditor.resx">
-      <DependentUpon>PictureEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Player.resx">
-      <DependentUpon>Player.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Playlist.resx">
-      <DependentUpon>Playlist.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Styles\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <EmbeddedResource Include="SavePanel.resx">
-      <DependentUpon>SavePanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Settings.resx">
-      <DependentUpon>Settings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TagEditor.resx">
-      <DependentUpon>TagEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
+    </Page>
+    <Page Include="Styles\_Colors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\_FontSizes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\_Thickness.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\TextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AlbumsDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AlbumsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ArtistsDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ArtistsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FirstRunDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\GenresDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\GenresPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\HomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ListLayoutPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\OnlinePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PlayerPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PlaylistsDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PlaylistsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ShellPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SongsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\WhatsNewDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="AxWMPLib">
-      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>aximp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
-    <COMReference Include="WMPLib">
-      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
+    <Compile Include="Helpers\ResourceExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
+    <Content Include="Assets\BadgeLogo.scale-200.png" />
+    <Content Include="Assets\Square310x310Logo.scale-200.png" />
+    <Content Include="Assets\Square71x71Logo.scale-100.png" />
+    <Content Include="Properties\Default.rd.xml" />
+    <Content Include="Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="icon.ico" />
-    <None Include="Resources\Load.png" />
-    <None Include="Resources\Google.png" />
-    <None Include="Resources\YouTube.png" />
-    <None Include="Resources\SoundCloud.png" />
-    <None Include="Resources\Spotify.png" />
-    <None Include="Resources\YouTube Music.png" />
-    <None Include="Resources\logo.png" />
+    <None Include=".editorconfig" />
+    <None Include="UMusic_TemporaryKey.pfx" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\NAudio.Lame.1.0.9\build\NAudio.Lame.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NAudio.Lame.1.0.9\build\NAudio.Lame.targets'))" />
-    <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets'))" />
-    <Error Condition="!Exists('..\packages\cef.redist.x64.75.1.14\build\cef.redist.x64.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x64.75.1.14\build\cef.redist.x64.props'))" />
-    <Error Condition="!Exists('..\packages\cef.redist.x86.75.1.14\build\cef.redist.x86.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x86.75.1.14\build\cef.redist.x86.props'))" />
-    <Error Condition="!Exists('..\packages\CefSharp.Common.75.1.141\build\CefSharp.Common.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.75.1.141\build\CefSharp.Common.props'))" />
-    <Error Condition="!Exists('..\packages\CefSharp.Common.75.1.141\build\CefSharp.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.75.1.141\build\CefSharp.Common.targets'))" />
-    <Error Condition="!Exists('..\packages\CefSharp.WinForms.75.1.141\build\CefSharp.WinForms.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.WinForms.75.1.141\build\CefSharp.WinForms.props'))" />
-    <Error Condition="!Exists('..\packages\CefSharp.WinForms.75.1.141\build\CefSharp.WinForms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.WinForms.75.1.141\build\CefSharp.WinForms.targets'))" />
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="Microsoft.Services.Store.Engagement, Version=10.0">
+      <Name>Microsoft Engagement Framework</Name>
+    </SDKReference>
+    <SDKReference Include="Microsoft.VCLibs, Version=14.0">
+      <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
+    </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UMusic.Core\UMusic.Core.csproj">
+      <Project>{4DA1B681-1BB3-4D76-B2CE-6499C49A5846}</Project>
+      <Name>UMusic.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
   </Target>
-  <Import Project="..\packages\NAudio.Lame.1.0.9\build\NAudio.Lame.targets" Condition="Exists('..\packages\NAudio.Lame.1.0.9\build\NAudio.Lame.targets')" />
-  <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
-  <Import Project="..\packages\CefSharp.Common.75.1.141\build\CefSharp.Common.targets" Condition="Exists('..\packages\CefSharp.Common.75.1.141\build\CefSharp.Common.targets')" />
-  <Import Project="..\packages\CefSharp.WinForms.75.1.141\build\CefSharp.WinForms.targets" Condition="Exists('..\packages\CefSharp.WinForms.75.1.141\build\CefSharp.WinForms.targets')" />
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>
