@@ -445,7 +445,7 @@ namespace UMusic
 
             for (index = 0; index < value.Length; index++)
             {
-                try
+                //try
                 {
                     value[index] = DGV.Rows[index].Cells["File"].Value;
                     fileName[index] = value[index].ToString();
@@ -474,7 +474,7 @@ namespace UMusic
                         }
                     }
                 }
-                catch { }
+                //catch { }
             }
 
             bool wasShuffling = false;

@@ -93,7 +93,8 @@ namespace UMusic
 
             this.filePath = filePath;
             wplayer.CurrentPlaylistChange += wplayer_CurrentPlaylistChange;
-            playlist = wplayer.playlistCollection.newPlaylist("myplaylist");
+            
+            playlist = wplayer.currentPlaylist;
             
             PlaySong(filePath, false);
 
