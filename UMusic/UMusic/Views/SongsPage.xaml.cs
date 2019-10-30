@@ -8,8 +8,11 @@ using System.Runtime.CompilerServices;
 using UMusic.Core.Models;
 using UMusic.Core.Services;
 
+using Windows.Storage;
+
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+
 
 namespace UMusic.Views
 {
@@ -31,10 +34,27 @@ namespace UMusic.Views
 
             // TODO WTS: Replace this with your actual data
 
-            string[] tempPaths = { @"E:\Music\Google Drive (ijustwannaseemyfamily@gmail.com)\music (1)\", @"E:\Music\Google Drive (ijustwannaseemyfamily@gmail.com)\music (1)\download\" };
-            // string[] tempPaths = { @"C:\Users\itsug\Music\" };
+            //string[] tempPaths = { @"E:\Music\Google Drive (ijustwannaseemyfamily@gmail.com)\music (1)\", @"E:\Music\Google Drive (ijustwannaseemyfamily@gmail.com)\music (1)\download\" };
+            string[] tempPaths = { @"C:\Users\itsug\Music\" };
 
-            ArrayList files = SongDatabase.GetFiles(tempPaths);
+            ArrayList files = new ArrayList();
+
+            /*
+            foreach (string path in tempPaths)
+            {
+                string[] pathFiles = Directory.GetFiles(path);
+
+                foreach (string pathFile in pathFiles)
+                {
+                    files.Add(pathFile);
+                }
+            }
+            */
+
+            var musicLibrary = await StorageLibrary.GetLibraryAsync(KnownLibraryId.Music);
+            Console.WriteLine(musicLibrary.SaveFolder.Path);
+
+            files.Add(@"E:\Music\Google Drive (ijustwannaseemyfamily@gmail.com)\music (1)\download\ILLENIUM - Good Things Fall Apart (Tiesto Remix) ft. Jon Bellion.mp3");
 
             Song song;
             TagLib.File tagFile;
