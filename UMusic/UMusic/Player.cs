@@ -694,7 +694,7 @@ namespace UMusic
 
             if (!speedGrabbed)
             {
-                wplayer.settings.rate = (double)SpeedBar.Value / 100;
+                try { wplayer.settings.rate = (double)SpeedBar.Value / 100; } catch { }
             }
 
             int sec = 0;
