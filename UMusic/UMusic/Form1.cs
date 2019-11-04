@@ -330,6 +330,7 @@ namespace UMusic
             // if (settings.IndexOf("[Album Art]\nVisible = True") != -1)
                 // dataTable.Columns.Add("Album Art", typeof(byte[]));
             
+            /*
             for (int r = 0; r < height; r++)
             {
                 if (files[r].ToString().IndexOf(".jpg") == -1)
@@ -340,7 +341,6 @@ namespace UMusic
                     
                 }
 
-                /*
                 for (int x = 0; x < dataTable.Rows.Count; x++)
                 {
                     try
@@ -360,8 +360,8 @@ namespace UMusic
                         dataTable.Rows[x][0] = imageToByteArray(albumArt);
                     }
                 }
-                */
             }
+            */
 
             DGV.DataSource = dataTable;
 
@@ -375,7 +375,7 @@ namespace UMusic
             DGV.Columns["Genre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             DGV.Columns["Date Added"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             DGV.Columns["File"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            
+
             settings = File.ReadAllText("settings.txt", Encoding.UTF8);
 
             int sortColumnIndex = settings.IndexOf("SortBy=");
@@ -401,6 +401,15 @@ namespace UMusic
                             DGV.Sort(DGV.Columns[index], ListSortDirection.Descending);
                     }
                     catch { }
+                }
+            }
+
+            for (index = 0; index < DGV.Rows.Count; index++)
+            {
+                if (DGV.Rows[index].Cells["File"].Value.ToString().IndexOf(".jpg") != -1)
+                {
+                    DGV.Rows.RemoveAt(index);
+                    index--;
                 }
             }
         }
@@ -501,9 +510,14 @@ namespace UMusic
             {
                 try
                 {
-                    this.DGV.Rows[e.RowIndex].Selected = true;
+                   // this.DGV.Rows[e.RowIndex].Selected = true;
                     this.rowIndex = e.RowIndex;
-                    this.DGV.CurrentCell = this.DGV.Rows[e.RowIndex].Cells["Title"];
+
+                    /*
+                    if (DGV.SelectedRows.Count <= 1)
+                        DGV.CurrentCell = DGV.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                    */
+
                     this.LocalContextMenu.Show(this.DGV, e.Location);
                     LocalContextMenu.Show(Cursor.Position);
                 }
@@ -514,28 +528,31 @@ namespace UMusic
         private void addToQueueToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string fileName;
-            object value = DGV.Rows[this.rowIndex].Cells["File"].Value;
-            fileName = value.ToString();
+            for (int index = DGV.SelectedRows.Count - 1; index != -1; index--)
+            {
+                Console.WriteLine("Gamig");
+                fileName = DGV.SelectedRows[index].Cells["File"].Value.ToString();
 
-            try
-            {
-                player.Show();
-                WMPLib.IWMPMedia newSong = player.wplayer.newMedia(fileName);
-                player.wplayer.currentPlaylist.appendItem(newSong);
-            }
-            catch
-            {
                 try
                 {
                     player.Show();
                     WMPLib.IWMPMedia newSong = player.wplayer.newMedia(fileName);
-                    player.playlist.appendItem(newSong);
-                    player.wplayer.currentPlaylist = player.playlist;
+                    player.wplayer.currentPlaylist.appendItem(newSong);
                 }
                 catch
                 {
-                    player = new Player(fileName, this);
-                    player.Show();
+                    try
+                    {
+                        player.Show();
+                        WMPLib.IWMPMedia newSong = player.wplayer.newMedia(fileName);
+                        player.playlist.appendItem(newSong);
+                        player.wplayer.currentPlaylist = player.playlist;
+                    }
+                    catch
+                    {
+                        player = new Player(fileName, this);
+                        player.Show();
+                    }
                 }
             }
         }
