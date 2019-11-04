@@ -92,7 +92,8 @@ namespace Animation
             HomePanel.Visible = false;
             ListPanel.Visible = true;
 
-            ListArtBox.BackgroundImage = Image.FromFile(@"resources\DefaultAlbumArt.png");
+            try { ListArtBox.BackgroundImage = Image.FromFile(@"resources\DefaultAlbumArt.png"); }
+            catch { MessageBox.Show("File \"resources\\DefaultAlbumArt.png\" not found.", "File Not Found"); }
 
             LoadingForm loadingForm = new LoadingForm(this);
             try { loadingForm.Show(); } catch { }
