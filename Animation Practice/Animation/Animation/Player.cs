@@ -31,8 +31,6 @@ namespace Animation
         {
             this.refer = refer;
 
-            
-
             positionTimer = new Timer();
             positionTimer.Interval = 500;
             positionTimer.Elapsed += PositionTimer_Elapsed;
@@ -42,8 +40,7 @@ namespace Animation
 
         private void PositionTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            Console.WriteLine(playlist.Count);
-            SetProgressBarValue(Convert.ToInt32(playlist[playlistIndex].CurrentTime.TotalSeconds));
+            try { SetProgressBarValue(Convert.ToInt32(playlist[playlistIndex].CurrentTime.TotalSeconds)); } catch { }
 
             // refer.BarProgressSlider.Value = Convert.ToInt32(playlist[playlistIndex].CurrentTime.TotalSeconds);
         }
@@ -79,13 +76,26 @@ namespace Animation
 
         public void PreviousTrack()
         {
+            bool wasPlaying = playing;
+            playing = false;
             playlistIndex -= 2;
             NextSong();
+
+            if (wasPlaying)
+                Play();
         }
 
         public void NextTrack()
         {
+            bool wasPlaying = playing;
+            playing = false;
+            playlistIndex++;
             NextSong();
+            
+            if (wasPlaying)
+                Play();
+
+            Console.WriteLine(playlistIndex);
         }
 
         public void ShuffleToggle()
@@ -95,6 +105,9 @@ namespace Animation
 
         private void InitializeSong()
         {
+            outputDevice = new WaveOutEvent();
+            outputDevice.PlaybackStopped += OnPlaybackStopped;
+
             outputDevice.Init(playlist[playlistIndex]);
             if (playing)
                 outputDevice.Play();
@@ -112,7 +125,6 @@ namespace Animation
             // Set current and max label positions
         }
 
-
         public void NewPlaylist(string[] files)
         {
             for (int index = 0; index < files.Length; index++)
@@ -123,15 +135,13 @@ namespace Animation
 
         public void NextSong()
         {
+            outputDevice.Stop();
+
             outputDevice = new WaveOutEvent();
             outputDevice.PlaybackStopped += OnPlaybackStopped;
 
-            if (!playing)
-                InitializeSong();
-
             if (playlistIndex < playlist.Count)
             {
-                playlistIndex++;
                 InitializeSong();
             }
             else if (loop)
@@ -147,7 +157,11 @@ namespace Animation
 
         private void OnPlaybackStopped(object sender, StoppedEventArgs e)
         {
-            NextSong();
+            if (playing)
+            {
+                playlistIndex++;
+                NextSong();
+            }
         }
 
         delegate void SetValueCallback(int value);

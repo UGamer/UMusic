@@ -136,19 +136,14 @@ namespace Animation
 
         private void BarPausePlayButton_Click(object sender, EventArgs e)
         {
-            try
+            // try
             {
                 if (player.playing)
                     player.Pause();
                 else
                     player.Play();
             }
-            catch (NullReferenceException) { }
-        }
-
-        public void SetProgressBarValue(int value)
-        {
-            
+            // catch (NullReferenceException) { }
         }
 
         private void BarPreviousButton_Click(object sender, EventArgs e)
