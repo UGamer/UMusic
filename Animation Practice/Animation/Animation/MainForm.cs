@@ -91,7 +91,8 @@ namespace Animation
             HomePanel.Visible = false;
             ListPanel.Visible = true;
 
-            ListArtBox.BackgroundImage = Image.FromFile(@"resources\DefaultAlbumArt.png");
+            try { ListArtBox.BackgroundImage = Image.FromFile(@"resources\DefaultAlbumArt.png"); }
+            catch { MessageBox.Show("File \"resources\\DefaultAlbumArt.png\" not found.", "File Not Found"); }
 
             LoadingForm loadingForm = new LoadingForm(this);
             try { loadingForm.Show(); } catch { }
@@ -148,6 +149,16 @@ namespace Animation
         public void SetProgressBarValue(int value)
         {
             
+        }
+
+        private void BarPreviousButton_Click(object sender, EventArgs e)
+        {
+            player.PreviousTrack();
+        }
+
+        private void BarNextButton_Click(object sender, EventArgs e)
+        {
+            player.NextTrack();
         }
     }
 }

@@ -31,8 +31,7 @@ namespace Animation
         {
             this.refer = refer;
 
-            outputDevice = new WaveOutEvent();
-            outputDevice.PlaybackStopped += OnPlaybackStopped;
+            
 
             positionTimer = new Timer();
             positionTimer.Interval = 500;
@@ -62,12 +61,15 @@ namespace Animation
                 outputDevice.Play();
                 playing = true;
             }
+
+            refer.BarPausePlayButton.Text = "||";
         }
 
         public void Pause()
         {
             outputDevice.Pause();
             playing = false;
+            refer.BarPausePlayButton.Text = ">";
         }
 
         public void LoopToggle()
@@ -77,12 +79,13 @@ namespace Animation
 
         public void PreviousTrack()
         {
-            //
+            playlistIndex -= 2;
+            NextSong();
         }
 
         public void NextTrack()
         {
-            //
+            NextSong();
         }
 
         public void ShuffleToggle()
@@ -93,6 +96,8 @@ namespace Animation
         private void InitializeSong()
         {
             outputDevice.Init(playlist[playlistIndex]);
+            if (playing)
+                outputDevice.Play();
 
             // Set progress bar value and maximum
             SetProgressBarValue(0);
@@ -112,10 +117,15 @@ namespace Animation
         {
             for (int index = 0; index < files.Length; index++)
                 playlist.Add(new AudioFileReader(files[index]));
+
+            playlistIndex = 0;
         }
 
         public void NextSong()
         {
+            outputDevice = new WaveOutEvent();
+            outputDevice.PlaybackStopped += OnPlaybackStopped;
+
             if (!playing)
                 InitializeSong();
 
