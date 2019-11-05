@@ -82,8 +82,7 @@ namespace Animation
 
                     SettingsButton.Width += 3;
                     AboutButton.Width += 3;
-                }
-                    
+                } 
             }
         }
 
@@ -92,8 +91,7 @@ namespace Animation
             HomePanel.Visible = false;
             ListPanel.Visible = true;
 
-            try { ListArtBox.BackgroundImage = Image.FromFile(@"resources\DefaultAlbumArt.png"); }
-            catch { MessageBox.Show("File \"resources\\DefaultAlbumArt.png\" not found.", "File Not Found"); }
+            ListArtBox.BackgroundImage = Image.FromFile(@"resources\DefaultAlbumArt.png");
 
             LoadingForm loadingForm = new LoadingForm(this);
             try { loadingForm.Show(); } catch { }
@@ -105,9 +103,51 @@ namespace Animation
             ListPanel.Visible = false;
         }
 
-        private void ListDGV_MouseEnter(object sender, EventArgs e)
+        private void ListDGV_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex != -1)
+            {
+                for (int index = 0; index < ListDGV.Rows[e.RowIndex].Cells.Count; index++)
+                    ListDGV.Rows[e.RowIndex].Cells[index].Style.BackColor = Color.FromArgb(30, 30, 30);
+            }
+        }
 
+        private void ListDGV_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex != -1)
+            {
+                for (int index = 0; index < ListDGV.Rows[e.RowIndex].Cells.Count; index++)
+                    ListDGV.Rows[e.RowIndex].Cells[index].Style.BackColor = Color.FromArgb(64, 64, 64);
+            }
+        }
+
+        private void ListDGV_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            player = new Player(this);
+
+            string[] files = new string[ListDGV.Rows.Count];
+
+            for (int index = 0; index < ListDGV.Rows.Count; index++)
+                files[index] = ListDGV.Rows[index].Cells["File"].Value.ToString();
+
+            player.NewPlaylist(files);
+        }
+
+        private void BarPausePlayButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (player.playing)
+                    player.Pause();
+                else
+                    player.Play();
+            }
+            catch (NullReferenceException) { }
+        }
+
+        public void SetProgressBarValue(int value)
+        {
+            
         }
     }
 }

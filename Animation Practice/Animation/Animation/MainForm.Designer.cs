@@ -44,11 +44,11 @@
             this.OnlineButton = new System.Windows.Forms.Button();
             this.HomeButton = new System.Windows.Forms.Button();
             this.MainPanel = new System.Windows.Forms.Panel();
-            this.HomePanel = new System.Windows.Forms.Panel();
-            this.HelloLabel = new System.Windows.Forms.Label();
             this.ListPanel = new System.Windows.Forms.Panel();
             this.ListArtBox = new System.Windows.Forms.PictureBox();
             this.ListDGV = new System.Windows.Forms.DataGridView();
+            this.HomePanel = new System.Windows.Forms.Panel();
+            this.HelloLabel = new System.Windows.Forms.Label();
             this.PlayerBar = new System.Windows.Forms.Panel();
             this.BarVolumeSlider = new System.Windows.Forms.TrackBar();
             this.BarProgressSlider = new System.Windows.Forms.TrackBar();
@@ -62,10 +62,10 @@
             this.BarAlbumArt = new System.Windows.Forms.PictureBox();
             this.Drawer.SuspendLayout();
             this.MainPanel.SuspendLayout();
-            this.HomePanel.SuspendLayout();
             this.ListPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ListArtBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ListDGV)).BeginInit();
+            this.HomePanel.SuspendLayout();
             this.PlayerBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BarVolumeSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BarProgressSlider)).BeginInit();
@@ -192,28 +192,6 @@
             this.MainPanel.Size = new System.Drawing.Size(750, 537);
             this.MainPanel.TabIndex = 2;
             // 
-            // HomePanel
-            // 
-            this.HomePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.HomePanel.Controls.Add(this.HelloLabel);
-            this.HomePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.HomePanel.Location = new System.Drawing.Point(0, 0);
-            this.HomePanel.Name = "HomePanel";
-            this.HomePanel.Size = new System.Drawing.Size(750, 537);
-            this.HomePanel.TabIndex = 0;
-            this.HomePanel.Visible = false;
-            // 
-            // HelloLabel
-            // 
-            this.HelloLabel.AutoSize = true;
-            this.HelloLabel.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HelloLabel.ForeColor = System.Drawing.Color.White;
-            this.HelloLabel.Location = new System.Drawing.Point(8, 13);
-            this.HelloLabel.Name = "HelloLabel";
-            this.HelloLabel.Size = new System.Drawing.Size(230, 38);
-            this.HelloLabel.TabIndex = 0;
-            this.HelloLabel.Text = "Hello, Merrek.";
-            // 
             // ListPanel
             // 
             this.ListPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -239,6 +217,7 @@
             this.ListDGV.AllowUserToAddRows = false;
             this.ListDGV.AllowUserToDeleteRows = false;
             this.ListDGV.AllowUserToOrderColumns = true;
+            this.ListDGV.AllowUserToResizeRows = false;
             this.ListDGV.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(96)))), ((int)(((byte)(96)))));
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.Black;
@@ -276,7 +255,31 @@
             this.ListDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.ListDGV.Size = new System.Drawing.Size(750, 372);
             this.ListDGV.TabIndex = 0;
-            this.ListDGV.MouseEnter += new System.EventHandler(this.ListDGV_MouseEnter);
+            this.ListDGV.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ListDGV_CellClick);
+            this.ListDGV.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.ListDGV_CellMouseEnter);
+            this.ListDGV.CellMouseLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.ListDGV_CellMouseLeave);
+            // 
+            // HomePanel
+            // 
+            this.HomePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.HomePanel.Controls.Add(this.HelloLabel);
+            this.HomePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.HomePanel.Location = new System.Drawing.Point(0, 0);
+            this.HomePanel.Name = "HomePanel";
+            this.HomePanel.Size = new System.Drawing.Size(750, 537);
+            this.HomePanel.TabIndex = 0;
+            this.HomePanel.Visible = false;
+            // 
+            // HelloLabel
+            // 
+            this.HelloLabel.AutoSize = true;
+            this.HelloLabel.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HelloLabel.ForeColor = System.Drawing.Color.White;
+            this.HelloLabel.Location = new System.Drawing.Point(8, 13);
+            this.HelloLabel.Name = "HelloLabel";
+            this.HelloLabel.Size = new System.Drawing.Size(230, 38);
+            this.HelloLabel.TabIndex = 0;
+            this.HelloLabel.Text = "Hello, Merrek.";
             // 
             // PlayerBar
             // 
@@ -337,6 +340,7 @@
             this.BarPausePlayButton.TabIndex = 5;
             this.BarPausePlayButton.Text = ">";
             this.BarPausePlayButton.UseVisualStyleBackColor = true;
+            this.BarPausePlayButton.Click += new System.EventHandler(this.BarPausePlayButton_Click);
             // 
             // BarNextButton
             // 
@@ -388,6 +392,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(800, 592);
             this.Controls.Add(this.PlayerBar);
             this.Controls.Add(this.MainPanel);
@@ -397,11 +402,11 @@
             this.Text = "UMusic";
             this.Drawer.ResumeLayout(false);
             this.MainPanel.ResumeLayout(false);
-            this.HomePanel.ResumeLayout(false);
-            this.HomePanel.PerformLayout();
             this.ListPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ListArtBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ListDGV)).EndInit();
+            this.HomePanel.ResumeLayout(false);
+            this.HomePanel.PerformLayout();
             this.PlayerBar.ResumeLayout(false);
             this.PlayerBar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BarVolumeSlider)).EndInit();
@@ -432,15 +437,15 @@
         private System.Windows.Forms.PictureBox ListArtBox;
         private System.Windows.Forms.Panel PlayerBar;
         private System.Windows.Forms.TrackBar BarVolumeSlider;
-        private System.Windows.Forms.TrackBar BarProgressSlider;
         private System.Windows.Forms.Button BarLoopButton;
         private System.Windows.Forms.Button BarPreviousButton;
         private System.Windows.Forms.Button BarPausePlayButton;
         private System.Windows.Forms.Button BarNextButton;
         private System.Windows.Forms.Button BarShuffleButton;
-        private System.Windows.Forms.Label BarArtistLabel;
-        private System.Windows.Forms.Label BarTitleLabel;
-        private System.Windows.Forms.PictureBox BarAlbumArt;
+        public System.Windows.Forms.TrackBar BarProgressSlider;
+        public System.Windows.Forms.Label BarArtistLabel;
+        public System.Windows.Forms.Label BarTitleLabel;
+        public System.Windows.Forms.PictureBox BarAlbumArt;
     }
 }
 
