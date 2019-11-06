@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Timers;
@@ -94,18 +95,24 @@ namespace Animation
             SetProgressBarValue(0);
             SetProgressBarMaximum(Convert.ToInt32(Playlist[PlaylistIndex].Audio.TotalTime.TotalSeconds));
 
-            // Fill out title and artist labels
+            // Fill out bar labels and album art
             
             SetTitleLabels(Playlist[PlaylistIndex].Title);
             SetArtistLabels(Playlist[PlaylistIndex].Artist);
 
+            SetAlbumArt(Playlist[PlaylistIndex].AlbumArt);
+
             // Set current and max label positions
         }
 
-        public void NewPlaylist(string[] files)
+        public void NewPlaylist(Song[] songs)
         {
-            for (int index = 0; index < files.Length; index++)
-                Playlist[PlaylistIndex].Audio = new AudioFileReader(files[index]);
+            for (int index = 0; index < songs.Length; index++)
+            {
+                songs[index].Audio = new AudioFileReader(songs[index].Path);
+
+                Playlist.Add(songs[index]);
+            }
 
             PlaylistIndex = 0;
         }
@@ -144,6 +151,7 @@ namespace Animation
 
         delegate void SetValueCallback(int value);
         delegate void SetTextCallback(string text);
+        delegate void SetImageCallback(Image image);
 
         private void SetProgressBarValue(int value)
         {
@@ -201,6 +209,21 @@ namespace Animation
             {
                 Refer.BarArtistLabel.Text = text;
                 // Refer.FullArtistLabel.Text = text;
+            }
+        }
+
+        private void SetAlbumArt(Image image)
+        {
+            if (this.Refer.BarAlbumArt.InvokeRequired)
+            {
+                SetImageCallback d = new SetImageCallback(SetAlbumArt);
+                Refer.BarAlbumArt.Invoke(d, new object[] { image });
+                // Refer.FullAlbumArt.Invoke(d, new object[] { image });
+            }
+            else
+            {
+                Refer.BarAlbumArt.BackgroundImage = image;
+                // Refer.FullAlbumArt.BackgroundImage = image;
             }
         }
     }

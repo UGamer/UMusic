@@ -133,6 +133,7 @@ namespace Animation
         private void ListDGV_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             NewPlaylist();
+            Player.Play();
         }
 
         private void BarPausePlayButton_Click(object sender, EventArgs e)
@@ -154,12 +155,14 @@ namespace Animation
         {
             Player = new Player(this);
 
-            string[] files = new string[ListDGV.Rows.Count];
+            Song[] songs = new Song[ListDGV.Rows.Count];
 
             for (int index = 0; index < ListDGV.Rows.Count; index++)
-                files[index] = ListDGV.Rows[index].Cells["File"].Value.ToString();
+            {
+                songs[index] = (Song)ListDGV.Rows[index].Cells["Object"].Value;
+            }
 
-            Player.NewPlaylist(files);
+            Player.NewPlaylist(songs);
         }
 
         private void BarPreviousButton_Click(object sender, EventArgs e)
