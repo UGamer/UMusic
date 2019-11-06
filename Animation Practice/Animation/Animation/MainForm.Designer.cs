@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.DrawerButton = new System.Windows.Forms.Button();
             this.Drawer = new System.Windows.Forms.Panel();
             this.SettingsButton = new System.Windows.Forms.Button();
@@ -60,6 +60,9 @@
             this.BarArtistLabel = new System.Windows.Forms.Label();
             this.BarTitleLabel = new System.Windows.Forms.Label();
             this.BarAlbumArt = new System.Windows.Forms.PictureBox();
+            this.ListTopLabel = new System.Windows.Forms.Label();
+            this.ListBottomLabel = new System.Windows.Forms.Label();
+            this.ListDurationTrackLabel = new System.Windows.Forms.Label();
             this.Drawer.SuspendLayout();
             this.MainPanel.SuspendLayout();
             this.ListPanel.SuspendLayout();
@@ -195,6 +198,9 @@
             // ListPanel
             // 
             this.ListPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.ListPanel.Controls.Add(this.ListDurationTrackLabel);
+            this.ListPanel.Controls.Add(this.ListBottomLabel);
+            this.ListPanel.Controls.Add(this.ListTopLabel);
             this.ListPanel.Controls.Add(this.ListArtBox);
             this.ListPanel.Controls.Add(this.ListDGV);
             this.ListPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -219,46 +225,47 @@
             this.ListDGV.AllowUserToOrderColumns = true;
             this.ListDGV.AllowUserToResizeRows = false;
             this.ListDGV.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(96)))), ((int)(((byte)(96)))));
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ListDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ListDGV.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.ListDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.ListDGV.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.ListDGV.DefaultCellStyle = dataGridViewCellStyle10;
             this.ListDGV.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.ListDGV.Location = new System.Drawing.Point(0, 165);
             this.ListDGV.Name = "ListDGV";
             this.ListDGV.ReadOnly = true;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.ListDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.ListDGV.RowHeadersDefaultCellStyle = dataGridViewCellStyle11;
             this.ListDGV.RowHeadersVisible = false;
             this.ListDGV.RowHeadersWidth = 82;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
-            this.ListDGV.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.White;
+            this.ListDGV.RowsDefaultCellStyle = dataGridViewCellStyle12;
             this.ListDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.ListDGV.Size = new System.Drawing.Size(750, 372);
             this.ListDGV.TabIndex = 0;
             this.ListDGV.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ListDGV_CellClick);
             this.ListDGV.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.ListDGV_CellMouseEnter);
             this.ListDGV.CellMouseLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.ListDGV_CellMouseLeave);
+            this.ListDGV.Sorted += new System.EventHandler(this.ListDGV_Sorted);
             // 
             // HomePanel
             // 
@@ -314,6 +321,9 @@
             this.BarProgressSlider.Name = "BarProgressSlider";
             this.BarProgressSlider.Size = new System.Drawing.Size(221, 45);
             this.BarProgressSlider.TabIndex = 8;
+            this.BarProgressSlider.MouseCaptureChanged += new System.EventHandler(this.BarProgressSlider_MouseCaptureChanged);
+            this.BarProgressSlider.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BarProgressSlider_MouseDown);
+            this.BarProgressSlider.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BarProgressSlider_MouseUp);
             // 
             // BarLoopButton
             // 
@@ -391,6 +401,39 @@
             this.BarAlbumArt.TabIndex = 0;
             this.BarAlbumArt.TabStop = false;
             // 
+            // ListTopLabel
+            // 
+            this.ListTopLabel.AutoSize = true;
+            this.ListTopLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ListTopLabel.ForeColor = System.Drawing.Color.White;
+            this.ListTopLabel.Location = new System.Drawing.Point(164, 13);
+            this.ListTopLabel.Name = "ListTopLabel";
+            this.ListTopLabel.Size = new System.Drawing.Size(829, 37);
+            this.ListTopLabel.TabIndex = 2;
+            this.ListTopLabel.Text = "Songs / Artist Name / Album Title / Genre / Playlist Name";
+            // 
+            // ListBottomLabel
+            // 
+            this.ListBottomLabel.AutoSize = true;
+            this.ListBottomLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ListBottomLabel.ForeColor = System.Drawing.Color.White;
+            this.ListBottomLabel.Location = new System.Drawing.Point(164, 57);
+            this.ListBottomLabel.Name = "ListBottomLabel";
+            this.ListBottomLabel.Size = new System.Drawing.Size(415, 29);
+            this.ListBottomLabel.TabIndex = 3;
+            this.ListBottomLabel.Text = "... / ... / Album Artist(s) Name(s) / ... / ...";
+            // 
+            // ListDurationTrackLabel
+            // 
+            this.ListDurationTrackLabel.AutoSize = true;
+            this.ListDurationTrackLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ListDurationTrackLabel.ForeColor = System.Drawing.Color.White;
+            this.ListDurationTrackLabel.Location = new System.Drawing.Point(166, 125);
+            this.ListDurationTrackLabel.Name = "ListDurationTrackLabel";
+            this.ListDurationTrackLabel.Size = new System.Drawing.Size(267, 29);
+            this.ListDurationTrackLabel.TabIndex = 4;
+            this.ListDurationTrackLabel.Text = "Duration: 00:00, # tracks";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -403,9 +446,11 @@
             this.Controls.Add(this.DrawerButton);
             this.Name = "MainForm";
             this.Text = "UMusic";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Drawer.ResumeLayout(false);
             this.MainPanel.ResumeLayout(false);
             this.ListPanel.ResumeLayout(false);
+            this.ListPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ListArtBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ListDGV)).EndInit();
             this.HomePanel.ResumeLayout(false);
@@ -449,6 +494,9 @@
         public System.Windows.Forms.Label BarTitleLabel;
         public System.Windows.Forms.PictureBox BarAlbumArt;
         public System.Windows.Forms.Button BarPausePlayButton;
+        private System.Windows.Forms.Label ListBottomLabel;
+        private System.Windows.Forms.Label ListTopLabel;
+        public System.Windows.Forms.Label ListDurationTrackLabel;
     }
 }
 

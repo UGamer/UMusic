@@ -15,37 +15,58 @@ namespace Animation
 {
     public partial class LoadingForm : Form
     {
-        MainForm refer;
+        MainForm Refer;
 
         public LoadingForm(MainForm refer)
         {
-            this.refer = refer;
+            this.Refer = refer;
 
-            string connectionString = "Data Source=user.db;Version=3;";
-            SQLiteConnection con = new SQLiteConnection(connectionString);
-            SQLiteCommand selectSettingsCmd = new SQLiteCommand("SELECT * FROM Settings", con);
-            SQLiteCommand selectFoldersCmd = new SQLiteCommand("SELECT * FROM Folders", con);
+            try
+            {
+                string connectionString = "Data Source=user.db;Version=3;";
+                SQLiteConnection con = new SQLiteConnection(connectionString);
+                SQLiteCommand selectFoldersCmd = new SQLiteCommand("SELECT * FROM Folders", con);
 
-            SQLiteDataAdapter da;
-            con.Open();
+                SQLiteDataAdapter da;
+                con.Open();
+                
+                selectFoldersCmd.CommandType = CommandType.Text;
+                da = new SQLiteDataAdapter(selectFoldersCmd);
+                DataTable foldersTable = new DataTable();
+                da.Fill(foldersTable);
 
-            selectSettingsCmd.CommandType = CommandType.Text;
-            da = new SQLiteDataAdapter(selectSettingsCmd);
-            DataTable settingsTable = new DataTable();
-            da.Fill(settingsTable);
+                con.Close();
 
-            selectFoldersCmd.CommandType = CommandType.Text;
-            da = new SQLiteDataAdapter(selectFoldersCmd);
-            DataTable foldersTable = new DataTable();
-            da.Fill(foldersTable);
+                InitializeComponent();
 
-            con.Close();
-            
-            InitializeComponent();
+                DataTable musicTable = CreateMusicTable(foldersTable);
 
-            DataTable musicTable = CreateMusicTable(foldersTable);
+                refer.ListDGV.DataSource = musicTable;
 
-            refer.ListDGV.DataSource = musicTable;
+                int totalSeconds = 0;
+                for (int index = 0; index < musicTable.Rows.Count; index++)
+                    totalSeconds += Convert.ToInt32(musicTable.Rows[index]["Duration"].ToString());
+
+                int totalMinutes = totalSeconds / 60;
+                totalSeconds %= 60;
+
+                string totalMinutesString = "";
+                if (totalMinutes < 10)
+                    totalMinutesString = "0";
+                totalMinutesString += totalMinutes.ToString();
+
+                string totalSecondsString = "";
+                if (totalSeconds < 10)
+                    totalSecondsString = "0";
+                totalSecondsString += totalSeconds.ToString();
+
+                refer.ListDurationTrackLabel.Text = "Duration: " + totalMinutesString + ":" + totalSecondsString + ", " + musicTable.Rows.Count + " tracks";
+            }
+            catch
+            {
+                MessageBox.Show("File \"user.db\" could not be found. To get this file, try redownloading the application. Closing the application.", "Error: File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                refer.Close();
+            }
         }
 
         private DataTable CreateMusicTable(DataTable foldersTable)
@@ -63,16 +84,14 @@ namespace Animation
             }
 
             LoadedBar.Maximum = files.Count;
-
-            int index;
+            
             DateTime fileCreated;
             TagLib.File currentFile;
-            // Image albumArt = Image.FromFile(@"resources\Unknown Album Art.png");
-            MemoryStream ms;
+            Song song;
 
             DataTable musicTable = new DataTable();
 
-            // musicTable.Columns.Add("Album Art", typeof(Image));
+            musicTable.Columns.Add(" ", typeof(Image));
             musicTable.Columns.Add("Title");
             musicTable.Columns.Add("Artist(s)");
             musicTable.Columns.Add("Album");
@@ -80,30 +99,32 @@ namespace Animation
             musicTable.Columns.Add("Genre");
             musicTable.Columns.Add("Date Added");
             musicTable.Columns.Add("File");
+            musicTable.Columns.Add("Duration");
+            musicTable.Columns.Add("Object", typeof(Song));
 
-            // Image albumArt2;
-            // ArrayList albumArts = new ArrayList();
-            for (index = 0; index < files.Count; index++)
+            for (int index = 0; index < files.Count; index++)
             {
                 try
                 {
+                    if (files[index].ToString().IndexOf(".jpg") != -1)
+                        continue;
+
+                    song = new Song(files[index].ToString());
+
                     currentFile = TagLib.File.Create(files[index].ToString());
 
                     DataRow dRow = musicTable.NewRow();
-
-                    /*
+                    
                     if (currentFile.Tag.Pictures.Length > 0)
                     {
                         MemoryStream mStream = new MemoryStream(currentFile.Tag.Pictures[0].Data.Data);
-                        // albumArts.Add(Image.FromStream(mStream));
-                        albumArt2 = Image.FromStream(mStream);
-                        // dRow["Album Art"] = Image.FromStream(mStream);
+                        song.AlbumArt = Image.FromStream(mStream);
                         mStream.Dispose();
                     }
-                    else */
-                    // dRow["Album Art"] = albumArt;
+                    else
+                     try { song.AlbumArt = Image.FromFile(@"resources\DefaultAlbumArt.png"); } catch { }
 
-                    string title = currentFile.Tag.Title;
+                    song.Title = currentFile.Tag.Title;
                     if (currentFile.Tag.Title == null)
                     {
                         string fileName = files[index].ToString();
@@ -120,19 +141,49 @@ namespace Animation
                                 ready = true;
                             }
                         }
-                        title = fileName;
+                        song.Title = fileName;
+                    }
+                    
+                    song.Artist = currentFile.Tag.FirstPerformer;
+                    if (currentFile.Tag.Performers.Length > 1)
+                    {
+                        for (int index2 = 1; index2 < currentFile.Tag.Performers.Length; index2++)
+                            song.Artist += " & " + currentFile.Tag.Performers[index2];
+                    }
+
+                    song.Album = currentFile.Tag.Album;
+
+                    song.AlbumArtist = currentFile.Tag.FirstAlbumArtist;
+                    if (currentFile.Tag.AlbumArtists.Length > 1)
+                    {
+                        for (int index2 = 1; index2 < currentFile.Tag.AlbumArtists.Length; index2++)
+                            song.AlbumArtist += " & " + currentFile.Tag.AlbumArtists[index2];
+                    }
+
+                    song.Genre = currentFile.Tag.FirstGenre;
+                    if (currentFile.Tag.Genres.Length > 1)
+                    {
+                        for (int index2 = 1; index2 < currentFile.Tag.Genres.Length; index2++)
+                            song.Genre += " & " + currentFile.Tag.Genres[index2];
                     }
 
                     fileCreated = File.GetCreationTime(files[index].ToString());
+                    song.DateAdded = string.Format("{0:00}/{1:00}/{2:00} {3:00}:{4:00}:{5:00}", fileCreated.Year, fileCreated.Month, fileCreated.Day, fileCreated.Hour, fileCreated.Minute, fileCreated.Second);
 
-                    dRow["Title"] = title;
-                    dRow["Artist(s)"] = currentFile.Tag.FirstPerformer;
-                    dRow["Album"] = currentFile.Tag.Album;
-                    dRow["Album Artist(s)"] = currentFile.Tag.FirstAlbumArtist;
-                    dRow["Genre"] = currentFile.Tag.FirstGenre;
-                    dRow["Date Added"] = string.Format("{0:00}/{1:00}/{2:00} {3:00}:{4:00}:{5:00}", fileCreated.Year,
-                        fileCreated.Month, fileCreated.Day, fileCreated.Hour, fileCreated.Minute, fileCreated.Second);
-                    dRow["File"] = files[index].ToString();
+                    song.Path = files[index].ToString();
+
+                    song.Duration = Convert.ToInt32(currentFile.Properties.Duration.TotalSeconds);
+
+                    dRow[0] = song.AlbumArt;
+                    dRow["Title"] = song.Title;
+                    dRow["Artist(s)"] = song.Artist;
+                    dRow["Album"] = song.Album;
+                    dRow["Album Artist(s)"] = song.AlbumArtist;
+                    dRow["Genre"] = song.Genre;
+                    dRow["Date Added"] = song.DateAdded;
+                    dRow["File"] = song.Path;
+                    dRow["Duration"] = song.Duration;
+                    dRow["Object"] = song;
 
                     musicTable.Rows.Add(dRow);
                 }
@@ -151,79 +202,43 @@ namespace Animation
             // if (settings.IndexOf("[Album Art]\nVisible = True") != -1)
             // dataTable.Columns.Add("Album Art", typeof(byte[]));
 
-            /*
-            for (int r = 0; r < height; r++)
-            {
-                for (int x = 0; x < dataTable.Rows.Count; x++)
-                {
-                    try
-                    {
-                        currentFile = TagLib.File.Create(dataTable.Rows[x]["File"].ToString());
-                        if (currentFile.Tag.Pictures.Length > 0)
-                        {
-                            bin = currentFile.Tag.Pictures[0].Data.Data;
-                            currentAlbumArt = Image.FromStream(new MemoryStream(bin)).GetThumbnailImage(500, 500, null, IntPtr.Zero);
-                            dataTable.Rows[x][0] = imageToByteArray(currentAlbumArt);
-                        }
-                        else
-                            dataTable.Rows[x][0] = imageToByteArray(albumArt);
-                    }
-                    catch
-                    {
-                        dataTable.Rows[x][0] = imageToByteArray(albumArt);
-                    }
-                }
-            }
-            */
+            Refer.ListDGV.DataSource = musicTable;
 
-            refer.ListDGV.DataSource = musicTable;
+            Refer.ListDGV.Columns[0].Width = 50;
+            ((DataGridViewImageColumn)Refer.ListDGV.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Zoom;
 
-            // DGV.Columns["Album Art"].Width = 50;
-            // ((DataGridViewImageColumn)DGV.Columns[0]).ImageLayout = DataGridViewImageCellLayout.Zoom;
-
-            refer.ListDGV.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            refer.ListDGV.Columns["Artist(s)"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            refer.ListDGV.Columns["Album"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            refer.ListDGV.Columns["Album Artist(s)"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            refer.ListDGV.Columns["Genre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            refer.ListDGV.Columns["Date Added"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            refer.ListDGV.Columns["File"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-            /*
-            settings = File.ReadAllText("settings.txt", Encoding.UTF8);
-
-            int sortColumnIndex = settings.IndexOf("SortBy=");
-            int sortOrderIndex = settings.IndexOf("Order=");
-
-            sortColumn = settings.Substring(sortColumnIndex + 8);
-            sortColumn = sortColumn.Substring(0, sortColumn.IndexOf("\""));
-
-            sortOrder = settings.Substring(sortOrderIndex + 7);
-            sortOrder = sortOrder.Substring(0, sortOrder.IndexOf("\""));
-
+            Refer.ListDGV.Columns["Title"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            Refer.ListDGV.Columns["Artist(s)"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            Refer.ListDGV.Columns["Album"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            Refer.ListDGV.Columns["Album Artist(s)"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            Refer.ListDGV.Columns["Genre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            Refer.ListDGV.Columns["Date Added"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            Refer.ListDGV.Columns["File"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            Refer.ListDGV.Columns["Duration"].Visible = false;
+            Refer.ListDGV.Columns["Object"].Visible = false;
+            
             bool columnFound = false;
-            for (index = 0; index < DGV.Columns.Count && columnFound == false; index++)
+            for (int index = 0; index < Refer.ListDGV.Columns.Count && columnFound == false; index++)
             {
-                if (DGV.Columns[index].HeaderText == sortColumn)
+                if (Refer.ListDGV.Columns[index].HeaderText == Refer.UserSettings.SortBy)
                 {
                     columnFound = true;
                     try
                     {
-                        if (sortOrder == "Ascending")
-                            refer.ListDGV.Sort(refer.ListDGV.Columns[index], ListSortDirection.Ascending);
+                        if (Refer.UserSettings.SortOrder == "Ascending")
+                            Refer.ListDGV.Sort(Refer.ListDGV.Columns[index], ListSortDirection.Ascending);
                         else
-                            refer.ListDGV.Sort(refer.ListDGV.Columns[index], ListSortDirection.Descending);
+                            Refer.ListDGV.Sort(Refer.ListDGV.Columns[index], ListSortDirection.Descending);
                     }
                     catch { }
                 }
             }
-            */
 
-            for (index = 0; index < refer.ListDGV.Rows.Count; index++)
+            for (int index = 0; index < Refer.ListDGV.Rows.Count; index++)
             {
-                if (refer.ListDGV.Rows[index].Cells["File"].Value.ToString().IndexOf(".jpg") != -1)
+                if (Refer.ListDGV.Rows[index].Cells["File"].Value.ToString().IndexOf(".jpg") != -1)
                 {
-                    refer.ListDGV.Rows.RemoveAt(index);
+                    Refer.ListDGV.Rows.RemoveAt(index);
                     index--;
                 }
             }

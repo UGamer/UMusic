@@ -13,10 +13,15 @@ namespace Animation
 {
     public partial class MainForm : Form
     {
-        Player player;
+        public Settings UserSettings;
+        public Player Player;
+
+        public List<Song> Library = new List<Song>();
 
         public MainForm()
         {
+            UserSettings = new Settings();
+
             InitializeComponent();
 
             ValidateSetup();
@@ -92,7 +97,10 @@ namespace Animation
             ListPanel.Visible = true;
 
             try { ListArtBox.BackgroundImage = Image.FromFile(@"resources\DefaultAlbumArt.png"); }
-            catch { MessageBox.Show("File \"resources\\DefaultAlbumArt.png\" not found.", "File Not Found"); }
+            catch { MessageBox.Show("File \"resources\\DefaultAlbumArt.png\" could not be found.", "Error: File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+
+            ListTopLabel.Text = "Songs";
+            ListBottomLabel.Text = "";
 
             LoadingForm loadingForm = new LoadingForm(this);
             try { loadingForm.Show(); } catch { }
@@ -124,36 +132,73 @@ namespace Animation
 
         private void ListDGV_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            player = new Player(this);
+            NewPlaylist();
+        }
+
+        private void BarPausePlayButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Player.Playing)
+                    Player.Pause();
+                else
+                    Player.Play();
+            }
+            catch (NullReferenceException)
+            {
+                NewPlaylist();
+            }
+        }
+
+        private void NewPlaylist()
+        {
+            Player = new Player(this);
 
             string[] files = new string[ListDGV.Rows.Count];
 
             for (int index = 0; index < ListDGV.Rows.Count; index++)
                 files[index] = ListDGV.Rows[index].Cells["File"].Value.ToString();
 
-            player.NewPlaylist(files);
-        }
-
-        private void BarPausePlayButton_Click(object sender, EventArgs e)
-        {
-            // try
-            {
-                if (player.playing)
-                    player.Pause();
-                else
-                    player.Play();
-            }
-            // catch (NullReferenceException) { }
+            Player.NewPlaylist(files);
         }
 
         private void BarPreviousButton_Click(object sender, EventArgs e)
         {
-            player.PreviousTrack();
+            Player.Playlist[Player.PlaylistIndex - 1].Audio.CurrentTime = new TimeSpan(0, 0, 0);
+            Player.Playlist[Player.PlaylistIndex].Audio.CurrentTime = new TimeSpan(0, 0, 0);
+            Player.PlaylistIndex -= 2;
+            Player.OutputDevice.Stop();
         }
 
         private void BarNextButton_Click(object sender, EventArgs e)
         {
-            player.NextTrack();
+            Player.OutputDevice.Stop();
+        }
+
+        private void BarProgressSlider_MouseCaptureChanged(object sender, EventArgs e)
+        {
+            Player.Playlist[Player.PlaylistIndex].Audio.CurrentTime = new TimeSpan(0, 0, BarProgressSlider.Value);
+        }
+
+        private void BarProgressSlider_MouseDown(object sender, MouseEventArgs e)
+        {
+            Player.ProgressGrabbed = true;
+        }
+
+        private void BarProgressSlider_MouseUp(object sender, MouseEventArgs e)
+        {
+            Player.ProgressGrabbed = false;
+        }
+
+        private void ListDGV_Sorted(object sender, EventArgs e)
+        {
+            UserSettings.SortBy = ListDGV.SortedColumn.HeaderText;
+            UserSettings.SortOrder = ListDGV.SortOrder.ToString();
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            UserSettings.WriteToDatabase();
         }
     }
 }

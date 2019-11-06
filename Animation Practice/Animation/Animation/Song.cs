@@ -12,20 +12,21 @@ namespace Animation
 {
     public class Song
     {
-        public AudioFileReader audio;
+        public AudioFileReader Audio;
 
-        public Image albumArt;
-        public string title;
-        public string artist;
-        public string album;
-        public string albumArtist;
-        public string genre;
-        public string dateAdded;
-        public string path;
+        public Image AlbumArt;
+        public string Title;
+        public string Artist;
+        public string Album;
+        public string AlbumArtist;
+        public string Genre;
+        public string DateAdded;
+        public string Path;
+        public int Duration;
 
-        public Song()
+        public Song(string path)
         {
-
+            Audio = new AudioFileReader(path);
         }
     }
 }

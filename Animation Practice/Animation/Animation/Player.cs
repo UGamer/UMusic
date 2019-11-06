@@ -15,32 +15,34 @@ namespace Animation
 {
     public class Player
     {
-        MainForm refer;
+        MainForm Refer;
 
-        WaveOutEvent outputDevice;
+        public WaveOutEvent OutputDevice;
 
-        public List<AudioFileReader> playlist = new List<AudioFileReader>();
-        public int playlistIndex = 0;
-        
-        public bool playing = false;
-        bool loop = false;
+        public List<Song> Playlist = new List<Song>();
+        public int PlaylistIndex = 0;
 
-        Timer positionTimer;
+        public bool ProgressGrabbed = false;
+        public bool Playing = false;
+        bool Loop = false;
+
+        Timer PositionTimer;
 
         public Player(MainForm refer)
         {
-            this.refer = refer;
+            this.Refer = refer;
 
-            positionTimer = new Timer();
-            positionTimer.Interval = 500;
-            positionTimer.Elapsed += PositionTimer_Elapsed;
+            PositionTimer = new Timer();
+            PositionTimer.Interval = 500;
+            PositionTimer.Elapsed += PositionTimer_Elapsed;
 
-            positionTimer.Start();
+            PositionTimer.Start();
         }
 
         private void PositionTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            try { SetProgressBarValue(Convert.ToInt32(playlist[playlistIndex].CurrentTime.TotalSeconds)); } catch { }
+            if (!ProgressGrabbed)
+                try { SetProgressBarValue(Convert.ToInt32(Playlist[PlaylistIndex].Audio.CurrentTime.TotalSeconds)); } catch { }
 
             // refer.BarProgressSlider.Value = Convert.ToInt32(playlist[playlistIndex].CurrentTime.TotalSeconds);
         }
@@ -49,53 +51,29 @@ namespace Animation
         {
             try
             {
-                outputDevice.Play();
-                playing = true;
+                OutputDevice.Play();
+                Playing = true;
             }
             catch
             {
                 InitializeSong();
-                outputDevice.Play();
-                playing = true;
+                OutputDevice.Play();
+                Playing = true;
             }
 
-            refer.BarPausePlayButton.Text = "||";
+            Refer.BarPausePlayButton.Text = "||";
         }
 
         public void Pause()
         {
-            outputDevice.Pause();
-            playing = false;
-            refer.BarPausePlayButton.Text = ">";
+            OutputDevice.Pause();
+            Playing = false;
+            Refer.BarPausePlayButton.Text = ">";
         }
 
         public void LoopToggle()
         {
             //
-        }
-
-        public void PreviousTrack()
-        {
-            bool wasPlaying = playing;
-            playing = false;
-            playlistIndex -= 2;
-            NextSong();
-
-            if (wasPlaying)
-                Play();
-        }
-
-        public void NextTrack()
-        {
-            bool wasPlaying = playing;
-            playing = false;
-            playlistIndex++;
-            NextSong();
-            
-            if (wasPlaying)
-                Play();
-
-            Console.WriteLine(playlistIndex);
         }
 
         public void ShuffleToggle()
@@ -105,22 +83,21 @@ namespace Animation
 
         private void InitializeSong()
         {
-            outputDevice = new WaveOutEvent();
-            outputDevice.PlaybackStopped += OnPlaybackStopped;
+            OutputDevice = new WaveOutEvent();
+            OutputDevice.PlaybackStopped += OnPlaybackStopped;
 
-            outputDevice.Init(playlist[playlistIndex]);
-            if (playing)
-                outputDevice.Play();
+            OutputDevice.Init(Playlist[PlaylistIndex].Audio);
+            if (Playing)
+                OutputDevice.Play();
 
             // Set progress bar value and maximum
             SetProgressBarValue(0);
-            SetProgressBarMaximum(Convert.ToInt32(playlist[playlistIndex].TotalTime.TotalSeconds));
+            SetProgressBarMaximum(Convert.ToInt32(Playlist[PlaylistIndex].Audio.TotalTime.TotalSeconds));
 
             // Fill out title and artist labels
-            TagLib.File currentFile = TagLib.File.Create(playlist[playlistIndex].FileName);
-
-            SetTitleLabels(currentFile.Tag.Title);
-            SetArtistLabels(currentFile.Tag.FirstPerformer);
+            
+            SetTitleLabels(Playlist[PlaylistIndex].Title);
+            SetArtistLabels(Playlist[PlaylistIndex].Artist);
 
             // Set current and max label positions
         }
@@ -128,38 +105,39 @@ namespace Animation
         public void NewPlaylist(string[] files)
         {
             for (int index = 0; index < files.Length; index++)
-                playlist.Add(new AudioFileReader(files[index]));
+                Playlist[PlaylistIndex].Audio = new AudioFileReader(files[index]);
 
-            playlistIndex = 0;
+            PlaylistIndex = 0;
         }
 
         public void NextSong()
         {
-            outputDevice.Stop();
+            OutputDevice.Stop();
 
-            outputDevice = new WaveOutEvent();
-            outputDevice.PlaybackStopped += OnPlaybackStopped;
+            OutputDevice = new WaveOutEvent();
+            OutputDevice.PlaybackStopped += OnPlaybackStopped;
 
-            if (playlistIndex < playlist.Count)
+            if (PlaylistIndex < Playlist.Count)
             {
                 InitializeSong();
             }
-            else if (loop)
+            else if (Loop)
             {
-                playlistIndex = 0;
+                PlaylistIndex = 0;
                 InitializeSong();
             }
             else
             {
-                outputDevice.Stop();
+                OutputDevice.Stop();
             }
         }
 
         private void OnPlaybackStopped(object sender, StoppedEventArgs e)
         {
-            if (playing)
+            if (Playing)
             {
-                playlistIndex++;
+
+                PlaylistIndex++;
                 NextSong();
             }
         }
@@ -172,57 +150,57 @@ namespace Animation
             // InvokeRequired required compares the thread ID of the
             // calling thread to the thread ID of the creating thread.
             // If these threads are different, it returns true.
-            if (this.refer.BarProgressSlider.InvokeRequired)
+            if (this.Refer.BarProgressSlider.InvokeRequired)
             {
                 SetValueCallback d = new SetValueCallback(SetProgressBarValue);
-                this.refer.BarProgressSlider.Invoke(d, new object[] { value });
+                this.Refer.BarProgressSlider.Invoke(d, new object[] { value });
             }
             else
             {
-                this.refer.BarProgressSlider.Value = value;
+                try { this.Refer.BarProgressSlider.Value = value; } catch { }
             }
         }
 
         private void SetProgressBarMaximum(int value)
         {
-            if (this.refer.BarProgressSlider.InvokeRequired)
+            if (this.Refer.BarProgressSlider.InvokeRequired)
             {
                 SetValueCallback d = new SetValueCallback(SetProgressBarMaximum);
-                this.refer.BarProgressSlider.Invoke(d, new object[] { value });
+                this.Refer.BarProgressSlider.Invoke(d, new object[] { value });
             }
             else
             {
-                this.refer.BarProgressSlider.Maximum = value;
+                this.Refer.BarProgressSlider.Maximum = value;
             }
         }
 
         private void SetTitleLabels(string text)
         {
-            if (this.refer.BarTitleLabel.InvokeRequired)
+            if (this.Refer.BarTitleLabel.InvokeRequired)
             {
                 SetTextCallback d = new SetTextCallback(SetTitleLabels);
-                refer.BarTitleLabel.Invoke(d, new object[] { text });
-                // refer.FullTitleLabel.Invoke(d, new object[] { text });
+                Refer.BarTitleLabel.Invoke(d, new object[] { text });
+                // Refer.FullTitleLabel.Invoke(d, new object[] { text });
             }
             else
             {
-                refer.BarTitleLabel.Text = text;
-                // refer.FullTitleLabel.Text = text;
+                Refer.BarTitleLabel.Text = text;
+                // Refer.FullTitleLabel.Text = text;
             }
         }
 
         private void SetArtistLabels(string text)
         {
-            if (this.refer.BarArtistLabel.InvokeRequired)
+            if (this.Refer.BarArtistLabel.InvokeRequired)
             {
                 SetTextCallback d = new SetTextCallback(SetArtistLabels);
-                refer.BarArtistLabel.Invoke(d, new object[] { text });
-                // refer.FullArtistLabel.Invoke(d, new object[] { text });
+                Refer.BarArtistLabel.Invoke(d, new object[] { text });
+                // Refer.FullArtistLabel.Invoke(d, new object[] { text });
             }
             else
             {
-                refer.BarArtistLabel.Text = text;
-                // refer.FullArtistLabel.Text = text;
+                Refer.BarArtistLabel.Text = text;
+                // Refer.FullArtistLabel.Text = text;
             }
         }
     }
